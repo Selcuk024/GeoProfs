@@ -26,4 +26,4 @@ Ilities
 •	Zorgen dat de code herbruikbaar en efficient is // DOD bij een git review request
 
 Werkafspraken:
--	Map mee committen waar alle verslagen etc in staan
+-	Map mee committen waar alle verslagen etc in staan.
