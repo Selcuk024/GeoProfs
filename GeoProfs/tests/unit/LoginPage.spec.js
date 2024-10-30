@@ -16,7 +16,7 @@ describe("LoginPage.vue", () => {
     // Klik op de login-knop
     await wrapper.find("form").trigger("submit.prevent");
 
-    // Controleer of het `login-success` event is uitgezonden
+    // Controleer of het login event is uitgezonden
     expect(wrapper.emitted("login-success")).toBeTruthy();
   });
 
