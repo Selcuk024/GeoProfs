@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home-page">
     <HeaderComponent />
     <NavTabs :currentTab="currentTab" @change-tab="currentTab = $event" />
     <component :is="currentComponent" />
@@ -39,3 +39,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.home-page {
+  font-family: 'Inter', sans-serif;
+}
+</style>
