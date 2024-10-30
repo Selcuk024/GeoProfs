@@ -1,4 +1,4 @@
-@import './base.css';
+/* @import './base.css';
 
 
 @media (hover: hover) {
@@ -10,6 +10,7 @@
 @media (min-width: 1024px) {
   body {
     display: flex;
+    place-items: center;
   }
 
   #app {
@@ -17,4 +18,4 @@
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-}
+} */
