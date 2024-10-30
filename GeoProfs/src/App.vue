@@ -1,25 +1,29 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import HomePage from './components/HomePage.vue';
-import TheWelcome from './components/TheWelcome.vue'
-import VerlofPage from './components/VerlofPage.vue';
-</script>
-
 <template>
-  
-
-  <main>
-    <HomePage />
-    <VerlofPage />
-  </main>
+  <div id="app">
+    <LoginPage v-if="!isLoggedIn" @login-success="handleLoginSuccess" />
+    <HomePage v-else />
+  </div>
 </template>
 
-<style scoped>
+<script>
+import LoginPage from "./components/LoginPage.vue";
+import HomePage from "./components/HomePage.vue";
 
-
-
-
-@media (min-width: 1024px) {
-
-}
-</style>
+export default {
+  name: "App",
+  components: {
+    LoginPage,
+    HomePage,
+  },
+  data() {
+    return {
+      isLoggedIn: false,
+    };
+  },
+  methods: {
+    handleLoginSuccess() {
+      this.isLoggedIn = true;
+    },
+  },
+};
+</script>
