@@ -1,20 +1,16 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
+import HomePage from './components/HomePage.vue';
 import TheWelcome from './components/TheWelcome.vue'
+import VerlofPage from './components/VerlofPage.vue';
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <h1 class="testing">HELLO KENNY INTELLIGENCE</h1>
-    </div>
-  </header>
+  
 
   <main>
-    <TheWelcome />
+    <HomePage />
+    <VerlofPage />
   </main>
 </template>
 
