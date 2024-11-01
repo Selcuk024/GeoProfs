@@ -14,14 +14,15 @@ export default {
 </script>
 
 <style scoped>
-body {
-  font-family: 'Inter', sans-serif;
-}
-
 .afwezig-page {
   padding: 20px;
+  display: flex;
+  justify-content: center;
+  background-color: #f5f5f5;
 }
+
 .absence-card {
+  width: 300px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
