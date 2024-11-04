@@ -22,30 +22,38 @@ export default {
 </script>
 
 <style scoped>
-body {
-  font-family: 'Inter', sans-serif;
+.header {
+  margin: 0;
+  padding: 0;
 }
+
 
 .nav-tabs {
   display: flex;
-  background-color: #e0e0e0;
+  flex-direction: column; /* Maakt het verticaal */
+  width: 200px;
+  background-color: #001f6b; /* Donkerblauwe zijbalk */
+  color: white;
+  padding-top: 20px;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
+
 button {
-  flex: 1;
-  padding: 12px;
-  font-size: 1rem;
+  padding: 15px;
+  color: white;
   border: none;
-  background: #f5f5f5;
+  background: none;
+  text-align: left;
   cursor: pointer;
 }
+
 button.active {
-  background-color: #fff;
-  font-weight: bold;
+  background-color: #4a90e2;
 }
+
 button:hover {
-  background-color: #d0d0d0;
-}
-button:focus {
-  outline: none;
+  background-color: #3a7bd5;
 }
 </style>

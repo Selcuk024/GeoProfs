@@ -1,11 +1,13 @@
 <template>
   <div class="verlof-page">
     <div class="verlof-item" v-for="(item, index) in verlofList" :key="index">
-      <p class="title">{{ item.title }}</p>
-      <p class="date">Data: {{ item.date }}</p>
-      <p class="status">
-        Status: <span :class="item.status">{{ item.status }}</span>
-      </p>
+      <div class="verlof-content">
+        <p class="title">{{ item.title }}</p>
+        <p class="date">Data: {{ item.date }}</p>
+        <p class="status">
+          Status: <span :class="item.status">{{ item.status }}</span>
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -26,38 +28,36 @@ export default {
 </script>
 
 <style scoped>
-body {
-  font-family: 'Inter', sans-serif;
-}
-
 .verlof-page {
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  background-color: #f5f5f5;
 }
+
 .verlof-item {
-  border: 1px solid #ccc;
-  padding: 16px;
+  background-color: white;
   border-radius: 8px;
-  background-color: #2e2e2e;
-  color: #f5f5f5;
+  padding: 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .title {
   font-weight: bold;
 }
-.date {
-  margin: 4px 0;
-}
+
+.date,
 .status {
-  margin-top: 8px;
+  color: #4a4a4a;
 }
+
 .Goedgekeurd {
   color: green;
 }
+
 .Afgekeurd {
   color: red;
 }
+
 .Verzonden {
   color: gray;
 }

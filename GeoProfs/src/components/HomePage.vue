@@ -1,8 +1,12 @@
 <template>
   <div class="home-page">
     <HeaderComponent />
-    <NavTabs :currentTab="currentTab" @change-tab="currentTab = $event" />
-    <component :is="currentComponent" />
+    <div class="content">
+      <NavTabs :currentTab="currentTab" @change-tab="currentTab = $event" />
+      <div class="main-content">
+        <component :is="currentComponent" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -41,7 +45,29 @@ export default {
 </script>
 
 <style scoped>
+*{
+  margin: 0px;
+  padding: 0px;
+}
+
 .home-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
   font-family: 'Inter', sans-serif;
+  margin: 0; /* Voeg dit toe */
+  padding: 0; /* Voeg dit toe */
+}
+
+.content {
+  display: flex;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: #f5f5f5;
 }
 </style>

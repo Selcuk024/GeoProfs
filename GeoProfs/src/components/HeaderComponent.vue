@@ -1,33 +1,25 @@
 <template>
   <div class="header">
     <img src="@/assets/logo-geo.jpeg" alt="Logo" class="logo" />
-    <h1>Welkom Marco</h1>
-    <img src="@/assets/profile-image.png" alt="Profile Icon" class="profile-icon" />
+    <h1>Welkom Kenny Intelligence</h1>
+    <img src="@/assets/profile-icon-white.png" alt="Profile Icon" class="profile-icon" />
   </div>
 </template>
 
-<script>
-export default {
-  name: 'HeaderComponent'
-}
-</script>
-
 <style scoped>
-body {
-  font-family: 'Inter', sans-serif;
-}
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  background-color: #e87722;
+  background-color: #001f6b; /* Donkerblauw */
   color: white;
-  font-size: 1.5rem;
 }
+
 .logo,
 .profile-icon {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
 }
 </style>
