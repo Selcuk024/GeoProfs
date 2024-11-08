@@ -10,8 +10,8 @@ describe("LoginPage.vue", () => {
 
   it("moet succesvol inloggen met correcte gebruikersnaam en wachtwoord", async () => {
     // Simuleer invoer voor gebruikersnaam en wachtwoord
-    await wrapper.find("#username").setValue("admin");
-    await wrapper.find("#password").setValue("password123");
+    await wrapper.find("#username").setValue("marco");
+    await wrapper.find("#password").setValue("admin");
 
     // Klik op de login-knop
     await wrapper.find("form").trigger("submit.prevent");

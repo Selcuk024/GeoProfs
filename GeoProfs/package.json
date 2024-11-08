@@ -14,7 +14,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "vue": "^3.4.29"
+    "firebase": "^10.14.1",
+    "vue": "^3.4.29",
+    "vuefire": "^3.2.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",

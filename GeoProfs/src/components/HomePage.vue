@@ -15,6 +15,10 @@ import NavTabs from "@/components/NavTabs.vue";
 import VerlofPage from "@/components/VerlofPage.vue";
 import AfwezigPage from "@/components/AfwezigPage.vue";
 import HeaderComponent from "@/components/HeaderComponent.vue";
+import { useCollection } from 'vuefire'
+import { collection } from 'firebase/firestore'
+const todos = useCollection(collection(db, 'todos'))
+
 
 export default {
   name: "HomePage",
