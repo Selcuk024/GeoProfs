@@ -1,6 +1,5 @@
 import { mount } from "@vue/test-utils";
-import LoginPage from "@/components/LoginPage.vue";
-
+import LoginPage from "../../src/components/LoginPage.vue";
 describe("LoginPage.vue", () => {
   let wrapper;
 
