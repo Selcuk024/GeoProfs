@@ -6,11 +6,11 @@
       </div>
       <h2>Geoprofs</h2>
       <form @submit.prevent="login" class="login-form">
-        <label for="username">Email</label>
-        <input type="text" v-model="username" id="username" placeholder="Email" />
+        <label for="email">Email</label>
+        <input type="email" v-model="email" id="email" placeholder="Email" required />
 
         <label for="password">Password</label>
-        <input type="password" v-model="password" id="password" placeholder="Password" />
+        <input type="password" v-model="password" id="password" placeholder="Password" required />
 
         <button type="submit" class="submit-button">Submit</button>
       </form>
@@ -19,36 +19,40 @@
     </div>
   </div>
 </template>
-  
-  <script>
-  export default {
-    name: "LoginPage",
-    data() {
-      return {
-        username: "",
-        password: "",
-        errorMessage: null,
-      };
+
+<script>
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+
+export default {
+  name: "LoginPage",
+  data() {
+    return {
+      email: "",
+      password: "",
+      errorMessage: null,
+    };
+  },
+  methods: {
+    async login() {
+      try {
+        // Firebase Authentication
+        const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
+        console.log("User logged in:", userCredential.user);
+
+        // Redirect or emit login success
+        this.$emit("login-success", userCredential.user);
+      } catch (error) {
+        // Display Firebase error messages
+        console.error(error);
+        this.errorMessage = error.message || "Login failed. Please try again.";
+      }
     },
-    methods: {
-      login() {
-        // Hardcoded username and password
-        const hardcodedUsername = "marco";
-        const hardcodedPassword = "admin";
-  
-        if (this.username === hardcodedUsername && this.password === hardcodedPassword) {
-          // Login successful
-          this.$emit("login-success");
-        } else {
-          // Login failed
-          this.errorMessage = "Invalid username or password.";
-        }
-      },
-    },
-  };
-  </script>
-  
-  <style scoped>
+  },
+};
+</script>
+
+<style scoped>
 /* Algemene pagina opmaak */
 .login-page {
   display: flex;
