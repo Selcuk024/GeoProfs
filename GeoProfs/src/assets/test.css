@@ -68,15 +68,7 @@ html, body, * {
     display: flex;
     flex-direction: column;
     gap: 10px;
-  }
-  
-  .verlof-item {
-    border: 1px solid #ccc;
-    padding: 16px;
-    border-radius: 8px;
-    background-color: #2e2e2e;
-    color: #f5f5f5;
-  }
+  } 
   
   .verlof-item .title {
     font-weight: bold;

@@ -35,7 +35,6 @@ export default {
   background-color: #001f6b; /* Donkerblauwe zijbalk */
   color: white;
   padding-top: 20px;
-  height: 100vh;
   margin: 0;
   padding: 0;
 }

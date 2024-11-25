@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <LoginPage v-if="!isLoggedIn" @login-success="handleLoginSuccess" />
+    <LoginPage v-if="isLoggedIn" @login-success="handleLoginSuccess" />
     <HomePage v-else />
   </div>
 </template>
