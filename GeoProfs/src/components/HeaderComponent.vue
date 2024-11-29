@@ -1,7 +1,6 @@
 <template>
   <div class="header">
     <img src="@/assets/logo-geo.jpeg" alt="Logo" class="logo" />
-    <h1>Welkom Kenny Intelligence</h1>
     <img src="@/assets/profile-icon-white.png" alt="Profile Icon" class="profile-icon" />
   </div>
 </template>

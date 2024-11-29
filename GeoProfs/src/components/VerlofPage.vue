@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <h1 class="username">Welkom Marco</h1>
+    <div class="miniContainer">
     <div class="tabs">
       <button
         v-for="(tab, index) in tabs"
@@ -10,9 +11,13 @@
       >
         {{ tab }}
       </button>
+      <button class="add">
+        PLUS
+      </button>
     </div>
+  </div>
     <div class="content">
-      <div v-if="currentTab === 'Verlof'">
+      <div v-if="currentTab === 'Verlof'" class="allItems">
         <div class="verlof-item" v-for="(item, index) in verlofList" :key="index">
           <div class="verlof-content">
             <p class="title">{{ item.title }}</p>
@@ -23,7 +28,7 @@
           </div>
         </div>
       </div>
-      <div v-if="currentTab === 'Goedgekeurd'">
+      <div v-if="currentTab === 'Goedgekeurd'" class="allItems">
         <div
           class="verlof-item"
           v-for="(item, index) in filteredVerlof('Goedgekeurd')"
@@ -35,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div v-if="currentTab === 'Afgekeurd'">
+      <div v-if="currentTab === 'Afgekeurd'" class="allItems">
         <div
           class="verlof-item"
           v-for="(item, index) in filteredVerlof('Afgekeurd')"
@@ -63,6 +68,16 @@ export default {
         { title: "Vakantie text...", date: "12-12-2024 - 13-12-2024", status: "Verzonden" },
         { title: "Vakantie met vak...", date: "12-12-2024 - 13-12-2024", status: "Goedgekeurd" },
         { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
+        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
+        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
+        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
+        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
+        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
+        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
+        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
+        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
+        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
+        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
         { title: "Vakantie met vak...", date: "12-12-2024 - 13-12-2024", status: "Goedgekeurd" },
       ],
     };
@@ -77,13 +92,43 @@ export default {
 
 <style scoped>
 .tabs {
+  width: 70%;
   display: flex;
-  justify-content: center;
-  margin: 20px 0;
+  justify-content: flex-start;
 }
+.add{
+  margin-left: auto;
+  width: 24px;
+  height: 24px;
+}
+.miniContainer{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 24px;
+}
+.allItems{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container{
+  width: 100%;
+  height: 88vh;
+  display: flex;
+  flex-direction: column;
+}
+.content{
+  height: 100%;
+  overflow-y: scroll;
+  scrollbar-gutter: stable; 
 
+
+}
 .tab {
-  padding: 10px 20px;
+  padding: 15px 30px;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
   cursor: pointer;
@@ -94,10 +139,6 @@ export default {
   background-color: #007bff;
   color: white;
   border-color: #007bff;
-}
-
-.content {
-  margin-top: 20px;
 }
 
 .verlof-item {
@@ -118,4 +159,8 @@ export default {
 .Verzonden {
   color: gray;
 }
+.username{
+  margin: 24px;
+}
+
 </style>
