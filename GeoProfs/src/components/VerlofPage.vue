@@ -1,158 +1,82 @@
 <template>
   <div class="container">
     <h1 class="username">Welkom Marco</h1>
-    <div class="miniContainer">
-    <div class="tabs">
-      <button
-        v-for="(tab, index) in tabs"
-        :key="index"
-        :class="['tab', { active: currentTab === tab }]"
-        @click="currentTab = tab"
-      >
-        {{ tab }}
-      </button>
-
-      <button id="popup" class="add">
-        +
-      </button>
-    </div>
-  </div>
-    <div class="content">
-      <div v-if="currentTab === 'Verlof'" class="allItems">
+    <div class="class">
         <div class="verlof-item" v-for="(item, index) in verlofList" :key="index">
-          <div class="verlof-content">
-            <p class="title">{{ item.title }}</p>
-            <p class="date">Data: {{ item.date }}</p>
-            <p class="status">
-              Status: <span :class="item.status">{{ item.status }}</span>
-            </p>
-          </div>
-        </div>
+      <div class="verlof-content">
+        <p class="title">{{ item.title }}</p>
+        <p class="date">Data: {{ item.date }}</p>
+        <p class="status">
+          Status: <span :class="item.status">{{ item.status }}</span>
+        </p>
       </div>
-      <div v-if="currentTab === 'Goedgekeurd'" class="allItems">
-        <div
-          class="verlof-item"
-          v-for="(item, index) in filteredVerlof('Goedgekeurd')"
-          :key="index"
-        >
-          <div class="verlof-content">
-            <p class="title">{{ item.title }}</p>
-            <p class="date">Data: {{ item.date }}</p>
-          </div>
-        </div>
-      </div>
-      <div v-if="currentTab === 'Afgekeurd'" class="allItems">
-        <div
-          class="verlof-item"
-          v-for="(item, index) in filteredVerlof('Afgekeurd')"
-          :key="index"
-        >
-          <div class="verlof-content">
-            <p class="title">{{ item.title }}</p>
-            <p class="date">Data: {{ item.date }}</p>
-          </div>
-        </div>
-      </div>
+    </div>
     </div>
   </div>
 </template>
 
-
 <script>
-
 export default {
-  name: "VerlofPage",
+  name: 'VerlofPage',
   data() {
     return {
-      tabs: ["Verlof", "Goedgekeurd", "Afgekeurd"],
-      currentTab: "Verlof",
       verlofList: [
-        { title: "Vakantie text...", date: "12-12-2024 - 13-12-2024", status: "Verzonden" },
-        { title: "Vakantie met vak...", date: "12-12-2024 - 13-12-2024", status: "Goedgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie met vak...", date: "12-12-2024 - 13-12-2024", status: "Goedgekeurd" },
-      ],
-    };
-  },
-  methods: {
-    filteredVerlof(status) {
-      return this.verlofList.filter((item) => item.status === status);
-    },
-  },
-};
+        { title: 'Vakantie text...', date: '12-12-2024 - 13-12-2024', status: 'Verzonden' },
+        { title: 'Vakantie met vak...', date: '12-12-2024 - 13-12-2024', status: 'Goedgekeurd' },
+        { title: 'Vakantie', date: '12-12-2024 - 13-12-2024', status: 'Afgekeurd' }
+      ]
+    }
+  }
+}
 </script>
 
 <style scoped>
-.tabs {
-  width: 70%;
-  display: flex;
-  justify-content: flex-start;
-}
-.add{
-  margin-left: auto;
-  width: 46px;
-  height: 46px;
-  font-weight: bolder;
-  margin-right: 15px;
-  font-size: 40px;
-  color: white;
-  background-color: #209FD2;
-  border-radius: 13px;
-  border: none;
-}
-.miniContainer{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 24px;
-}
-.allItems{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+*{
+  margin: 0;
+  padding: 0;
+
 }
 .container{
   width: 100%;
-  height: 88vh;
+  background-color: red;
+  height: 100%;  
   display: flex;
   flex-direction: column;
 }
-.content{
-  height: 100%;
-  overflow-y: scroll;
+.class{
+  background-color: #4a4a4a;
+  width: 100%;
+  height: 70%;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
 }
-.tab {
-  padding: 15px 30px;
-  background-color: #b7b7b7;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  color: #000;
-  border-radius: 13px 13px 0px 0px;
-  font-weight: bold;
+.username{
+  font-size: 48px;
+  margin-left: 24px;
+  margin-top: 24px;
 }
-
-.tab.active {
-  background-color: #f0f0f0;
-  color: #000;
+.verlof-page {
+  border: none;
+  padding: 20px;
+  background-color: #f5f5f5;
 }
 
 .verlof-item {
   background-color: white;
   padding: 16px;
   width: 70%;
-  border: 1px solid #ccc;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.date,
+.status {
+  color: #4a4a4a;
 }
 
 .Goedgekeurd {
@@ -166,8 +90,4 @@ export default {
 .Verzonden {
   color: gray;
 }
-.username{
-  margin: 24px;
-}
-
 </style>
