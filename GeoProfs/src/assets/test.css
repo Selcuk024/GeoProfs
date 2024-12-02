@@ -41,7 +41,7 @@ html, body, * {
   }
   
   .nav-tabs button {
-    flex: 1;
+    height: 56px;
     padding: 12px;
     font-size: 1rem;
     border: none;
