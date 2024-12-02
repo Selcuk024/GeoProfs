@@ -21,6 +21,7 @@ export default {
   background-color: #f5f5f5;
 }
 
+
 .absence-card {
   width: 300px;
   padding: 20px;
