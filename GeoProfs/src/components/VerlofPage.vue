@@ -11,8 +11,9 @@
       >
         {{ tab }}
       </button>
-      <button class="add">
-        PLUS
+
+      <button id="popup" class="add">
+        +
       </button>
     </div>
   </div>
@@ -58,6 +59,7 @@
 
 
 <script>
+
 export default {
   name: "VerlofPage",
   data() {
@@ -98,8 +100,15 @@ export default {
 }
 .add{
   margin-left: auto;
-  width: 24px;
-  height: 24px;
+  width: 46px;
+  height: 46px;
+  font-weight: bolder;
+  margin-right: 15px;
+  font-size: 40px;
+  color: white;
+  background-color: #209FD2;
+  border-radius: 13px;
+  border: none;
 }
 .miniContainer{
   width: 100%;
@@ -123,22 +132,20 @@ export default {
 .content{
   height: 100%;
   overflow-y: scroll;
-  scrollbar-gutter: stable; 
-
-
 }
 .tab {
   padding: 15px 30px;
-  background-color: #f0f0f0;
+  background-color: #b7b7b7;
   border: 1px solid #ccc;
   cursor: pointer;
+  color: #000;
+  border-radius: 13px 13px 0px 0px;
   font-weight: bold;
 }
 
 .tab.active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
+  background-color: #f0f0f0;
+  color: #000;
 }
 
 .verlof-item {
