@@ -1,183 +1,182 @@
 /* Basis Reset voor marges en padding */
 html, body, * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Instellen van het standaard lettertype */
-  body {
-    font-family: 'Inter', sans-serif;
-  }
-  
-  /* Home Page styling */
-  .home-page {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-  
-  /* Header styling */
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px;
-    background-color: #e87722;
-    color: white;
-    font-size: 1.5rem;
-  }
-  
-  .header .logo,
-  .header .profile-icon {
-    width: 40px;
-    height: 40px;
-  }
-  
-  /* Navigatie Tabs styling */
-  .nav-tabs {
-    display: flex;
-    background-color: #e0e0e0;
-  }
-  
-  .nav-tabs button {
-    flex: 1;
-    padding: 12px;
-    font-size: 1rem;
-    border: none;
-    background: #f5f5f5;
-    cursor: pointer;
-  }
-  
-  .nav-tabs button.active {
-    background-color: #fff;
-    font-weight: bold;
-  }
-  
-  .nav-tabs button:hover {
-    background-color: #d0d0d0;
-  }
-  
-  .nav-tabs button:focus {
-    outline: none;
-  }
-  
-  /* Verlof Page styling */
-  .verlof-page {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  } 
-  
-  .verlof-item .title {
-    font-weight: bold;
-  }
-  
-  .verlof-item .date {
-    margin: 4px 0;
-  }
-  
-  .verlof-item .status {
-    margin-top: 8px;
-  }
-  
-  /* Kleur voor status */
-  .status .Goedgekeurd {
-    color: green;
-  }
-  
-  .status .Afgekeurd {
-    color: red;
-  }
-  
-  .status .Verzonden {
-    color: gray;
-  }
-  
-  /* Afwezig Page styling */
-  .afwezig-page {
-    padding: 20px;
-  }
-  
-  .absence-card {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #2e2e2e;
-    color: #f5f5f5;
-    text-align: center;
-  }
-  
-  /* Styling voor algemene item-weergave */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Instellen van het standaard lettertype */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Home Page styling */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Header styling */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: #e87722;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.header .logo,
+.header .profile-icon {
+  width: 40px;
+  height: 40px;
+}
+
+/* Navigatie Tabs styling */
+.nav-tabs {
+  display: flex;
+  background-color: #e0e0e0;
+}
+
+.nav-tabs button {
+  height: 56px;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  background: #f5f5f5;
+  cursor: pointer;
+}
+
+.nav-tabs button.active {
+  background-color: #fff;
+  font-weight: bold;
+}
+
+.nav-tabs button:hover {
+  background-color: #d0d0d0;
+}
+
+.nav-tabs button:focus {
+  outline: none;
+}
+
+/* Verlof Page styling */
+.verlof-page {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+} 
+
+.verlof-item .title {
+  font-weight: bold;
+}
+
+.verlof-item .date {
+  margin: 4px 0;
+}
+
+.verlof-item .status {
+  margin-top: 8px;
+}
+
+/* Kleur voor status */
+.status .Goedgekeurd {
+  color: green;
+}
+
+.status .Afgekeurd {
+  color: red;
+}
+
+.status .Verzonden {
+  color: gray;
+}
+
+/* Afwezig Page styling */
+.afwezig-page {
+  padding: 20px;
+}
+
+.absence-card {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #2e2e2e;
+  color: #f5f5f5;
+  text-align: center;
+}
+
+/* Styling voor algemene item-weergave */
+.item {
+  margin-top: 2rem;
+  display: flex;
+  position: relative;
+}
+
+.details {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.item i {
+  display: flex;
+  place-items: center;
+  place-content: center;
+  width: 32px;
+  height: 32px;
+  color: var(--color-text);
+}
+
+.item h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: var(--color-heading);
+}
+
+/* Responsieve styling voor grotere schermen */
+@media (min-width: 1024px) {
   .item {
-    margin-top: 2rem;
-    display: flex;
-    position: relative;
+    margin-top: 0;
   }
-  
-  .details {
-    flex: 1;
-    margin-left: 1rem;
-  }
-  
+
   .item i {
-    display: flex;
-    place-items: center;
-    place-content: center;
-    width: 32px;
-    height: 32px;
-    color: var(--color-text);
+    top: calc(50% - 25px);
+    left: -26px;
+    position: absolute;
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+    border-radius: 8px;
+    width: 50px;
+    height: 50px;
   }
-  
-  .item h3 {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-bottom: 0.4rem;
-    color: var(--color-heading);
+
+  .item:before {
+    content: ' ';
+    border-left: 1px solid var(--color-border);
+    position: absolute;
+    left: 0;
+    bottom: calc(50% + 25px);
+    height: calc(50% - 25px);
   }
-  
-  /* Responsieve styling voor grotere schermen */
-  @media (min-width: 1024px) {
-    .item {
-      margin-top: 0;
-    }
-  
-    .item i {
-      top: calc(50% - 25px);
-      left: -26px;
-      position: absolute;
-      border: 1px solid var(--color-border);
-      background: var(--color-background);
-      border-radius: 8px;
-      width: 50px;
-      height: 50px;
-    }
-  
-    .item:before {
-      content: ' ';
-      border-left: 1px solid var(--color-border);
-      position: absolute;
-      left: 0;
-      bottom: calc(50% + 25px);
-      height: calc(50% - 25px);
-    }
-  
-    .item:after {
-      content: ' ';
-      border-left: 1px solid var(--color-border);
-      position: absolute;
-      left: 0;
-      top: calc(50% + 25px);
-      height: calc(50% - 25px);
-    }
-  
-    .item:first-of-type:before {
-      display: none;
-    }
-  
-    .item:last-of-type:after {
-      display: none;
-    }
+
+  .item:after {
+    content: ' ';
+    border-left: 1px solid var(--color-border);
+    position: absolute;
+    left: 0;
+    top: calc(50% + 25px);
+    height: calc(50% - 25px);
   }
-  
+
+  .item:first-of-type:before {
+    display: none;
+  }
+
+  .item:last-of-type:after {
+    display: none;
+  }
+}
