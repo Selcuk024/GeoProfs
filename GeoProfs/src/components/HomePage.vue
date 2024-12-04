@@ -1,14 +1,15 @@
 <template>
   <div class="home-page">
     <HeaderComponent />
-  </div>
-  <div class="content">
-    <NavTabs :currentTab="currentTab" @change-tab="currentTab = $event" />
-    <div class="main-content">
-      <component :is="currentComponent" />
+    <div class="content">
+      <NavTabs :currentTab="currentTab" @change-tab="currentTab = $event" />
+      <div class="main-content">
+        <component :is="currentComponent" />
+      </div>
     </div>
   </div>
 </template>
+
 <script>
 import NavTabs from "@/components/NavTabs.vue";
 import VerlofPage from "@/components/VerlofPage.vue";
@@ -18,6 +19,7 @@ import { useCollection } from 'vuefire'
 import { collection } from 'firebase/firestore'
 
 export default {
+  name: "HomePage",
   components: {
     HeaderComponent,
     NavTabs,
@@ -29,7 +31,18 @@ export default {
       currentTab: "verlof",
     };
   },
-  
+  computed: {
+    currentComponent() {
+      switch (this.currentTab) {
+        case "verlof":
+          return "VerlofPage";
+        case "afwezig":
+          return "AfwezigPage";
+        default:
+          return "VerlofPage";
+      }
+    },
+  },
 };
 </script>
 
@@ -43,6 +56,18 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.content {
+  display: flex;
+  flex: 1;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f5f5f5;
+}
+
 
 button:hover {
   background-color: darkred;

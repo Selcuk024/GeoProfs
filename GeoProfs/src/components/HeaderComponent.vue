@@ -35,7 +35,6 @@ export default {
   justify-content: space-between;
   padding: 16px;
   background-color: #001f6b;
-  /* Donkerblauw */
   color: white;
 }
 
@@ -55,11 +54,12 @@ export default {
 .dropdown-content {
   display: none;
   position: absolute;
-  text-align: start;
+  text-align: center;
+  font-weight: 400;
   background-color: #f9f9f9;
-  width: 5vw;
+  width: 4vw;
   height: 5vh;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  border: none;
   z-index: 1;
 }
 
