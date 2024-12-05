@@ -1,19 +1,23 @@
+
 <template>
   <div id="app">
     <LoginPage v-if="isLoggedIn" @login-success="handleLoginSuccess" />
-    <HomePage v-else />
+    <router-view v-else />
+
   </div>
 </template>
 
 <script>
 import LoginPage from "./components/LoginPage.vue";
 import HomePage from "./components/HomePage.vue";
+import AdminPage from "./components/AdminPage.vue";
 
 export default {
   name: "App",
   components: {
     LoginPage,
     HomePage,
+    AdminPage,
   },
   data() {
     return {

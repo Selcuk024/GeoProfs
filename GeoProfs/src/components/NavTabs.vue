@@ -9,6 +9,9 @@
     <button :class="{ active: currentTab === 'profiel' }" @click="$emit('change-tab', 'profiel')">
       Profiel
     </button>
+    <button :class="{ active: currentTab === 'admin' }" @click="$emit('change-tab', 'admin')">
+      Admin
+    </button>
   </div>
 </template>
 
@@ -30,7 +33,7 @@ export default {
 
 .nav-tabs {
   display: flex;
-  flex-direction: column; /* Maakt het verticaal */
+  flex-direction: column;
   width: 200px;
   background-color: #001f6b; /* Donkerblauwe zijbalk */
   color: white;
