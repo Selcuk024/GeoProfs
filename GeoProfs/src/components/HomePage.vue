@@ -44,8 +44,7 @@ export default {
           return "AfwezigPage";
         case "profiel":
           return "ProfilePage";
-        case "admin":
-          return "AdminPage"
+
       }
     },
   },
