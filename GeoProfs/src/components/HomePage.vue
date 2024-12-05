@@ -18,6 +18,7 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 import { useCollection } from 'vuefire'
 import { collection } from 'firebase/firestore'
 import ProfilePage from "./ProfilePage.vue";
+import AdminPage from "./AdminPage.vue";
 
 export default {
   name: "HomePage",

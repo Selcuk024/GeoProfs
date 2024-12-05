@@ -11,6 +11,7 @@ import LoginPage from "./components/LoginPage.vue";
 import HomePage from "./components/HomePage.vue";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
+import AdminPage from "../src/components/AdminPage.vue";
 
 export default {
   name: "App",
