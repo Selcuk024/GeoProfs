@@ -17,6 +17,7 @@ import AfwezigPage from "@/components/AfwezigPage.vue";
 import HeaderComponent from "@/components/HeaderComponent.vue";
 import { useCollection } from 'vuefire'
 import { collection } from 'firebase/firestore'
+import ProfilePage from "./ProfilePage.vue";
 
 export default {
   name: "HomePage",
@@ -25,6 +26,7 @@ export default {
     NavTabs,
     VerlofPage,
     AfwezigPage,
+    ProfilePage,
   },
   data() {
     return {
@@ -38,8 +40,8 @@ export default {
           return "VerlofPage";
         case "afwezig":
           return "AfwezigPage";
-        default:
-          return "VerlofPage";
+        case "profiel":
+          return "ProfilePage";
       }
     },
   },

@@ -1,13 +1,17 @@
-  <template>
-    <div class="header">
+geoprofs-96030.firebaseapp.com	<template>
+  <div class="header">
+    <div class="aroundLogo">
       <img src="@/assets/logo-geo.jpeg" alt="Logo" class="logo" />
-      <h1>Welkom Kenny Intelligence</h1>
-      <div class="dropdown">
-        <img src="@/assets/profile-icon-white.png" alt="Profile Icon" class="dropdown" />
-        <button @click="logout" class="dropdown-content"><span class="logout-text">Logout</span></button>        
-      </div>
     </div>
-  </template>
+    <h1>Welkom Kenny Intelligence</h1>
+    <div class="dropdown">
+      <img src="@/assets/profile-icon-white.png" alt="Profile Icon" class="profile-icon" />
+      <button @click="logout" class="dropdown-content">
+        <span class="logout-text">Logout</span>
+      </button>
+    </div>
+  </div>
+</template>
 
 <script>
 import { signOut } from "firebase/auth";
@@ -25,7 +29,7 @@ export default {
       }
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -39,18 +43,34 @@ export default {
 }
 
 .header {
+  width: 90%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  background-color: #001f6b;
+  background-color: #001f6b; /* Donkerblauw */
   color: white;
 }
 
+.aroundLogo {
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .logo {
+  width: 55%;
+  border-radius: 50%;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.profile-icon {
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  margin-left: auto;
 }
 
 .dropdown {
@@ -58,7 +78,7 @@ export default {
   width: 50px;
   position: relative;
   display: inline-block;
-  background-color: #0000;
+  background-color: transparent;
 }
 
 .dropdown-content {
@@ -71,13 +91,11 @@ export default {
   z-index: 1;
   top: 100%;
   right: 0;
-
 }
 
 .logout-text {
   font-weight: 400;
   color: #000;
-
 }
 
 .dropdown:hover .dropdown-content {
