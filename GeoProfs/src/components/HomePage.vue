@@ -18,7 +18,6 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
 import { useCollection } from 'vuefire'
 import { collection } from 'firebase/firestore'
 import ProfilePage from "./ProfilePage.vue";
-import AdminPage from "./AdminPage.vue";
 
 export default {
   name: "HomePage",
@@ -52,18 +51,14 @@ export default {
 </script>
 
 <style scoped>
-*{
-  margin: 0px;
-  padding: 0px;
-}
-
-.home-page {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  font-family: 'Inter', sans-serif;
-  margin: 0; /* Voeg dit toe */
-  padding: 0; /* Voeg dit toe */
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background-color: red;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .content {
@@ -74,5 +69,10 @@ export default {
   flex: 1;
   overflow-y: auto;
   background-color: #f5f5f5;
+}
+
+
+button:hover {
+  background-color: darkred;
 }
 </style>

@@ -33,13 +33,14 @@ export default {
 
 .nav-tabs {
   display: flex;
-  flex-direction: column;
-  width: 200px;
+  flex-direction: column; /* Maakt het verticaal */
+  width: 10%;
   background-color: #001f6b; /* Donkerblauwe zijbalk */
   color: white;
   padding-top: 20px;
   margin: 0;
   padding: 0;
+  justify-content: space-evenly;
 }
 
 button {

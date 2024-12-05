@@ -36,20 +36,17 @@ export default {
   methods: {
     async login() {
       try {
-        // Firebase Authentication
         const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
         console.log("User logged in:", userCredential.user);
-
-        // Redirect or emit login success
         this.$emit("login-success", userCredential.user);
       } catch (error) {
-        // Display Firebase error messages
         console.error(error);
         this.errorMessage = error.message || "Login failed. Please try again.";
       }
     },
   },
 };
+
 </script>
 
 <style scoped>
