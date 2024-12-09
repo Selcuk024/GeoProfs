@@ -44,7 +44,8 @@ export default {
           return "AfwezigPage";
         case "profiel":
           return "ProfilePage";
-
+        case "admin":
+          return "AdminPage"
       }
     },
   },
@@ -64,6 +65,7 @@ button {
 
 .content {
   display: flex;
+  flex: 1;
 }
 
 .main-content {
