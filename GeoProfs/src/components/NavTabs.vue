@@ -9,6 +9,9 @@
     <button :class="{ active: currentTab === 'profiel' }" @click="$emit('change-tab', 'profiel')">
       Profiel
     </button>
+    <button :class="{ active: currentTab === 'admin' }" @click="$emit('change-tab', 'admin')">
+      Admin
+    </button>
   </div>
 </template>
 
