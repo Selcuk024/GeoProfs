@@ -45,6 +45,7 @@ export default {
 }
 
 .aroundLogo {
+  height: 15vh;
   width: 10%;
   display: flex;
   justify-content: center;
