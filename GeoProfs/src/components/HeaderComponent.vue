@@ -37,7 +37,7 @@ export default {
   width: 90%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: end;
   padding: 16px;
   background-color: #001f6b;
   /* Donkerblauw */
@@ -72,7 +72,7 @@ export default {
 
 .dropdown {
   height: 50px;
-  width: 100%;
+  width: 50px;
   position: relative;
   display: flex;
   background-color: transparent;
