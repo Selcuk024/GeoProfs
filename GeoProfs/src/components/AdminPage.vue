@@ -1,80 +1,88 @@
 <template>
   <div class="container">
     <h1 class="title">Admin Panel</h1>
+    <div class="icons-container">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+
+    </div>
     <h1 class="title">Users</h1>
     <div class="bigContainer">
-    <div class="userContainer" v-for="user in users" :key="user.id">
-      <p class="user">{{ user.username }}</p>
+      <div class="userContainer" v-for="user in users" :key="user.id">
+        <p class="user">{{ user.username }}</p>
+      </div>
+
+      <button class="addUserButton" @click="showForm = !showForm">
+        {{ showForm ? 'Annuleer' : 'User Aanmaken' }}
+      </button>
+
+      <form v-if="showForm" @submit.prevent="addUser" class="userForm">
+        <input
+          v-model="newUsername"
+          type="text"
+          placeholder="Enter username"
+          required
+          class="inputField"
+        />
+        <button type="submit" class="submitButton">User Aanmaken</button>
+      </form>
     </div>
-
-    <button class="addUserButton" @click="showForm = !showForm">
-      {{ showForm ? "Annuleer" : "User Aanmaken" }}
-    </button>
-
-    <form v-if="showForm" @submit.prevent="addUser" class="userForm">
-      <input
-        v-model="newUsername"
-        type="text"
-        placeholder="Enter username"
-        required
-        class="inputField"
-      />
-      <button type="submit" class="submitButton">User Aanmaken</button>
-    </form>
-  </div>
   </div>
 </template>
 
 <script>
-import { collection, getDocs, addDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { collection, getDocs, addDoc } from 'firebase/firestore'
+import { db } from '../firebase'
 
 export default {
-  name: "AdminPage",
+  name: 'AdminPage',
   data() {
     return {
       users: [], // Store fetched users
       showForm: false, // Controls form visibility
-      newUsername: "", // Stores the new user's username
-    };
+      newUsername: '' // Stores the new user's username
+    }
   },
   async created() {
-    this.fetchUsers();
+    this.fetchUsers()
   },
   methods: {
     // Fetch users from Firestore
     async fetchUsers() {
       try {
-        const querySnapshot = await getDocs(collection(db, "users"));
+        const querySnapshot = await getDocs(collection(db, 'users'))
         this.users = querySnapshot.docs.map((doc) => {
-          return { id: doc.id, username: doc.data().username };
-        });
+          return { id: doc.id, username: doc.data().username }
+        })
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        console.error('Error fetching data: ', error)
       }
     },
     // Add a new user to Firestore
     async addUser() {
       try {
-        if (!this.newUsername.trim()) return;
+        if (!this.newUsername.trim()) return
 
         // Add new user to Firestore
-        await addDoc(collection(db, "users"), {
-          username: this.newUsername,
-        });
+        await addDoc(collection(db, 'users'), {
+          username: this.newUsername
+        })
 
         // Refresh the user list
-        await this.fetchUsers();
+        await this.fetchUsers()
 
         // Clear form and hide it
-        this.newUsername = "";
-        this.showForm = false;
+        this.newUsername = ''
+        this.showForm = false
       } catch (error) {
-        console.error("Error adding user: ", error);
+        console.error('Error adding user: ', error)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -83,11 +91,34 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.bigContainer{
+
+.icons-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 40%;
+  height: 10vh;
+  padding-left: 30px;
+}
+.circle {
+  width: 70px;
+  height: 70px;
+  background-color: #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  font-size: 20px;
+}
+.bigContainer {
   display: flex;
   flex-direction: column;
   width: 70%;
-  margin-left: 24px
+  margin-left: 24px;
 }
 .title {
   margin: 24px;
