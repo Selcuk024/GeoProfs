@@ -66,6 +66,7 @@ button {
 .content {
   display: flex;
   flex: 1;
+  height: 85vh;
 }
 
 .main-content {
