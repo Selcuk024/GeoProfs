@@ -2,21 +2,28 @@
   <div class="container">
     <h1 class="username">Welkom Marco</h1>
     <div class="miniContainer">
-    <div class="tabs">
-      <button
-        v-for="(tab, index) in tabs"
-        :key="index"
-        :class="['tab', { active: currentTab === tab }]"
-        @click="currentTab = tab"
-      >
-        {{ tab }}
-      </button>
+      <div class="tabs">
+        <button v-for="(tab, index) in tabs" :key="index" :class="['tab', { active: currentTab === tab }]"
+          @click="currentTab = tab">
+          {{ tab }}
+        </button>
 
-      <button id="popup" class="add">
-        +
-      </button>
+        <div id="app">
+          <button class="add" @click="showModal = true">+</button>
+          <VerlofModal v-if="showModal" @close="showModal = false">
+            <template v-slot:header>
+              <h3>Verlofaanvraag</h3>
+            </template>
+            <template v-slot:body>
+              <p>Test jehtoch.</p>
+            </template>
+            <template v-slot:footer>
+              <button class="modal-default-button" @click="showModal = false">Close</button>
+            </template>
+          </VerlofModal>
+        </div>
+      </div>
     </div>
-  </div>
     <div class="content">
       <div v-if="currentTab === 'Verlof'" class="allItems">
         <div class="verlof-item" v-for="(item, index) in verlofList" :key="index">
@@ -30,11 +37,7 @@
         </div>
       </div>
       <div v-if="currentTab === 'Goedgekeurd'" class="allItems">
-        <div
-          class="verlof-item"
-          v-for="(item, index) in filteredVerlof('Goedgekeurd')"
-          :key="index"
-        >
+        <div class="verlof-item" v-for="(item, index) in filteredVerlof('Goedgekeurd')" :key="index">
           <div class="verlof-content">
             <p class="title">{{ item.title }}</p>
             <p class="date">Data: {{ item.date }}</p>
@@ -42,11 +45,7 @@
         </div>
       </div>
       <div v-if="currentTab === 'Afgekeurd'" class="allItems">
-        <div
-          class="verlof-item"
-          v-for="(item, index) in filteredVerlof('Afgekeurd')"
-          :key="index"
-        >
+        <div class="verlof-item" v-for="(item, index) in filteredVerlof('Afgekeurd')" :key="index">
           <div class="verlof-content">
             <p class="title">{{ item.title }}</p>
             <p class="date">Data: {{ item.date }}</p>
@@ -59,13 +58,18 @@
 
 
 <script>
+import VerlofModal from "../components/VerlofModal.vue";
 
 export default {
   name: "VerlofPage",
+  components:{
+    VerlofModal
+  },
   data() {
     return {
       tabs: ["Verlof", "Goedgekeurd", "Afgekeurd"],
       currentTab: "Verlof",
+      showModal: false,
       verlofList: [
         { title: "Vakantie text...", date: "12-12-2024 - 13-12-2024", status: "Verzonden" },
         { title: "Vakantie met vak...", date: "12-12-2024 - 13-12-2024", status: "Goedgekeurd" },
@@ -98,7 +102,8 @@ export default {
   display: flex;
   justify-content: flex-start;
 }
-.add{
+
+.add {
   margin-left: auto;
   width: 46px;
   height: 46px;
@@ -110,29 +115,34 @@ export default {
   border-radius: 13px;
   border: none;
 }
-.miniContainer{
+
+.miniContainer {
   width: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
   margin-top: 24px;
 }
-.allItems{
+
+.allItems {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-.container{
+
+.container {
   width: 100%;
   height: 85vh;
   display: flex;
   flex-direction: column;
 }
-.content{
+
+.content {
   height: 100%;
   overflow-y: scroll;
 }
+
 .tab {
   padding: 15px 30px;
   background-color: #b7b7b7;
@@ -166,8 +176,8 @@ export default {
 .Verzonden {
   color: gray;
 }
-.username{
+
+.username {
   margin: 24px;
 }
-
 </style>
