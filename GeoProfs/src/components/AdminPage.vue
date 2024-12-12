@@ -4,11 +4,24 @@
     <h1 class="title">Users</h1>
     <div class="bigContainer">
     <div class="userContainer" v-for="user in users" :key="user.id">
-      <p class="user">{{ user.username }}</p>
+      <div class="left">
+        <p class="user">{{ user.username }}</p>
+        <p class="user">Aangemaakt: 1-1-2006</p>
+
+      </div>
+      <div class="right">
+        <button class="addUserButton">
+        Informatie
+      </button>
+      <button class="addUserButton vw">
+        Verwijder Gebruiker
+      </button>
+      </div>
+     
     </div>
 
     <button class="addUserButton" @click="showForm = !showForm">
-      {{ showForm ? "Annuleer" : "User Aanmaken" }}
+      {{ showForm ? "Annuleer" : "Gebruiker Aanmaken" }}
     </button>
 
     <form v-if="showForm" @submit.prevent="addUser" class="userForm">
@@ -36,6 +49,7 @@ export default {
       users: [], // Store fetched users
       showForm: false, // Controls form visibility
       newUsername: "", // Stores the new user's username
+      date: "",
     };
   },
   async created() {
@@ -57,11 +71,16 @@ export default {
     async addUser() {
       try {
         if (!this.newUsername.trim()) return;
+        const currentDate = new Date();
+        this.date = currentDate.toISOString().split("T")[0];
 
         // Add new user to Firestore
         await addDoc(collection(db, "users"), {
           username: this.newUsername,
+          date: this.date,
         });
+
+        console.log("Date added:", this.date);
 
         // Refresh the user list
         await this.fetchUsers();
@@ -78,6 +97,10 @@ export default {
 </script>
 
 <style scoped>
+.vw{
+  background-color: red !important;
+  margin-left: 24px !important; 
+}
 .container {
   width: 100%;
   display: flex;
@@ -98,6 +121,21 @@ export default {
   border: 1px solid #939393;
   background-color: white;
   text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.right{
+  margin-left: auto;
+  margin-right: 24px;
+}
+.left{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: 24px;
 }
 .addUserButton {
   padding: 8px 16px;
