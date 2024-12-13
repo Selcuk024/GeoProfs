@@ -36,8 +36,7 @@ export default {
   /* Maakt het verticaal */
   width: 10%;
   height: 85vh;
-  background-color: #001f6b;
-  /* Donkerblauwe zijbalk */
+  background-color: #001f6b; 
   color: white;
   padding-top: 20px;
   margin: 0;
