@@ -1,9 +1,19 @@
 <template>
   <div class="container">
     <h1 class="title">Admin Panel</h1>
+    <div class="icons-container">
+      <div class="circle"><img src="@/assets/users.png" alt="Users" class="users-img" /></div>
+      <div class="circle"><img src="@/assets/leave.jpg" alt="Leave" class="leave-img" /></div>
+
+    </div>
     <h1 class="title">Users</h1>
     <div class="bigContainer">
       <div class="userContainer" v-for="user in users" :key="user.id">
+        <p class="user">{{ user.username }}</p>
+      </div>
+
+      <button class="addUserButton" @click="showForm = !showForm">
+        {{ showForm ? 'Annuleer' : 'User Aanmaken' }}
         <div class="left">
           <p class="user">{{ user.username }}</p>
           <p class="user">Aangemaakt: {{ user.date }}</p>
@@ -30,6 +40,9 @@
           required
           class="inputField"
         />
+        <button type="submit" class="submitButton">User Aanmaken</button>
+      </form>
+    </div>
         <input
           v-model="Bsn"
           type="text"
@@ -90,7 +103,7 @@ import { collection, getDocs, addDoc, doc, deleteDoc } from "firebase/firestore"
 import { db } from "../firebase";
 
 export default {
-  name: "AdminPage",
+  name: 'AdminPage',
   data() {
     return {
       users: [],
@@ -105,10 +118,11 @@ export default {
     };
   },
   async created() {
-    this.fetchUsers();
+    this.fetchUsers()
   },
   methods: {
     async fetchUsers() {
+
   try {
     const querySnapshot = await getDocs(collection(db, "users"));
     this.users = querySnapshot.docs.map((doc) => ({
@@ -154,7 +168,7 @@ export default {
         this.Positie = "";
         this.showForm = false;
       } catch (error) {
-        console.error("Error adding user: ", error);
+        console.error('Error adding user: ', error)
       }
     },
     async deleteUser(userId) {
@@ -233,11 +247,34 @@ export default {
   display: flex;
   flex-direction: column;
 }
-.bigContainer{
+
+.icons-container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 15%;
+  height: 10vh;
+  padding-left: 30px;
+}
+.circle {
+  width: 70px;
+  height: 70px;
+  background-color: #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  font-size: 20px;
+}
+.bigContainer {
   display: flex;
   flex-direction: column;
   width: 70%;
-  margin-left: 24px
+  margin-left: 24px;
 }
 .title {
   margin: 24px;
@@ -300,5 +337,14 @@ export default {
   color: white;
   border: none;
   border-radius: 4px;
+}
+
+.users-img{
+  width: 65%;
+}
+
+.leave-img{
+  width: 60%;
+  padding-left: 5px;
 }
 </style>
