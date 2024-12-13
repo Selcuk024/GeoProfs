@@ -22,7 +22,7 @@ export default {
     async logout() {
       try {
         await signOut(auth);
-        this.$emit("logout-success"); // Notify parent component (App.vue) about logout
+        this.$emit("logout-success");
         console.log("User logged out successfully");
       } catch (error) {
         console.error("Error during logout:", error);
@@ -40,11 +40,11 @@ export default {
   justify-content: end;
   padding: 16px;
   background-color: #001f6b;
-  /* Donkerblauw */
   color: white;
 }
 
 .aroundLogo {
+  height: 15vh;
   width: 10%;
   display: flex;
   justify-content: center;

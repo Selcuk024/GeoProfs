@@ -30,12 +30,13 @@ export default {
   padding: 0;
 }
 
-
 .nav-tabs {
   display: flex;
-  flex-direction: column; /* Maakt het verticaal */
+  flex-direction: column;
+  /* Maakt het verticaal */
   width: 10%;
-  background-color: #001f6b; /* Donkerblauwe zijbalk */
+  height: 85vh;
+  background-color: #001f6b; 
   color: white;
   padding-top: 20px;
   margin: 0;
