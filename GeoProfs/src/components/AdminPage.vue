@@ -78,7 +78,7 @@
         <p><strong>Gemaakt op:</strong> {{ selectedUser.date ? selectedUser.date : "Geen datum gevonden" }}</p>
         <p><strong>BSN:</strong> {{ selectedUser.bsn ? selectedUser.bsn : "Geen BSN gevonden" }}</p>
         <p><strong>Afdeling:</strong> {{  selectedUser.afdeling ? selectedUser.afdeling : "Afdeling niet gevonden" }}</p>
-        <p><strong>Afdeling:</strong> {{  selectedUser.positie ? selectedUser.positie : "Positie niet gevonden" }}</p>
+        <p><strong>Positie:</strong> {{  selectedUser.positie ? selectedUser.positie : "Positie niet gevonden" }}</p>
         <button class="closeButton" @click="selectedUser = null">Terug</button>
       </div>
     </div>
