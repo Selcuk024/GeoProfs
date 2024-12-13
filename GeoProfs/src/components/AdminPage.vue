@@ -2,11 +2,8 @@
   <div class="container">
     <h1 class="title">Admin Panel</h1>
     <div class="icons-container">
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
+      <div class="circle"><img src="@/assets/users.png" alt="Users" class="users-img" /></div>
+      <div class="circle"><img src="@/assets/leave.jpg" alt="Leave" class="leave-img" /></div>
 
     </div>
     <h1 class="title">Users</h1>
@@ -97,7 +94,7 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 40%;
+  width: 15%;
   height: 10vh;
   padding-left: 30px;
 }
@@ -161,5 +158,14 @@ export default {
   color: white;
   border: none;
   border-radius: 4px;
+}
+
+.users-img{
+  width: 65%;
+}
+
+.leave-img{
+  width: 60%;
+  padding-left: 5px;
 }
 </style>
