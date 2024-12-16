@@ -23,7 +23,7 @@
 <script>
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase";
-import { collection, query, where, getDocs, deleteField, doc  } from "firebase/firestore";
+import { collection, query, where, getDocs, deleteField, updateDoc  } from "firebase/firestore";
 
 export default {
   name: "LoginPage",
@@ -43,7 +43,7 @@ export default {
       } catch (error) {
         console.error(error);
         this.errorMessage = error.message || "Login failed. Please try again.";
-        this.errorMessage ? this.loginWithDatabase(this.email, this.password) : console.log("no")
+        this.errorMessage ? this.loginWithDatabase(this.email, this.password) : console.log("no");
       }
     },
 
@@ -59,10 +59,15 @@ export default {
 
     const userDoc = querySnapshot.docs[0];
     const userData = userDoc.data();
+    const ref = userDoc.ref;
 
     if (userData.password === password) {
       console.log(userData.password);
-      deleteField(userData.password);
+      await updateDoc(ref, {
+        password: deleteField(),
+        madePassword: false,
+      });
+      this.$emit("login-success", userData);
       console.log("Login successful", userData);
       return true;
     } else {
