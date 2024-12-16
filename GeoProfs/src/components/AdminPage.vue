@@ -199,7 +199,7 @@ export default {
 
 .closeButton {
   padding: 8px 16px;
-  background-color: red;
+  background-color: #209FD2;
   color: white;
   border: none;
   border-radius: 4px;
