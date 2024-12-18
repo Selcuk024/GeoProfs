@@ -12,7 +12,7 @@
         <label for="password">Password</label>
         <input type="password" v-model="password" id="password" placeholder="Password" required />
 
-        <button type="submit" class="submit-button">Submit</button>
+        <button type="submit" id="submit" class="submit-button">Submit</button>
       </form>
 
       <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
