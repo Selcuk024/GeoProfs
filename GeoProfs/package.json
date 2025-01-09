@@ -15,6 +15,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "cypress-real-events": "^1.13.0",
     "firebase": "^10.14.1",
     "vue": "^3.4.29",
     "vuefire": "^3.2.0"
