@@ -11,15 +11,6 @@
         <div id="app">
           <button class="add" @click="showModal = true">+</button>
           <VerlofModal v-if="showModal" @close="showModal = false">
-            <template v-slot:header>
-              <h3>Verlofaanvraag</h3>
-            </template>
-            <template v-slot:body>
-              <p>Test jehtoch.</p>
-            </template>
-            <template v-slot:footer>
-              <button class="modal-default-button" @click="showModal = false">Close</button>
-            </template>
           </VerlofModal>
         </div>
       </div>
