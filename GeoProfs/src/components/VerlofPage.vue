@@ -95,7 +95,6 @@ export default {
 }
 
 .add {
-  margin-left: auto;
   width: 46px;
   height: 46px;
   font-weight: bolder;
