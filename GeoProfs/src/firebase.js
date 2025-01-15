@@ -18,4 +18,3 @@ const db = getFirestore(app);
 export { db };
 export const auth = getAuth(app);
 export { onAuthStateChanged };
-
