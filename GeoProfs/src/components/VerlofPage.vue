@@ -3,15 +3,18 @@
     <h1 class="username">Welkom Marco</h1>
     <div class="miniContainer">
       <div class="tabs">
-        <button v-for="(tab, index) in tabs" :key="index" :class="['tab', { active: currentTab === tab }]"
-          @click="currentTab = tab">
+        <button
+          v-for="(tab, index) in tabs"
+          :key="index"
+          :class="['tab', { active: currentTab === tab }]"
+          @click="currentTab = tab"
+        >
           {{ tab }}
         </button>
 
         <div id="app">
           <button class="add" @click="showModal = true">+</button>
-          <VerlofModal v-if="showModal" @close="showModal = false">
-          </VerlofModal>
+          <VerlofModal v-if="showModal" @close="showModal = false"> </VerlofModal>
         </div>
       </div>
     </div>
@@ -19,16 +22,21 @@
       <div v-if="currentTab === 'Verlof'" class="allItems">
         <div class="verlof-item" v-for="(item, index) in verlofList" :key="index">
           <div class="verlof-content">
-            <p class="title">{{ item.title }}</p>
-            <p class="date">Data: {{ item.date }}</p>
+            <p class="title">Reden: {{ item.reason }}</p>
+            <p class="date">Van: {{ item.startDate }} Tot: {{ item.endDate }}</p>
             <p class="status">
               Status: <span :class="item.status">{{ item.status }}</span>
             </p>
+            <p class="type">Type: {{ item.type }}</p>
           </div>
         </div>
       </div>
       <div v-if="currentTab === 'Goedgekeurd'" class="allItems">
-        <div class="verlof-item" v-for="(item, index) in filteredVerlof('Goedgekeurd')" :key="index">
+        <div
+          class="verlof-item"
+          v-for="(item, index) in filteredVerlof('Goedgekeurd')"
+          :key="index"
+        >
           <div class="verlof-content">
             <p class="title">{{ item.title }}</p>
             <p class="date">Data: {{ item.date }}</p>
@@ -47,44 +55,48 @@
   </div>
 </template>
 
-
 <script>
-import VerlofModal from "../components/VerlofModal.vue";
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '@/firebase' // Zorg ervoor dat je Firestore hebt geïmporteerd
+
+import VerlofModal from '../components/VerlofModal.vue'
 
 export default {
-  name: "VerlofPage",
-  components:{
+  name: 'VerlofPage',
+  components: {
     VerlofModal
   },
   data() {
     return {
-      tabs: ["Verlof", "Goedgekeurd", "Afgekeurd"],
-      currentTab: "Verlof",
+      tabs: ['Verlof', 'Goedgekeurd', 'Afgekeurd'],
+      currentTab: 'Verlof',
       showModal: false,
-      verlofList: [
-        { title: "Vakantie text...", date: "12-12-2024 - 13-12-2024", status: "Verzonden" },
-        { title: "Vakantie met vak...", date: "12-12-2024 - 13-12-2024", status: "Goedgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie", date: "12-12-2024 - 13-12-2024", status: "Afgekeurd" },
-        { title: "Vakantie met vak...", date: "12-12-2024 - 13-12-2024", status: "Goedgekeurd" },
-      ],
-    };
+      verlofList: []
+    }
+  },
+  created() {
+    this.fetchVerlofRequests()
   },
   methods: {
-    filteredVerlof(status) {
-      return this.verlofList.filter((item) => item.status === status);
+    async fetchVerlofRequests() {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'verlofAanvragen'))
+        const requests = querySnapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data()
+          }
+        })
+        this.verlofList = requests
+      } catch (error) {
+        console.error('Error fetching verlof requests:', error)
+      }
     },
-  },
-};
+    filteredVerlof(status) {
+      return this.verlofList.filter((item) => item.status === status)
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -101,9 +113,10 @@ export default {
   margin-right: 15px;
   font-size: 40px;
   color: white;
-  background-color: #209FD2;
+  background-color: #209fd2;
   border-radius: 13px;
   border: none;
+  cursor: pointer;
 }
 
 .miniContainer {
