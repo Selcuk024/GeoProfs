@@ -6,8 +6,9 @@
     <div class="header">
       <div class="dropdown">
         <img src="@/assets/profile-icon-white.png" alt="Profile Icon" class="profile-icon" />
-        <button @click="logout" class="dropdown-content">
-          <span class="logout-text">Logout</span>
+        <button class="dropdown-content">
+          <span @click="logout" class="logout-text">Logout</span>
+          
         </button>
       </div>
     </div>
