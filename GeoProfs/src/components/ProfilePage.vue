@@ -53,7 +53,7 @@ export default {
 }
 
 .username {
-  font-size: 48px;
+  font-size: 32px;
   margin-left: 24px;
   margin-top: 24px;
 }

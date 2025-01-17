@@ -6,8 +6,9 @@
     <div class="header">
       <div class="dropdown">
         <img src="@/assets/profile-icon-white.png" alt="Profile Icon" class="profile-icon" />
-        <button @click="logout" class="dropdown-content">
-          <span class="logout-text">Logout</span>
+        <button class="dropdown-content">
+          <span @click="logout" class="logout-text">Logout</span>
+          
         </button>
       </div>
     </div>
@@ -15,21 +16,21 @@
 </template>
 
 <script>
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
+import { signOut } from 'firebase/auth'
+import { auth } from '../firebase'
 export default {
   methods: {
     async logout() {
       try {
-        await signOut(auth);
-        this.$emit("logout-success");
-        console.log("User logged out successfully");
+        await signOut(auth)
+        this.$emit('logout-success')
+        console.log('User logged out successfully')
       } catch (error) {
-        console.error("Error during logout:", error);
+        console.error('Error during logout:', error)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -44,6 +45,7 @@ export default {
 }
 
 .aroundLogo {
+  height: 15vh;
   width: 10%;
   display: flex;
   justify-content: center;
@@ -62,6 +64,7 @@ export default {
   height: 50px;
   border-radius: 50%;
   margin-left: auto;
+  cursor: pointer;
 }
 
 .headerContainer {
@@ -87,11 +90,13 @@ export default {
   z-index: 1;
   top: 100%;
   right: 0;
+  cursor: pointer;
 }
 
 .logout-text {
   font-weight: 400;
   color: #000;
+  cursor: pointer;
 }
 
 .dropdown:hover .dropdown-content {

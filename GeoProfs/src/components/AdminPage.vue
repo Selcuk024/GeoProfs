@@ -1,6 +1,11 @@
 <template>
   <div class="container">
     <h1 class="title">Admin Panel</h1>
+    <div class="icons-container">
+      <div class="circle"><img src="@/assets/users.png" alt="Users" class="users-img" /></div>
+      <div class="circle"><img src="@/assets/leave.jpg" alt="Leave" class="leave-img" /></div>
+
+    </div>
     <h1 class="title">Users</h1>
     <div class="bigContainer">
       <div class="userContainer" v-for="user in users" :key="user.id">
@@ -9,17 +14,13 @@
           <p class="user">Aangemaakt: {{ user.date }}</p>
         </div>
         <div class="right">
-          <button class="addUserButton" @click="showUserInfo(user)">
-            Informatie
-          </button>
-          <button class="addUserButton vw" @click="deleteUser(user.id)">
-            Verwijder Gebruiker
-          </button>
+          <button class="addUserButton" @click="showUserInfo(user)">Informatie</button>
+          <button class="addUserButton vw" @click="deleteUser(user.id)">Verwijder Gebruiker</button>
         </div>
       </div>
 
       <button class="addUserButton" @click="showForm = !showForm">
-        {{ showForm ? "Annuleer" : "Gebruiker Aanmaken" }}
+        {{ showForm ? 'Annuleer' : 'Gebruiker Aanmaken' }}
       </button>
 
       <form v-if="showForm" @submit.prevent="addUser" class="userForm">
@@ -30,13 +31,7 @@
           required
           class="inputField"
         />
-        <input
-          v-model="Bsn"
-          type="text"
-          placeholder="Enter BSN"
-          required
-          class="inputField"
-        />
+        <input v-model="Bsn" type="text" placeholder="Enter BSN" required class="inputField" />
         <input
           v-model="Afdeling"
           type="text"
@@ -44,29 +39,26 @@
           required
           class="inputField"
         />
-      
+
         <div class="row2">
-        <input
-          v-model="generatedPassword"
-          type="password"
-          :readonly="true"
-          disabled
-          placeholder="Wachtwoord"
-          required
-          class="inputField width"
-        />
-        <button type="button" @click="generatePassword" class="generateButton">
-          Genereer Wachtwoord
-        </button>
-      </div>
-      <select
-        v-model="Positie"
-        class="inputField"
-        >
-        <option value="Werknemer">Werknemer</option>
-        <option value="Manager">Manager</option>
-        <option value="Office Manager">Office Manager</option>
-      </select>
+          <input
+            v-model="generatedPassword"
+            type="password"
+            :readonly="true"
+            disabled
+            placeholder="Wachtwoord"
+            required
+            class="inputField width"
+          />
+          <button type="button" @click="generatePassword" class="generateButton">
+            Genereer Wachtwoord
+          </button>
+        </div>
+        <select v-model="Positie" class="inputField">
+          <option value="Werknemer">Werknemer</option>
+          <option value="Manager">Manager</option>
+          <option value="Office Manager">Office Manager</option>
+        </select>
         <button type="submit" class="submitButton">User Aanmaken</button>
       </form>
     </div>
@@ -74,11 +66,23 @@
     <div v-if="selectedUser" class="modal">
       <div class="modal-content">
         <h2 class="info">Gebruiker Informatie</h2>
-        <p><strong>Username:</strong> {{ selectedUser.username ? selectedUser.username : "Geen username gevonden"}}</p>
-        <p><strong>Gemaakt op:</strong> {{ selectedUser.date ? selectedUser.date : "Geen datum gevonden" }}</p>
-        <p><strong>BSN:</strong> {{ selectedUser.bsn ? selectedUser.bsn : "Geen BSN gevonden" }}</p>
-        <p><strong>Afdeling:</strong> {{  selectedUser.afdeling ? selectedUser.afdeling : "Afdeling niet gevonden" }}</p>
-        <p><strong>Positie:</strong> {{  selectedUser.positie ? selectedUser.positie : "Positie niet gevonden" }}</p>
+        <p>
+          <strong>Username:</strong>
+          {{ selectedUser.username ? selectedUser.username : 'Geen username gevonden' }}
+        </p>
+        <p>
+          <strong>Gemaakt op:</strong>
+          {{ selectedUser.date ? selectedUser.date : 'Geen datum gevonden' }}
+        </p>
+        <p><strong>BSN:</strong> {{ selectedUser.bsn ? selectedUser.bsn : 'Geen BSN gevonden' }}</p>
+        <p>
+          <strong>Afdeling:</strong>
+          {{ selectedUser.afdeling ? selectedUser.afdeling : 'Afdeling niet gevonden' }}
+        </p>
+        <p>
+          <strong>Positie:</strong>
+          {{ selectedUser.positie ? selectedUser.positie : 'Positie niet gevonden' }}
+        </p>
         <button class="closeButton" @click="selectedUser = null">Terug</button>
       </div>
     </div>
@@ -86,95 +90,133 @@
 </template>
 
 <script>
-import { collection, getDocs, addDoc, doc, deleteDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { collection, getDocs, addDoc, doc, deleteDoc } from 'firebase/firestore'
+import { db } from '../firebase'
 
 export default {
-  name: "AdminPage",
+  name: 'AdminPage',
   data() {
     return {
       users: [],
       showForm: false,
-      newUsername: "",
-      date: "",
-      Bsn: "",
-      Afdeling: "",
-      generatedPassword: "",
-      Positie: "",
-      selectedUser: null,
-    };
+      newUsername: '',
+      date: '',
+      Bsn: '',
+      Afdeling: '',
+      generatedPassword: '',
+      Positie: '',
+      selectedUser: null
+    }
   },
   async created() {
-    this.fetchUsers();
+    this.fetchUsers()
   },
   methods: {
     async fetchUsers() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "users"));
-    this.users = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-  }
-},
+      try {
+        const querySnapshot = await getDocs(collection(db, 'users'))
+        this.users = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data()
+        }))
+      } catch (error) {
+        console.error('Error fetching data: ', error)
+      }
+    },
 
     generatePassword() {
-      const length = 12;
-      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
-      let password = "";
+      const length = 12
+      const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*'
+      let password = ''
       for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * charset.length);
-        password += charset[randomIndex];
+        const randomIndex = Math.floor(Math.random() * charset.length)
+        password += charset[randomIndex]
       }
-      this.generatedPassword = password;
+      this.generatedPassword = password
     },
     async addUser() {
       try {
-        if (!this.newUsername.trim() || !this.Bsn.trim() || !this.generatedPassword.trim() || !this.Afdeling.trim()) return;
+        if (
+          !this.newUsername.trim() ||
+          !this.Bsn.trim() ||
+          !this.generatedPassword.trim() ||
+          !this.Afdeling.trim()
+        )
+          return
 
-        const currentDate = new Date();
-        this.date = currentDate.toISOString().split("T")[0];
+        const currentDate = new Date()
+        this.date = currentDate.toISOString().split('T')[0]
 
-        await addDoc(collection(db, "users"), {
+        await addDoc(collection(db, 'users'), {
           username: this.newUsername,
           date: this.date,
           bsn: this.Bsn,
           afdeling: this.Afdeling,
           password: this.generatedPassword,
-          positie: this.Positie,
-        });
+          positie: this.Positie
+        })
 
-        await this.fetchUsers();
-        this.newUsername = "";
-        this.Bsn = "";
-        this.generatedPassword = "";
-        this.Afdeling = "";
-        this.Positie = "";
-        this.showForm = false;
+        await this.fetchUsers()
+        this.newUsername = ''
+        this.Bsn = ''
+        this.generatedPassword = ''
+        this.Afdeling = ''
+        this.Positie = ''
+        this.showForm = false
       } catch (error) {
-        console.error("Error adding user: ", error);
+        console.error('Error adding user: ', error)
       }
     },
     async deleteUser(userId) {
       try {
-        const userDoc = doc(db, "users", userId);
-        await deleteDoc(userDoc);
+        const userDoc = doc(db, 'users', userId)
+        await deleteDoc(userDoc)
 
-        await this.fetchUsers();
+        await this.fetchUsers()
       } catch (error) {
-        console.error("Error deleting user: ", error);
+        console.error('Error deleting user: ', error)
       }
     },
     showUserInfo(user) {
-      this.selectedUser = user;
-    },
-  },
-};
+      this.selectedUser = user
+    }
+  }
+}
 </script>
 
 <style scoped>
+.icons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 15%;
+  height: 10vh;
+  padding-left: 30px;
+}
+
+.circle {
+  width: 70px;
+  height: 70px;
+  background-color: #ccc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  font-size: 20px;
+}
+
+.users-img {
+  width: 65%;
+}
+
+.leave-img {
+  width: 60%;
+  padding-left: 5px;
+}
 .modal {
   position: fixed;
   top: 0;
@@ -186,7 +228,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.info{
+.info {
   margin-bottom: 24px;
 }
 .modal-content {
@@ -199,14 +241,14 @@ export default {
 
 .closeButton {
   padding: 8px 16px;
-  background-color: red;
+  background-color: #209FD2;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 20px;
 }
-.generateButton{
+.generateButton {
   margin-bottom: 8px;
   padding: 8px;
   font-size: 16px;
@@ -217,31 +259,32 @@ export default {
   color: #fff;
   background-color: #007bff;
 }
-.generateButton:hover{
+.generateButton:hover {
   cursor: pointer;
 }
-.vw{
+.vw {
   background-color: red !important;
-  margin-left: 24px !important; 
+  margin-left: 24px !important;
 }
-.width{
+.width {
   width: 60% !important;
 }
 .container {
   width: 100%;
+  height: 85vh;
   display: flex;
   flex-direction: column;
 }
-.bigContainer{
+.bigContainer {
   display: flex;
   flex-direction: column;
   width: 70%;
-  margin-left: 24px
+  margin-left: 24px;
 }
 .title {
   margin: 24px;
 }
-.row2{
+.row2 {
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -257,11 +300,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.right{
+.right {
   margin-left: auto;
   margin-right: 24px;
 }
-.left{
+.left {
   height: 100%;
   display: flex;
   flex-direction: column;
