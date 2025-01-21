@@ -2,7 +2,7 @@
   <div class="home-page">
     <HeaderComponent />
     <div class="content">
-      <NavTabs :currentTab="currentTab" @change-tab="currentTab = $event" />
+      <NavTabs :currentTab="currentTab" :userId="userId" @change-tab="currentTab = $event" />
       <div class="main-content">
         <component :is="currentComponent" />
       </div>
@@ -15,10 +15,9 @@ import NavTabs from "@/components/NavTabs.vue";
 import VerlofPage from "@/components/VerlofPage.vue";
 import AfwezigPage from "@/components/AfwezigPage.vue";
 import HeaderComponent from "@/components/HeaderComponent.vue";
-import { useCollection } from 'vuefire'
-import { collection } from 'firebase/firestore'
-import ProfilePage from "./ProfilePage.vue";
-import AdminPage from "./AdminPage.vue";
+import ProfilePage from "@/components/ProfilePage.vue";
+import AdminPage from "@/components/AdminPage.vue";
+import { getAuth } from "firebase/auth";
 
 export default {
   name: "HomePage",
@@ -33,6 +32,7 @@ export default {
   data() {
     return {
       currentTab: "verlof",
+      userId: null, // Opslag voor de huidige userId
     };
   },
   computed: {
@@ -45,9 +45,20 @@ export default {
         case "profiel":
           return "ProfilePage";
         case "admin":
-          return "AdminPage"
+          return "AdminPage";
       }
     },
+  },
+  async created() {
+    // Haal de huidige gebruiker op via Firebase Authentication
+    const auth = getAuth();
+    const currentUser = auth.currentUser;
+
+    if (currentUser) {
+      this.userId = currentUser.uid;
+    } else {
+      console.error("Geen gebruiker ingelogd.");
+    }
   },
 };
 </script>
@@ -74,7 +85,6 @@ button {
   overflow-y: auto;
   background-color: #f5f5f5;
 }
-
 
 button:hover {
   background-color: darkred;
