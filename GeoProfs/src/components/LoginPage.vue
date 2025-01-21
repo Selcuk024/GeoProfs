@@ -7,7 +7,7 @@
       <h2>Geoprofs</h2>
       <form @submit.prevent="login" class="login-form">
         <label for="email">Email</label>
-        <input type="email" v-model="email" id="email" placeholder="Email" required />
+        <input type="text" v-model="email" id="email" placeholder="Email" required />
 
         <label for="password">Password</label>
         <input type="password" v-model="password" id="password" placeholder="Password" required />
@@ -22,7 +22,8 @@
 
 <script>
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { collection, query, where, getDocs, deleteField, updateDoc  } from "firebase/firestore";
 
 export default {
   name: "LoginPage",
@@ -42,8 +43,43 @@ export default {
       } catch (error) {
         console.error(error);
         this.errorMessage = error.message || "Login failed. Please try again.";
+        this.errorMessage ? this.loginWithDatabase(this.email, this.password) : console.log("no");
       }
     },
+
+    async loginWithDatabase(username, password) { //dit is alleen voor de eerste keer
+  try {
+    const userQuery = query(collection(db, "users"), where("username", "==", username));
+    const querySnapshot = await getDocs(userQuery);
+
+    if (querySnapshot.empty) {
+      console.error("No user found with this email");
+      return false;
+    }
+
+    const userDoc = querySnapshot.docs[0];
+    const userData = userDoc.data();
+    const ref = userDoc.ref;
+
+    if (userData.password === password) {
+      console.log(userData.password);
+      await updateDoc(ref, {
+        password: deleteField(),
+        madePassword: false,
+      });
+      this.$emit("login-success", userData);
+      console.log("Login successful", userData);
+      return true;
+    } else {
+      console.error("Incorrect password");
+      return false;
+    }
+  } catch (error) {
+    console.error("Error during login", error);
+    return false;
+  }
+}
+
   },
 };
 
