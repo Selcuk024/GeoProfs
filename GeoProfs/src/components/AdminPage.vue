@@ -24,32 +24,14 @@
       </button>
 
       <form v-if="showForm" @submit.prevent="addUser" class="userForm">
-        <input
-          v-model="newUsername"
-          type="text"
-          placeholder="Enter username"
-          required
-          class="inputField"
-        />
+        <input v-model="newUsername" type="text" placeholder="Enter username" required class="inputField" />
+        <input v-model="email" type="email" placeholder="Enter email" required class="inputField" />
         <input v-model="Bsn" type="text" placeholder="Enter BSN" required class="inputField" />
-        <input
-          v-model="Afdeling"
-          type="text"
-          placeholder="Enter afdeling"
-          required
-          class="inputField"
-        />
+        <input v-model="Afdeling" type="text" placeholder="Enter afdeling" required class="inputField" />
 
         <div class="row2">
-          <input
-            v-model="generatedPassword"
-            type="password"
-            :readonly="true"
-            disabled
-            placeholder="Wachtwoord"
-            required
-            class="inputField width"
-          />
+          <input v-model="generatedPassword" type="password" :readonly="true" disabled placeholder="Wachtwoord" required
+            class="inputField width" />
           <button type="button" @click="generatePassword" class="generateButton">
             Genereer Wachtwoord
           </button>
@@ -61,6 +43,7 @@
         </select>
         <button type="submit" class="submitButton">User Aanmaken</button>
       </form>
+
     </div>
 
     <div v-if="selectedUser" class="modal">
@@ -90,8 +73,9 @@
 </template>
 
 <script>
-import { collection, getDocs, addDoc, doc, deleteDoc } from 'firebase/firestore'
-import { db } from '../firebase'
+import { collection, getDocs, addDoc, doc, deleteDoc, setDoc } from 'firebase/firestore'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { db, auth } from '../firebase'
 
 export default {
   name: 'AdminPage',
@@ -100,6 +84,7 @@ export default {
       users: [],
       showForm: false,
       newUsername: '',
+      email: '',
       date: '',
       Bsn: '',
       Afdeling: '',
@@ -134,12 +119,14 @@ export default {
       }
       this.generatedPassword = password
     },
+
     async addUser() {
       try {
         if (
           !this.newUsername.trim() ||
-          !this.Bsn.trim() ||
+          !this.email.trim() ||
           !this.generatedPassword.trim() ||
+          !this.Bsn.trim() ||
           !this.Afdeling.trim()
         )
           return
@@ -147,26 +134,41 @@ export default {
         const currentDate = new Date()
         this.date = currentDate.toISOString().split('T')[0]
 
-        await addDoc(collection(db, 'users'), {
+        // Maak een nieuwe gebruiker in Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          this.email,
+          this.generatedPassword
+        )
+        const userId = userCredential.user.uid
+
+        // Sla gebruiker op in Firestore
+        await setDoc(doc(db, 'users', userId), {
           username: this.newUsername,
+          email: this.email,
           date: this.date,
           bsn: this.Bsn,
+          wachtwoord: this.generatedPassword,
           afdeling: this.Afdeling,
-          password: this.generatedPassword,
           positie: this.Positie
         })
 
+        // Refresh gebruikerslijst
         await this.fetchUsers()
+
+        // Reset velden
         this.newUsername = ''
-        this.Bsn = ''
+        this.email = ''
         this.generatedPassword = ''
+        this.Bsn = ''
         this.Afdeling = ''
         this.Positie = ''
         this.showForm = false
       } catch (error) {
-        console.error('Error adding user: ', error)
+        console.error('Error adding user:', error.message)
       }
     },
+
     async deleteUser(userId) {
       try {
         const userDoc = doc(db, 'users', userId)
@@ -177,11 +179,14 @@ export default {
         console.error('Error deleting user: ', error)
       }
     },
+
     showUserInfo(user) {
       this.selectedUser = user
     }
   }
+  
 }
+
 </script>
 
 <style scoped>
@@ -217,6 +222,7 @@ export default {
   width: 60%;
   padding-left: 5px;
 }
+
 .modal {
   position: fixed;
   top: 0;
@@ -228,9 +234,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .info {
   margin-bottom: 24px;
 }
+
 .modal-content {
   background-color: white;
   padding: 20px;
@@ -248,6 +256,7 @@ export default {
   cursor: pointer;
   margin-top: 20px;
 }
+
 .generateButton {
   margin-bottom: 8px;
   padding: 8px;
@@ -259,36 +268,44 @@ export default {
   color: #fff;
   background-color: #007bff;
 }
+
 .generateButton:hover {
   cursor: pointer;
 }
+
 .vw {
   background-color: red !important;
   margin-left: 24px !important;
 }
+
 .width {
   width: 60% !important;
 }
+
 .container {
   width: 100%;
   height: 85vh;
   display: flex;
   flex-direction: column;
 }
+
 .bigContainer {
   display: flex;
   flex-direction: column;
   width: 70%;
   margin-left: 24px;
 }
+
 .title {
   margin: 24px;
 }
+
 .row2 {
   width: 100%;
   display: flex;
   flex-direction: row;
 }
+
 .userContainer {
   height: 96px;
   width: 100%;
@@ -300,10 +317,12 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
 .right {
   margin-left: auto;
   margin-right: 24px;
 }
+
 .left {
   height: 100%;
   display: flex;
@@ -311,6 +330,7 @@ export default {
   justify-content: space-around;
   margin-left: 24px;
 }
+
 .addUserButton {
   padding: 8px 16px;
   font-size: 16px;
@@ -322,11 +342,13 @@ export default {
   margin-left: auto;
   margin-top: 16px;
 }
+
 .userForm {
   display: flex;
   flex-direction: column;
   width: 50%;
 }
+
 .inputField {
   margin-bottom: 8px;
   padding: 8px;
@@ -334,6 +356,7 @@ export default {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 .submitButton {
   padding: 8px 16px;
   font-size: 16px;

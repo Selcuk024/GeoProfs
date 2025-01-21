@@ -25,7 +25,7 @@
     </div>
     <div class="personal-data-col">
       <div class="personal-data">
-        <h3>Afwachting</h3>
+        <h3>Verzonden</h3>
         <p>3</p>
       </div>
     </div>
