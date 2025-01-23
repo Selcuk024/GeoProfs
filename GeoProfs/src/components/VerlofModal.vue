@@ -25,12 +25,7 @@
               <input class="checkbox" type="radio" v-model="verlofType" value="Overige" />
               <label class="verlofaanvraag-label">Overige</label>
             </div>
-            <textarea
-              class="verlofaanvraag-input-field"
-              v-model="reason"
-              placeholder="Reden"
-              rows="4"
-            ></textarea>
+            <textarea class="verlofaanvraag-input-field" v-model="reason" placeholder="Reden" rows="4"></textarea>
             <div class="date-container">
               <input class="verlofaanvraag-date" type="date" v-model="startDate" />
               <input class="verlofaanvraag-date" type="date" v-model="endDate" />
@@ -38,7 +33,7 @@
           </div>
           <div class="modal-footer">
             <button class="modal-default-button" @click="saveVerlof">Versturen</button>
-        </div>
+          </div>
         </div>
       </div>
     </div>
@@ -64,8 +59,16 @@ export default {
         alert('Vul alle velden in.')
         return;
       } // else {
-        // alert('Incorrecte datum(s)')
+      // alert('Incorrecte datum(s)')
       // }
+
+      const startDateObj = new Date(this.startDate);
+      const endDateObj = new Date(this.endDate);
+
+      if (endDateObj < startDateObj) {
+        alert('De einddatum mag niet eerder zijn dan de startdatum.');
+        return;
+      }
 
       try {
         await addDoc(collection(db, 'verlofAanvragen'), {
