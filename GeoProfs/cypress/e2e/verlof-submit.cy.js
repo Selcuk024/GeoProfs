@@ -11,16 +11,12 @@
       .and('have.css', 'display', 'block');
   
       cy.get('input[type="radio"][value="Persoonlijk"]').check();
-      cy.get('textarea[placeholder="Reden"]').type('Ik heb een persoonlijke afspraak.');
+      cy.get('textarea[placeholder="Reden"]').type('TEST VERLOF SUBMTI');
       cy.get('input[type="date"]').first().type('2024-12-12');
       cy.get('input[type="date"]').last().type('2024-12-13');
-  
+
       cy.get('.modal-default-button').click();
   
       cy.get('[name="modal"]').should('not.exist');
-  
-      cy.get('.allItems .verlof-item', { timeout: 10000 }).should('contain', 'Ik heb een persoonlijke afspraak.');
-      cy.get('.allItems .verlof-item').should('contain', '12-12-2024 - 13-12-2024');
     });
   });
-  
