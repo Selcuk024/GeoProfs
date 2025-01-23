@@ -28,3 +28,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# BELANGRIJK!!!!!!!!!!!!!!! NIET COMMITEN NAAR GITHUB DAN ZIJN WE KLAAR
+src/credentials/

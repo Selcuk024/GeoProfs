@@ -40,8 +40,6 @@
   </div>
 </template>
 <script>
-import { collection, addDoc } from 'firebase/firestore'
-import { db } from '@/firebase'
 
 export default {
   name: 'VerlofModal',
@@ -54,39 +52,37 @@ export default {
     }
   },
   methods: {
-    async saveVerlof() {
-      if (!this.startDate || !this.endDate || !this.reason) {
-        alert('Vul alle velden in.')
-        return;
-      } // else {
-      // alert('Incorrecte datum(s)')
-      // }
-
-      const startDateObj = new Date(this.startDate);
-      const endDateObj = new Date(this.endDate);
-
-      if (endDateObj < startDateObj) {
-        alert('De einddatum mag niet eerder zijn dan de startdatum.');
-        return;
-      }
-
-      try {
-        await addDoc(collection(db, 'verlofAanvragen'), {
-          type: this.verlofType,
-          reason: this.reason,
-          startDate: this.startDate,
-          endDate: this.endDate,
-          status: 'Verzonden',
-          timestamp: new Date()
-        })
-        alert('Verlof succesvol aangevraagd!')
-        this.$emit('close')
-      } catch (error) {
-        console.error("Error adding document: ", error);
-        alert('Er is iets fout gegaan bij het aanvragen van uw verlof. Probeer het later opnieuw.')
-      }
+  async saveVerlof() {
+    console.log('saveVerlof called'); // Add this
+    if (!this.startDate || !this.endDate || !this.reason) {
+      alert('Vul alle velden in.');
+      return;
     }
-  }
+
+    const startDateObj = new Date(this.startDate);
+    const endDateObj = new Date(this.endDate);
+
+    if (endDateObj < startDateObj) {
+      alert('De einddatum mag niet eerder zijn dan de startdatum.');
+      return;
+    }
+
+    try {
+      // Simulate database operation
+      console.log('Data submitted:', {
+        type: this.verlofType,
+        reason: this.reason,
+        startDate: this.startDate,
+        endDate: this.endDate,
+      });
+      alert('Verlof succesvol aangevraagd!');
+      this.$emit('close');
+    } catch (error) {
+      console.error(error);
+      alert('Er is iets fout gegaan bij het aanvragen van uw verlof. Probeer het later opnieuw.');
+    }
+  },
+},
 }
 </script>
 
