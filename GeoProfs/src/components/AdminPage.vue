@@ -156,10 +156,12 @@ export default {
     async fetchVerlofRequests() {
       try {
         const querySnapshot = await getDocs(collection(db, 'verlofAanvragen'))
-        this.verlofList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data()
-        }))
+        this.verlofList = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+          .filter((verlof) => verlof.status === 'Verzonden') // Filteren op 'Verzonden' status
       } catch (error) {
         console.error('Error fetching verlof requests:', error)
       }
@@ -237,14 +239,19 @@ export default {
     },
 
     async updateVerlofStatus(verlofId, newStatus) {
-    try {
-      const verlofDoc = doc(db, 'verlofAanvragen', verlofId);
-      await setDoc(verlofDoc, { status: newStatus }, { merge: true });
-      await this.fetchVerlofRequests();
-    } catch (error) {
-      console.error('Error updating verlof status:', error);
+      try {
+        // Haal de specifieke verlofaanvraag op
+        const verlofDoc = doc(db, 'verlofAanvragen', verlofId)
+
+        // Werk de status bij
+        await setDoc(verlofDoc, { status: newStatus }, { merge: true })
+
+        // Haal de verlofaanvragen opnieuw op om de lijst te vernieuwen
+        await this.fetchVerlofRequests()
+      } catch (error) {
+        console.error('Error updating verlof status:', error)
+      }
     }
-  }
   }
 }
 </script>
@@ -438,10 +445,8 @@ export default {
   color: white;
 }
 
-
 .approve:hover,
 .reject:hover {
   opacity: 0.9;
 }
-
 </style>
