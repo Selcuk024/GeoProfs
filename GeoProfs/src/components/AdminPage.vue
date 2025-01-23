@@ -101,7 +101,15 @@
 </template>
 
 <script>
-import { collection, getDocs, addDoc, doc, deleteDoc, setDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  deleteDoc,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { db, auth } from "../firebase";
 
@@ -172,7 +180,8 @@ export default {
           return;
 
         const currentDate = new Date();
-        this.date = currentDate.toISOString().split("T")[0];
+        // Correcte omzetting naar Firestore Timestamp
+        this.date = Timestamp.now(); // Dit maakt de datum een Firestore Timestamp.
 
         // Maak een nieuwe gebruiker in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(
@@ -182,11 +191,11 @@ export default {
         );
         const userId = userCredential.user.uid;
 
-        // Sla gebruiker op in Firestore
+        // Sla gebruiker op in Firestore met Timestamp
         await setDoc(doc(db, "users", userId), {
           username: this.newUsername,
           email: this.email,
-          date: this.date,
+          date: this.date, // Timestamp voor de datum
           bsn: this.Bsn,
           wachtwoord: this.generatedPassword,
           afdeling: this.Afdeling,
