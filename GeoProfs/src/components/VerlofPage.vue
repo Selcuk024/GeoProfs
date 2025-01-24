@@ -20,7 +20,7 @@
     </div>
     <div class="content">
       <div v-if="currentTab === 'Verlof'" class="allItems">
-        <div class="verlof-item" v-for="(item, index) in verlofList" :key="index">
+        <div class="verlof-item" v-for="(item, index) in filteredVerlof('Verzonden')" :key="index">
           <div class="verlof-content">
             <p class="title">Reden: {{ item.reason }}</p>
             <p class="date">Van: {{ item.startDate }} Tot: {{ item.endDate }}</p>
@@ -31,6 +31,7 @@
           </div>
         </div>
       </div>
+
       <div v-if="currentTab === 'Goedgekeurd'" class="allItems">
         <div
           class="verlof-item"
@@ -38,16 +39,25 @@
           :key="index"
         >
           <div class="verlof-content">
-            <p class="title">{{ item.title }}</p>
-            <p class="date">Data: {{ item.date }}</p>
+            <p class="title">Reden: {{ item.reason }}</p>
+            <p class="date">Van: {{ item.startDate }} Tot: {{ item.endDate }}</p>
+            <p class="status">
+              Status: <span :class="item.status">{{ item.status }}</span>
+            </p>
+            <p class="type">Type: {{ item.type }}</p>
           </div>
         </div>
       </div>
+
       <div v-if="currentTab === 'Afgekeurd'" class="allItems">
-        <div class="verlof-item" v-for="(item, index) in filteredVerlof('Afgekeurd')" :key="index">
+        <div class="verlof-item" v-for="(item, index) in filteredVerlof('Afgewezen')" :key="index">
           <div class="verlof-content">
-            <p class="title">{{ item.title }}</p>
-            <p class="date">Data: {{ item.date }}</p>
+            <p class="title">Reden: {{ item.reason }}</p>
+            <p class="date">Van: {{ item.startDate }} Tot: {{ item.endDate }}</p>
+            <p class="status">
+              Status: <span :class="item.status">{{ item.status }}</span>
+            </p>
+            <p class="type">Type: {{ item.type }}</p>
           </div>
         </div>
       </div>
@@ -57,7 +67,7 @@
 
 <script>
 import { collection, getDocs } from 'firebase/firestore'
-import { db } from '@/firebase' // Zorg ervoor dat je Firestore hebt geïmporteerd
+import { db } from '@/firebase'
 
 import VerlofModal from '../components/VerlofModal.vue'
 
