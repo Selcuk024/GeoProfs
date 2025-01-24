@@ -4,8 +4,8 @@
     <div class="icons-container">
       <div class="circle"><img src="@/assets/users.png" alt="Users" class="users-img" /></div>
       <div class="circle"><img src="@/assets/leave.jpg" alt="Leave" class="leave-img" /></div>
-
     </div>
+
     <h1 class="title">Users</h1>
     <div class="bigContainer">
       <div class="userContainer" v-for="user in users" :key="user.id">
@@ -24,14 +24,33 @@
       </button>
 
       <form v-if="showForm" @submit.prevent="addUser" class="userForm">
-        <input v-model="newUsername" type="text" placeholder="Enter username" required class="inputField" />
+        <input
+          v-model="newUsername"
+          type="text"
+          placeholder="Enter username"
+          required
+          class="inputField"
+        />
         <input v-model="email" type="email" placeholder="Enter email" required class="inputField" />
         <input v-model="Bsn" type="text" placeholder="Enter BSN" required class="inputField" />
-        <input v-model="Afdeling" type="text" placeholder="Enter afdeling" required class="inputField" />
+        <input
+          v-model="Afdeling"
+          type="text"
+          placeholder="Enter afdeling"
+          required
+          class="inputField"
+        />
 
         <div class="row2">
-          <input v-model="generatedPassword" type="password" :readonly="true" disabled placeholder="Wachtwoord" required
-            class="inputField width" />
+          <input
+            v-model="generatedPassword"
+            type="password"
+            :readonly="true"
+            disabled
+            placeholder="Wachtwoord"
+            required
+            class="inputField width"
+          />
           <button type="button" @click="generatePassword" class="generateButton">
             Genereer Wachtwoord
           </button>
@@ -43,7 +62,30 @@
         </select>
         <button type="submit" class="submitButton">User Aanmaken</button>
       </form>
+    </div>
 
+    <h1 class="title">Verlofaanvragen</h1>
+    <div class="bigContainer">
+      <div class="userContainer" v-for="verlof in verlofList" :key="verlof.id">
+        <div class="left">
+          <p class="user">Reden: {{ verlof.reason }}</p>
+          <p class="user">Van: {{ verlof.startDate }} Tot: {{ verlof.endDate }}</p>
+          <p class="status">
+            Status: <span :class="verlof.status">{{ verlof.status }}</span>
+          </p>
+        </div>
+        <div class="right">
+          <button
+            class="addUserButton approve"
+            @click="updateVerlofStatus(verlof.id, 'Goedgekeurd')"
+          >
+            Goedkeuren
+          </button>
+          <button class="addUserButton reject" @click="updateVerlofStatus(verlof.id, 'Afgewezen')">
+            Afkeuren
+          </button>
+        </div>
+      </div>
     </div>
 
     <div v-if="selectedUser" class="modal">
@@ -82,6 +124,7 @@ export default {
   data() {
     return {
       users: [],
+      verlofList: [],
       showForm: false,
       newUsername: '',
       email: '',
@@ -95,6 +138,7 @@ export default {
   },
   async created() {
     this.fetchUsers()
+    this.fetchVerlofRequests()
   },
   methods: {
     async fetchUsers() {
@@ -106,6 +150,20 @@ export default {
         }))
       } catch (error) {
         console.error('Error fetching data: ', error)
+      }
+    },
+
+    async fetchVerlofRequests() {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'verlofAanvragen'))
+        this.verlofList = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+          .filter((verlof) => verlof.status === 'Verzonden') // Filteren op 'Verzonden' status
+      } catch (error) {
+        console.error('Error fetching verlof requests:', error)
       }
     },
 
@@ -134,7 +192,6 @@ export default {
         const currentDate = new Date()
         this.date = currentDate.toISOString().split('T')[0]
 
-        // Maak een nieuwe gebruiker in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           this.email,
@@ -142,7 +199,6 @@ export default {
         )
         const userId = userCredential.user.uid
 
-        // Sla gebruiker op in Firestore
         await setDoc(doc(db, 'users', userId), {
           username: this.newUsername,
           email: this.email,
@@ -153,10 +209,8 @@ export default {
           positie: this.Positie
         })
 
-        // Refresh gebruikerslijst
         await this.fetchUsers()
 
-        // Reset velden
         this.newUsername = ''
         this.email = ''
         this.generatedPassword = ''
@@ -182,11 +236,24 @@ export default {
 
     showUserInfo(user) {
       this.selectedUser = user
+    },
+
+    async updateVerlofStatus(verlofId, newStatus) {
+      try {
+        // Haal de specifieke verlofaanvraag op
+        const verlofDoc = doc(db, 'verlofAanvragen', verlofId)
+
+        // Werk de status bij
+        await setDoc(verlofDoc, { status: newStatus }, { merge: true })
+
+        // Haal de verlofaanvragen opnieuw op om de lijst te vernieuwen
+        await this.fetchVerlofRequests()
+      } catch (error) {
+        console.error('Error updating verlof status:', error)
+      }
     }
   }
-  
 }
-
 </script>
 
 <style scoped>
@@ -249,7 +316,7 @@ export default {
 
 .closeButton {
   padding: 8px 16px;
-  background-color: #209FD2;
+  background-color: #209fd2;
   color: white;
   border: none;
   border-radius: 4px;
@@ -365,5 +432,21 @@ export default {
   color: white;
   border: none;
   border-radius: 4px;
+}
+
+.approve {
+  background-color: #28a745;
+  color: white;
+  margin-right: 24px;
+}
+
+.reject {
+  background-color: #dc3545;
+  color: white;
+}
+
+.approve:hover,
+.reject:hover {
+  opacity: 0.9;
 }
 </style>
