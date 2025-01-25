@@ -8,7 +8,9 @@
       <div class="circle">
         <img src="@/assets/leave.jpg" alt="Leave" class="leave-img" />
       </div>
+
     </div>
+
     <h1 class="title">Users</h1>
     <div class="bigContainer">
       <div class="userContainer" v-for="user in users" :key="user.id">
@@ -71,6 +73,30 @@
       </form>
     </div>
 
+    <h1 class="title">Verlofaanvragen</h1>
+    <div class="bigContainer">
+      <div class="userContainer" v-for="verlof in verlofList" :key="verlof.id">
+        <div class="left">
+          <p class="user">Reden: {{ verlof.reason }}</p>
+          <p class="user">Van: {{ verlof.startDate }} Tot: {{ verlof.endDate }}</p>
+          <p class="status">
+            Status: <span :class="verlof.status">{{ verlof.status }}</span>
+          </p>
+        </div>
+        <div class="right">
+          <button
+            class="addUserButton approve"
+            @click="updateVerlofStatus(verlof.id, 'Goedgekeurd')"
+          >
+            Goedkeuren
+          </button>
+          <button class="addUserButton reject" @click="updateVerlofStatus(verlof.id, 'Afgewezen')">
+            Afkeuren
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div v-if="selectedUser" class="modal">
       <div class="modal-content">
         <h2 class="info">Gebruiker Informatie</h2>
@@ -118,6 +144,7 @@ export default {
   data() {
     return {
       users: [],
+      verlofList: [],
       showForm: false,
       newUsername: "",
       email: "",
@@ -131,7 +158,8 @@ export default {
     };
   },
   async created() {
-    this.fetchUsers();
+    this.fetchUsers()
+    this.fetchVerlofRequests()
   },
   methods: {
     async fetchUsers() {
@@ -143,6 +171,20 @@ export default {
         }));
       } catch (error) {
         console.error("Error fetching data: ", error);
+      }
+    },
+
+    async fetchVerlofRequests() {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'verlofAanvragen'))
+        this.verlofList = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+          .filter((verlof) => verlof.status === 'Verzonden') // Filteren op 'Verzonden' status
+      } catch (error) {
+        console.error('Error fetching verlof requests:', error)
       }
     },
 
@@ -183,16 +225,14 @@ export default {
         // Correcte omzetting naar Firestore Timestamp
         this.date = Timestamp.now(); // Dit maakt de datum een Firestore Timestamp.
 
-        // Maak een nieuwe gebruiker in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           this.email,
           this.generatedPassword
         );
         const userId = userCredential.user.uid;
-
-        // Sla gebruiker op in Firestore met Timestamp
-        await setDoc(doc(db, "users", userId), {
+        
+        await setDoc(doc(db, 'users', userId), {
           username: this.newUsername,
           email: this.email,
           date: this.date, // Timestamp voor de datum
@@ -201,18 +241,15 @@ export default {
           afdeling: this.Afdeling,
           positie: this.Positie,
         });
+        await this.fetchUsers()
 
-        // Refresh gebruikerslijst
-        await this.fetchUsers();
-
-        // Reset velden
-        this.newUsername = "";
-        this.email = "";
-        this.generatedPassword = "";
-        this.Bsn = "";
-        this.Afdeling = "";
-        this.Positie = "";
-        this.showForm = false;
+        this.newUsername = ''
+        this.email = ''
+        this.generatedPassword = ''
+        this.Bsn = ''
+        this.Afdeling = ''
+        this.Positie = ''
+        this.showForm = false
       } catch (error) {
         console.error("Error adding user:", error.message);
       }
@@ -230,10 +267,25 @@ export default {
     },
 
     showUserInfo(user) {
-      this.selectedUser = user;
+      this.selectedUser = user
     },
-  },
-};
+
+    async updateVerlofStatus(verlofId, newStatus) {
+      try {
+        // Haal de specifieke verlofaanvraag op
+        const verlofDoc = doc(db, 'verlofAanvragen', verlofId)
+
+        // Werk de status bij
+        await setDoc(verlofDoc, { status: newStatus }, { merge: true })
+
+        // Haal de verlofaanvragen opnieuw op om de lijst te vernieuwen
+        await this.fetchVerlofRequests()
+      } catch (error) {
+        console.error('Error updating verlof status:', error)
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -417,5 +469,21 @@ export default {
   color: white;
   border: none;
   border-radius: 4px;
+}
+
+.approve {
+  background-color: #28a745;
+  color: white;
+  margin-right: 24px;
+}
+
+.reject {
+  background-color: #dc3545;
+  color: white;
+}
+
+.approve:hover,
+.reject:hover {
+  opacity: 0.9;
 }
 </style>
