@@ -8,47 +8,46 @@
       <div class="circle">
         <img src="@/assets/leave.jpg" alt="Leave" class="leave-img" />
       </div>
-
     </div>
 
     <h1 class="title">Users</h1>
-    <div class="bigContainer">
-      <div class="userContainer" v-for="user in users" :key="user.id">
+    <div class="big-container">
+      <div class="user-container" v-for="user in users" :key="user.id">
         <div class="left">
           <p class="user">{{ user.username }}</p>
           <p class="user">Aangemaakt: {{ user.date }}</p>
         </div>
         <div class="right">
-          <button class="addUserButton" @click="showUserInfo(user)">Informatie</button>
-          <button class="addUserButton vw" @click="deleteUser(user.id)">
+          <button class="add-user-button" @click="showUserInfo(user)">Informatie</button>
+          <button class="add-user-button vw" @click="deleteUser(user.id)">
             Verwijder Gebruiker
           </button>
         </div>
       </div>
 
-      <button class="addUserButton" @click="showForm = !showForm">
+      <button class="add-user-button" @click="showForm = !showForm">
         {{ showForm ? "Annuleer" : "Gebruiker Aanmaken" }}
       </button>
 
-      <form v-if="showForm" @submit.prevent="addUser" class="userForm">
+      <form v-if="showForm" @submit.prevent="addUser" class="user-form">
         <input
           v-model="newUsername"
           type="text"
           placeholder="Enter username"
-          class="inputField"
+          class="input-field"
         />
         <input
           v-model="email"
           type="email"
           placeholder="Enter email"
-          class="inputField"
+          class="input-field"
         />
-        <input v-model="Bsn" type="text" placeholder="Enter BSN" class="inputField" />
+        <input v-model="Bsn" type="text" placeholder="Enter BSN" class="input-field" />
         <input
           v-model="Afdeling"
           type="text"
           placeholder="Enter afdeling"
-          class="inputField"
+          class="input-field"
         />
         <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
         <div class="row2">
@@ -58,39 +57,39 @@
             :readonly="true"
             disabled
             placeholder="Wachtwoord"
-            class="inputField width"
+            class="input-field width"
           />
-          <button type="button" @click="generatePassword" class="generateButton">
+          <button type="button" @click="generatePassword" class="generate-button">
             Genereer Wachtwoord
           </button>
         </div>
-        <select v-model="Positie" class="inputField">
+        <select v-model="Positie" class="input-field">
           <option value="Werknemer">Werknemer</option>
           <option value="Manager">Manager</option>
           <option value="Office Manager">Office Manager</option>
         </select>
-        <button type="submit" class="submitButton">User Aanmaken</button>
+        <button type="submit" class="submit-button">User Aanmaken</button>
       </form>
     </div>
 
     <h1 class="title">Verlofaanvragen</h1>
-    <div class="bigContainer">
-      <div class="userContainer" v-for="verlof in verlofList" :key="verlof.id">
+    <div class="big-container">
+      <div class="user-container" v-for="verlof in verlofList" :key="verlof.id">
         <div class="left">
-          <p class="user">Reden: {{ verlof.reason }}</p>
-          <p class="user">Van: {{ verlof.startDate }} Tot: {{ verlof.endDate }}</p>
+          <p class="verlof-reden">Reden: {{ verlof.reason }}</p>
+          <p class="verlof-datum">Van: {{ verlof.startDate }} Tot: {{ verlof.endDate }}</p>
           <p class="status">
             Status: <span :class="verlof.status">{{ verlof.status }}</span>
           </p>
         </div>
         <div class="right">
           <button
-            class="addUserButton approve"
+            class="add-user-button approve"
             @click="updateVerlofStatus(verlof.id, 'Goedgekeurd')"
           >
             Goedkeuren
           </button>
-          <button class="addUserButton reject" @click="updateVerlofStatus(verlof.id, 'Afgewezen')">
+          <button class="add-user-button reject" @click="updateVerlofStatus(verlof.id, 'Afgewezen')">
             Afkeuren
           </button>
         </div>
@@ -120,7 +119,7 @@
           <strong>Positie:</strong>
           {{ selectedUser.positie ? selectedUser.positie : "Positie niet gevonden" }}
         </p>
-        <button class="closeButton" @click="selectedUser = null">Terug</button>
+        <button class="close-button" @click="selectedUser = null">Terug</button>
       </div>
     </div>
   </div>
@@ -351,7 +350,7 @@ export default {
   text-align: center;
 }
 
-.closeButton {
+.close-button {
   padding: 8px 16px;
   background-color: #209fd2;
   color: white;
@@ -361,7 +360,7 @@ export default {
   margin-top: 20px;
 }
 
-.generateButton {
+.generate-button {
   margin-bottom: 8px;
   padding: 8px;
   font-size: 16px;
@@ -373,7 +372,7 @@ export default {
   background-color: #007bff;
 }
 
-.generateButton:hover {
+.generate-button:hover {
   cursor: pointer;
 }
 
@@ -393,7 +392,7 @@ export default {
   flex-direction: column;
 }
 
-.bigContainer {
+.big-container {
   display: flex;
   flex-direction: column;
   width: 70%;
@@ -410,7 +409,7 @@ export default {
   flex-direction: row;
 }
 
-.userContainer {
+.user-container {
   height: 96px;
   width: 100%;
   border: 0.01rem solid #939393;
@@ -435,7 +434,7 @@ export default {
   margin-left: 24px;
 }
 
-.addUserButton {
+.add-user-button {
   padding: 8px 16px;
   font-size: 16px;
   cursor: pointer;
@@ -447,13 +446,13 @@ export default {
   margin-top: 16px;
 }
 
-.userForm {
+.user-form {
   display: flex;
   flex-direction: column;
   width: 50%;
 }
 
-.inputField {
+.input-field {
   margin-bottom: 8px;
   padding: 8px;
   font-size: 16px;
@@ -461,7 +460,7 @@ export default {
   border-radius: 4px;
 }
 
-.submitButton {
+.submit-button {
   padding: 8px 16px;
   font-size: 16px;
   cursor: pointer;
