@@ -10,6 +10,10 @@ export default defineConfig({
     vue(),
     vueJsx(),
   ],
+  test: {
+    globals: true, 
+    environment: 'jsdom',
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
