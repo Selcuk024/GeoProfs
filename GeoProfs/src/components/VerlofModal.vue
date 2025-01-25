@@ -55,8 +55,9 @@ export default {
   },
   methods: {
     async saveVerlof() {
+      console.log('saveVerlof called'); // Add this
       if (!this.startDate || !this.endDate || !this.reason) {
-        alert('Vul alle velden in.')
+        alert('Vul alle velden in.');
         return;
       } // else {
       // alert('Incorrecte datum(s)')
@@ -64,29 +65,26 @@ export default {
 
       const startDateObj = new Date(this.startDate);
       const endDateObj = new Date(this.endDate);
-
       if (endDateObj < startDateObj) {
         alert('De einddatum mag niet eerder zijn dan de startdatum.');
         return;
       }
-
       try {
-        await addDoc(collection(db, 'verlofAanvragen'), {
+        // Simulate database operation
+        console.log('Data submitted:', {
           type: this.verlofType,
           reason: this.reason,
           startDate: this.startDate,
           endDate: this.endDate,
-          status: 'Verzonden',
-          timestamp: new Date()
-        })
-        alert('Verlof succesvol aangevraagd!')
-        this.$emit('close')
+        });
+        alert('Verlof succesvol aangevraagd!');
+        this.$emit('close');
       } catch (error) {
-        console.error("Error adding document: ", error);
-        alert('Er is iets fout gegaan bij het aanvragen van uw verlof. Probeer het later opnieuw.')
+        console.error(error);
+        alert('Er is iets fout gegaan bij het aanvragen van uw verlof. Probeer het later opnieuw.');
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
