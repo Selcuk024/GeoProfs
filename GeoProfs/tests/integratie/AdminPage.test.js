@@ -13,14 +13,41 @@ vi.mock('firebase/auth', () => ({
 }));
 
 vi.mock('firebase/firestore', async () => {
-  const actualFirestore = await vi.importActual('firebase/firestore');
   return {
-    ...actualFirestore, // Haal alle originele functies op (indien nodig)
-    getFirestore: vi.fn(() => ({})),  // Mock Firestore-initialisatie
-    setDoc: vi.fn(() => Promise.resolve()),  // Simuleer setDoc-functie
-    doc: vi.fn(() => ({})),  // Mock doc-functie
+    getFirestore: vi.fn(() => ({
+      collection: vi.fn(() => ({
+        docs: [],
+      })),
+    })),
+    collection: vi.fn(() => ({
+      docs: [],
+    })),
+    getDocs: vi.fn(() =>
+      Promise.resolve({
+        docs: [
+          {
+            id: 'mockUserId',
+            data: () => ({
+              username: 'TestUser',
+              email: 'test@example.com',
+              bsn: '123456789',
+              afdeling: 'IT',
+              positie: 'Manager',
+              date: new Date(),
+            }),
+          },
+        ],
+      })
+    ),
+    doc: vi.fn(() => ({})),
+    setDoc: vi.fn(() => Promise.resolve()),
+    deleteDoc: vi.fn(() => Promise.resolve()),
+    Timestamp: {
+      now: vi.fn(() => new Date()),
+    },
   };
 });
+
 
 describe('AdminPage.vue', () => {
   let wrapper;
@@ -72,15 +99,27 @@ describe('AdminPage.vue', () => {
 
 
   it('toont een foutmelding bij een onvolledig formulier', async () => {
-    // Klik op de "Gebruiker Aanmaken" button
+    const wrapper = mount(AdminPage);
+  
+    // Klik op de "Gebruiker Aanmaken"-knop
     await wrapper.find('.addUserButton').trigger('click');
-
-    // Sommige fielden leeg laten
-    await wrapper.find('input[placeholder="Enter username"]').setValue('');
-    await wrapper.find('input[placeholder="Enter email"]').setValue('invalid-email');
+  
+    // Wacht tot het formulier verschijnt
+    await wrapper.vm.$nextTick();
+  
+    // Controleer of het formulier zichtbaar is
+    expect(wrapper.find('form').exists()).toBe(true);
+  
+    // Simuleer formulierinvoer
+    await wrapper.find('input[placeholder="Enter username"]').setValue('TestUser');
+    await wrapper.find('input[placeholder="Enter email"]').setValue('');  // Leeg veld om foutmelding uit te lokken
+    await wrapper.find('input[placeholder="Enter BSN"]').setValue('123456789');
+    await wrapper.find('input[placeholder="Enter afdeling"]').setValue('IT');
+  
+    // Formulier indienen
     await wrapper.find('form').trigger('submit.prevent');
-
-    // Controleer of de foutmelding verschijnt
+  
+    // Controleer of de foutmelding zichtbaar is
     expect(wrapper.vm.errorMessage).toBe('Vul alle velden in voordat je doorgaat.');
   });
 });
