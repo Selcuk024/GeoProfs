@@ -2,8 +2,7 @@ import { mount } from '@vue/test-utils';
 import { describe, it, expect, vi } from 'vitest';
 import VerlofModal from '@/components/VerlofModal.vue';
 describe('VerlofModal Integration Test', () => {
-    it('should trigger an alert on successful submission', async () => {
-        // Spy on window.alert
+    it('should succesfully request verlof', async () => {
         const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
         
         const wrapper = mount(VerlofModal);
