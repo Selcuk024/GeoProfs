@@ -19,7 +19,7 @@ describe('Admin Panel - Verlof Goedkeuren', () => {
             const endDate = $verlof.find('.verlof-datum').eq(2).text().replace('Tot: ', '').trim();
 
             // Klik op de "Goedkeuren" knop
-            cy.get('.bigContainer .approve').first().click();
+            cy.get('.big-container .approve').first().click();
 
             // Controleer dat de verlofaanvraag verdwijnt uit de Admin Panel
             cy.get('.big-container .user-container')
