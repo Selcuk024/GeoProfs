@@ -60,7 +60,7 @@ describe('AdminPage.vue', () => {
     const wrapper = mount(AdminPage);
 
     // Open het form
-    await wrapper.find('.addUserButton').trigger('click');
+    await wrapper.find('.add-user-button').trigger('click');
 
     // Vul het in
     await wrapper.find('input[placeholder="Enter username"]').setValue('TestUser');
@@ -102,7 +102,7 @@ describe('AdminPage.vue', () => {
     const wrapper = mount(AdminPage);
   
     // Klik op de "Gebruiker Aanmaken"-knop
-    await wrapper.find('.addUserButton').trigger('click');
+    await wrapper.find('.add-user-button').trigger('click');
   
     // Wacht tot het formulier verschijnt
     await wrapper.vm.$nextTick();
