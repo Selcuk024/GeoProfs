@@ -2,8 +2,13 @@
   <div class="container">
     <h1 class="title">Admin Panel</h1>
     <div class="icons-container">
-      <div class="circle"><img src="@/assets/users.png" alt="Users" class="users-img" /></div>
-      <div class="circle"><img src="@/assets/leave.jpg" alt="Leave" class="leave-img" /></div>
+      <div class="circle">
+        <img src="@/assets/users.png" alt="Users" class="users-img" />
+      </div>
+      <div class="circle">
+        <img src="@/assets/leave.jpg" alt="Leave" class="leave-img" />
+      </div>
+
     </div>
 
     <h1 class="title">Users</h1>
@@ -15,12 +20,14 @@
         </div>
         <div class="right">
           <button class="addUserButton" @click="showUserInfo(user)">Informatie</button>
-          <button class="addUserButton vw" @click="deleteUser(user.id)">Verwijder Gebruiker</button>
+          <button class="addUserButton vw" @click="deleteUser(user.id)">
+            Verwijder Gebruiker
+          </button>
         </div>
       </div>
 
       <button class="addUserButton" @click="showForm = !showForm">
-        {{ showForm ? 'Annuleer' : 'Gebruiker Aanmaken' }}
+        {{ showForm ? "Annuleer" : "Gebruiker Aanmaken" }}
       </button>
 
       <form v-if="showForm" @submit.prevent="addUser" class="userForm">
@@ -28,19 +35,22 @@
           v-model="newUsername"
           type="text"
           placeholder="Enter username"
-          required
           class="inputField"
         />
-        <input v-model="email" type="email" placeholder="Enter email" required class="inputField" />
-        <input v-model="Bsn" type="text" placeholder="Enter BSN" required class="inputField" />
+        <input
+          v-model="email"
+          type="email"
+          placeholder="Enter email"
+          class="inputField"
+        />
+        <input v-model="Bsn" type="text" placeholder="Enter BSN" class="inputField" />
         <input
           v-model="Afdeling"
           type="text"
           placeholder="Enter afdeling"
-          required
           class="inputField"
         />
-
+        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
         <div class="row2">
           <input
             v-model="generatedPassword"
@@ -48,7 +58,6 @@
             :readonly="true"
             disabled
             placeholder="Wachtwoord"
-            required
             class="inputField width"
           />
           <button type="button" @click="generatePassword" class="generateButton">
@@ -93,20 +102,23 @@
         <h2 class="info">Gebruiker Informatie</h2>
         <p>
           <strong>Username:</strong>
-          {{ selectedUser.username ? selectedUser.username : 'Geen username gevonden' }}
+          {{ selectedUser.username ? selectedUser.username : "Geen username gevonden" }}
         </p>
         <p>
           <strong>Gemaakt op:</strong>
-          {{ selectedUser.date ? selectedUser.date : 'Geen datum gevonden' }}
+          {{ selectedUser.date ? selectedUser.date : "Geen datum gevonden" }}
         </p>
-        <p><strong>BSN:</strong> {{ selectedUser.bsn ? selectedUser.bsn : 'Geen BSN gevonden' }}</p>
+        <p>
+          <strong>BSN:</strong>
+          {{ selectedUser.bsn ? selectedUser.bsn : "Geen BSN gevonden" }}
+        </p>
         <p>
           <strong>Afdeling:</strong>
-          {{ selectedUser.afdeling ? selectedUser.afdeling : 'Afdeling niet gevonden' }}
+          {{ selectedUser.afdeling ? selectedUser.afdeling : "Afdeling niet gevonden" }}
         </p>
         <p>
           <strong>Positie:</strong>
-          {{ selectedUser.positie ? selectedUser.positie : 'Positie niet gevonden' }}
+          {{ selectedUser.positie ? selectedUser.positie : "Positie niet gevonden" }}
         </p>
         <button class="closeButton" @click="selectedUser = null">Terug</button>
       </div>
@@ -115,26 +127,35 @@
 </template>
 
 <script>
-import { collection, getDocs, addDoc, doc, deleteDoc, setDoc } from 'firebase/firestore'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { db, auth } from '../firebase'
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  deleteDoc,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { db, auth } from "../firebase";
 
 export default {
-  name: 'AdminPage',
+  name: "AdminPage",
   data() {
     return {
       users: [],
       verlofList: [],
       showForm: false,
-      newUsername: '',
-      email: '',
-      date: '',
-      Bsn: '',
-      Afdeling: '',
-      generatedPassword: '',
-      Positie: '',
-      selectedUser: null
-    }
+      newUsername: "",
+      email: "",
+      date: "",
+      Bsn: "",
+      Afdeling: "",
+      generatedPassword: "",
+      Positie: "",
+      selectedUser: null,
+      errorMessage: "",
+    };
   },
   async created() {
     this.fetchUsers()
@@ -143,13 +164,13 @@ export default {
   methods: {
     async fetchUsers() {
       try {
-        const querySnapshot = await getDocs(collection(db, 'users'))
+        const querySnapshot = await getDocs(collection(db, "users"));
         this.users = querySnapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data()
-        }))
+          ...doc.data(),
+        }));
       } catch (error) {
-        console.error('Error fetching data: ', error)
+        console.error("Error fetching data: ", error);
       }
     },
 
@@ -168,18 +189,29 @@ export default {
     },
 
     generatePassword() {
-      const length = 12
-      const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*'
-      let password = ''
+      const length = 12;
+      const charset =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+      let password = "";
       for (let i = 0; i < length; i++) {
-        const randomIndex = Math.floor(Math.random() * charset.length)
-        password += charset[randomIndex]
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
       }
-      this.generatedPassword = password
+      this.generatedPassword = password;
     },
 
     async addUser() {
       try {
+        if (
+          !this.newUsername ||
+          !this.email ||
+          !this.generatedPassword ||
+          !this.Bsn ||
+          !this.Afdeling
+        ) {
+          this.errorMessage = "Vul alle velden in voordat je doorgaat.";
+          return;
+        }
         if (
           !this.newUsername.trim() ||
           !this.email.trim() ||
@@ -187,28 +219,28 @@ export default {
           !this.Bsn.trim() ||
           !this.Afdeling.trim()
         )
-          return
+          return;
 
-        const currentDate = new Date()
-        this.date = currentDate.toISOString().split('T')[0]
+        const currentDate = new Date();
+        // Correcte omzetting naar Firestore Timestamp
+        this.date = Timestamp.now(); // Dit maakt de datum een Firestore Timestamp.
 
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           this.email,
           this.generatedPassword
-        )
-        const userId = userCredential.user.uid
-
+        );
+        const userId = userCredential.user.uid;
+        
         await setDoc(doc(db, 'users', userId), {
           username: this.newUsername,
           email: this.email,
-          date: this.date,
+          date: this.date, // Timestamp voor de datum
           bsn: this.Bsn,
           wachtwoord: this.generatedPassword,
           afdeling: this.Afdeling,
-          positie: this.Positie
-        })
-
+          positie: this.Positie,
+        });
         await this.fetchUsers()
 
         this.newUsername = ''
@@ -219,18 +251,18 @@ export default {
         this.Positie = ''
         this.showForm = false
       } catch (error) {
-        console.error('Error adding user:', error.message)
+        console.error("Error adding user:", error.message);
       }
     },
 
     async deleteUser(userId) {
       try {
-        const userDoc = doc(db, 'users', userId)
-        await deleteDoc(userDoc)
+        const userDoc = doc(db, "users", userId);
+        await deleteDoc(userDoc);
 
-        await this.fetchUsers()
+        await this.fetchUsers();
       } catch (error) {
-        console.error('Error deleting user: ', error)
+        console.error("Error deleting user: ", error);
       }
     },
 
@@ -257,6 +289,11 @@ export default {
 </script>
 
 <style scoped>
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
 .icons-container {
   display: flex;
   flex-direction: row;
