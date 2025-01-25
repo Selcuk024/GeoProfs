@@ -1,87 +1,86 @@
 import { mount } from '@vue/test-utils';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import AdminPage from '../../src/components/AdminPage.vue';
-import { db, auth } from '../../src/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { setDoc, doc, getDoc } from 'firebase/firestore';
-import { Timestamp } from 'firebase/firestore'; // Vergeet niet de Timestamp te importeren
+import { setDoc, doc, getFirestore } from 'firebase/firestore';
+
+// Mock de Firebase modules correct
+vi.mock('firebase/auth', () => ({
+  getAuth: vi.fn(() => ({})),
+  createUserWithEmailAndPassword: vi.fn(() =>
+    Promise.resolve({ user: { uid: 'mockUserId' } })
+  ),
+}));
+
+vi.mock('firebase/firestore', async () => {
+  const actualFirestore = await vi.importActual('firebase/firestore');
+  return {
+    ...actualFirestore, // Haal alle originele functies op (indien nodig)
+    getFirestore: vi.fn(() => ({})),  // Mock Firestore-initialisatie
+    setDoc: vi.fn(() => Promise.resolve()),  // Simuleer setDoc-functie
+    doc: vi.fn(() => ({})),  // Mock doc-functie
+  };
+});
 
 describe('AdminPage.vue', () => {
-  it('toont formulier en voegt een gebruiker toe wanneer het formulier wordt ingediend', async () => {
-    // Zorg ervoor dat je werkt met een testomgeving (bijv. Firestore Emulator)
+  let wrapper;
 
-    // Maak de gebruiker aan met Firebase Auth
-    const userCredential = await createUserWithEmailAndPassword(auth, 'test@example.com', 'Test@1234');
-    const user = userCredential.user;
+  beforeEach(() => {
+    wrapper = mount(AdminPage);
+  });
 
+  it('voert form submission uit en slaat data op in Firestore', async () => {
     const wrapper = mount(AdminPage);
 
-    // Zorg ervoor dat het formulier eerst niet zichtbaar is
-    expect(wrapper.find('form').exists()).toBe(false);
-
-    // Klik op de "Gebruiker Aanmaken"-knop om het formulier zichtbaar te maken
+    // Open het form
     await wrapper.find('.addUserButton').trigger('click');
 
-    // Het formulier zou nu zichtbaar moeten zijn
-    expect(wrapper.find('form').exists()).toBe(true);
-
-    // Simuleer formulierinvoer
+    // Vul het in
     await wrapper.find('input[placeholder="Enter username"]').setValue('TestUser');
     await wrapper.find('input[placeholder="Enter email"]').setValue('test@example.com');
     await wrapper.find('input[placeholder="Enter BSN"]').setValue('123456789');
     await wrapper.find('input[placeholder="Enter afdeling"]').setValue('IT');
     await wrapper.find('select').setValue('Manager');
 
-    // Wachtwoord genereren simuleren
+    // Genereer wachtwoord
     wrapper.vm.generatedPassword = 'Test@1234';
 
-    // Formulier indienen
+    // Form submitten
     await wrapper.find('form').trigger('submit.prevent');
 
-    // Controleer of de gebruiker daadwerkelijk is aangemaakt via Firebase Auth
-    const userDocRef = doc(db, 'users', user.uid);
-    await setDoc(userDocRef, {
-      username: 'TestUser',
-      email: 'test@example.com',
-      date: Timestamp.now(),  // Gebruik Timestamp.now() om de huidige tijd als Timestamp op te slaan
-      bsn: '123456789',
-      wachtwoord: 'Test@1234',
-      afdeling: 'IT',
-      positie: 'Manager'
-    });
+    // Controleer of de Firebase-auth-functie werd aangeroepen
+    expect(createUserWithEmailAndPassword).toHaveBeenCalledWith(
+      expect.any(Object),
+      'test@example.com',
+      'Test@1234'
+    );
 
-    // Controleer of het document werkelijk bestaat in Firestore
-    const docSnapshot = await getDoc(userDocRef);
-    expect(docSnapshot.exists()).toBe(true);
-
-    // Controleer of het datumveld een Timestamp is
-    const data = docSnapshot.data();
-    expect(data.date).toBeInstanceOf(Timestamp);
+    // Controleer of setDoc werd aangeroepen met de juiste gegevens
+    expect(setDoc).toHaveBeenCalledWith(
+      expect.any(Object),
+      {
+        username: 'TestUser',
+        email: 'test@example.com',
+        date: expect.any(Object), 
+        bsn: '123456789',
+        wachtwoord: 'Test@1234',
+        afdeling: 'IT',
+        positie: 'Manager',
+      }
+    );
   });
 
-  it('toont een foutmelding bij een mislukte registratie', async () => {
-    // Simuleer een mislukte registratie met Firebase Auth
-    try {
-      await createUserWithEmailAndPassword(auth, 'invalid-email', 'short');
-    } catch (error) {
-      expect(error.message).toContain('auth/invalid-email');
-    }
 
-    const wrapper = mount(AdminPage);
-
-    // Klik op de "Gebruiker Aanmaken"-knop om het formulier zichtbaar te maken
+  it('toont een foutmelding bij een onvolledig formulier', async () => {
+    // Klik op de "Gebruiker Aanmaken" button
     await wrapper.find('.addUserButton').trigger('click');
 
-    // Simuleer formulierinvoer
-    await wrapper.find('input[placeholder="Enter username"]').setValue('TestUser');
+    // Sommige fielden leeg laten
+    await wrapper.find('input[placeholder="Enter username"]').setValue('');
     await wrapper.find('input[placeholder="Enter email"]').setValue('invalid-email');
-    wrapper.vm.generatedPassword = 'short';
-
-    // Formulier indienen
     await wrapper.find('form').trigger('submit.prevent');
 
-    // Controleer of de foutmelding zichtbaar is
-    expect(wrapper.vm.showForm).toBe(true);
+    // Controleer of de foutmelding verschijnt
     expect(wrapper.vm.errorMessage).toBe('Vul alle velden in voordat je doorgaat.');
   });
 });
