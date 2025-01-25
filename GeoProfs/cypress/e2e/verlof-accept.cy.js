@@ -8,12 +8,12 @@ describe('Admin Panel - Verlof Goedkeuren', () => {
 
     it('Keurt een verlof goed en verifieert de wijzigingen op de verlofpagina', () => {
         // Controleer of er een verlofaanvraag aanwezig is in het Admin Panel
-        cy.get('.bigContainer .userContainer')
+        cy.get('.big-container .user-container')
             .contains('Reden:')
             .should('exist');
 
         // Haal de eerste verlof aanvraag op om de details te verifiëren
-        cy.get('.bigContainer .userContainer').first().then(($verlof) => {
+        cy.get('.big-container .user-container').first().then(($verlof) => {
             const reason = $verlof.find('.verlof-reden').first().text().replace('Reden: ', '').trim();
             const startDate = $verlof.find('.verlof-datum').eq(1).text().replace('Van: ', '').trim();
             const endDate = $verlof.find('.verlof-datum').eq(2).text().replace('Tot: ', '').trim();
@@ -22,7 +22,7 @@ describe('Admin Panel - Verlof Goedkeuren', () => {
             cy.get('.bigContainer .approve').first().click();
 
             // Controleer dat de verlofaanvraag verdwijnt uit de Admin Panel
-            cy.get('.bigContainer .userContainer')
+            cy.get('.big-container .user-container')
                 .contains('Reden:')
                 .should('not.exist');
 
