@@ -13,6 +13,5 @@ describe('VerlofModal Integration Test', () => {
         
         await wrapper.find('.modal-default-button').trigger('click');
         expect(alertSpy).toHaveBeenCalledWith('Verlof succesvol aangevraagd!');
-        console.log(wrapper.html());
     });
 });
