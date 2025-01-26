@@ -6,8 +6,8 @@ describe("Login Page Integration Test", () => {
   
     it("moet succesvol inloggen met correcte inloggegevens", () => {
       // Voer geldige inloggegevens in
-      cy.get("#email").type("marco@gmail.com");
-      cy.get("#password").type("adminn");
+      cy.get("#email").type("admin@gmail.com");
+      cy.get("#password").type("DxjBWPkfXXVQ");
   
       // Klik op de login-knop
       cy.get("#submit").click();
