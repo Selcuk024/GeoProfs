@@ -7,7 +7,7 @@ describe('Admin Panel - Gebruiker Aanmaken', () => {
 
     cy.contains('Gebruiker Aanmaken').click();
 
-    cy.get('form.userForm').should('be.visible');
+    cy.get('form.user-form').should('be.visible');
 
     cy.get('input[placeholder="Enter username"]').type('TestUser');
     cy.get('input[placeholder="Enter email"]').type('testuser@example.com');
@@ -18,7 +18,7 @@ describe('Admin Panel - Gebruiker Aanmaken', () => {
 
     cy.get('select').select('Manager');
 
-    cy.get('button.submitButton').click();
+    cy.get('button.submit-button').click();
 
     cy.contains('TestUser').should('be.visible');
   });
