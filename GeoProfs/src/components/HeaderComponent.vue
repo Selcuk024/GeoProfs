@@ -33,73 +33,74 @@ export default {
 }
 </script>
 
-<style scoped>
-.header {
-  width: 90%;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  padding: 16px;
-  background-color: #001f6b;
-  color: white;
-}
-
-.aroundLogo {
-  height: 15vh;
-  width: 10%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.logo {
-  width: 55%;
-  border-radius: 50%;
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-
-.profile-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-left: auto;
-  cursor: pointer;
-}
-
+<style scoped lang="scss">
 .headerContainer {
   display: flex;
   flex-direction: row;
-}
 
-.dropdown {
-  height: 50px;
-  width: 50px;
-  position: relative;
-  display: flex;
-  background-color: transparent;
-}
+  .aroundLogo {
+    height: 15vh;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  width: 6vw;
-  height: 5vh;
-  border: none;
-  z-index: 1;
-  top: 100%;
-  right: 0;
-  cursor: pointer;
-}
+    .logo {
+      width: 55%;
+      border-radius: 50%;
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+  }
 
-.logout-text {
-  font-weight: 400;
-  color: #000;
-  cursor: pointer;
-}
+  .header {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 16px;
+    background-color: #001f6b;
+    color: white;
 
-.dropdown:hover .dropdown-content {
-  display: block;
+    .profile-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-left: auto;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      height: 50px;
+      width: 50px;
+      position: relative;
+      display: flex;
+      background-color: transparent;
+
+      &:hover .dropdown-content {
+        display: block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        width: 6vw;
+        height: 5vh;
+        border: none;
+        z-index: 1;
+        top: 100%;
+        right: 0;
+        cursor: pointer;
+
+        .logout-text {
+          font-weight: 400;
+          color: #000;
+          cursor: pointer;
+        }
+      }
+    }
+  }
 }
 </style>
+
