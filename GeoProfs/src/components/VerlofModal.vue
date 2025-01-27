@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     async saveVerlof() {
-      console.log('saveVerlof called'); // Add this
+      console.log('saveVerlof called'); 
       if (!this.startDate || !this.endDate || !this.reason) {
         alert('Vul alle velden in.');
         return;
@@ -70,7 +70,6 @@ export default {
         return;
       }
       try {
-        // Simulate database operation
         console.log('Data submitted:', {
           type: this.verlofType,
           reason: this.reason,

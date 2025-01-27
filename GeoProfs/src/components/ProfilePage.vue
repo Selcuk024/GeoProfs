@@ -38,7 +38,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 * {
   margin: 0;
   padding: 0;
@@ -50,12 +50,12 @@ export default {
   height: 20%;
   display: flex;
   flex-direction: column;
-}
 
-.username {
-  font-size: 32px;
-  margin-left: 24px;
-  margin-top: 24px;
+  .username {
+    font-size: 32px;
+    margin-left: 24px;
+    margin-top: 24px;
+  }
 }
 
 .personal-data-container {
@@ -67,38 +67,38 @@ export default {
   height: 80%;
   gap: 50px;
   background-color: #f1f1f1;
-}
 
-.personal-data-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 25%;
-  height: 100%;
-  gap: 50px;
-  background-color: #f1f1f1;
-}
+  .personal-data-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 25%;
+    height: 100%;
+    gap: 50px;
+    background-color: #f1f1f1;
 
-.personal-data {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 40%;
-  background-color: #ffffff;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Schaduw toevoegen */
-  border-radius: 8px; /* Optioneel: afgeronde hoeken */
-}
+    .personal-data {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 40%;
+      background-color: #ffffff;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+      border-radius: 8px; 
 
-.personal-data h3 {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
+      h3 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
 
-.personal-data p {
-  font-size: 24px;
-  color: #333;
+      p {
+        font-size: 24px;
+        color: #333;
+      }
+    }
+  }
 }
 </style>
