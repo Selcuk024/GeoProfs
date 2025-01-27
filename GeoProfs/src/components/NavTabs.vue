@@ -62,7 +62,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .nav-tabs {
   display: flex;
   flex-direction: column;
@@ -73,22 +73,23 @@ export default {
   padding-top: 20px;
   margin: 0;
   justify-content: space-evenly;
-}
 
-button {
-  padding: 15px;
-  color: white;
-  border: none;
-  background: none;
-  text-align: left;
-  cursor: pointer;
-}
+  button {
+    padding: 15px;
+    color: white;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
 
-button.active {
-  background-color: #4a90e2;
-}
+    &.active {
+      background-color: #4a90e2;
+    }
 
-button:hover {
-  background-color: #3a7bd5;
+    &:hover {
+      background-color: #3a7bd5;
+    }
+  }
 }
 </style>
+

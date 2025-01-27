@@ -85,7 +85,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 /* Algemene pagina opmaak */
 .login-page {
   display: flex;
@@ -93,72 +93,69 @@ export default {
   align-items: center;
   height: 100vh;
   background-color: #f4f4f4;
-}
 
-/* Container voor login formulier */
-.login-container {
-  text-align: center;
-  padding: 40px;
-  max-width: 400px;
-  width: 100%;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+  .login-container {
+    text-align: center;
+    padding: 40px;
+    max-width: 400px;
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
-/* Logo styling */
-.logo img {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 20px;
-}
+    .logo {
+      img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+      }
+    }
 
-/* Titel styling */
-h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 20px;
-}
+    h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 20px;
+    }
 
-/* Formulier styling */
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
 
-.login-form label {
-  text-align: left;
-  font-size: 0.9rem;
-  color: #666;
-}
+      label {
+        text-align: left;
+        font-size: 0.9rem;
+        color: #666;
+      }
 
-.login-form input {
-  padding: 12px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+      input {
+        padding: 12px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+    }
 
-.submit-button {
-  padding: 12px;
-  font-size: 1rem;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+    .submit-button {
+      padding: 12px;
+      font-size: 1rem;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
 
-.submit-button:hover {
-  background-color: #333;
-}
+      &:hover {
+        background-color: #333;
+      }
+    }
 
-/* Error bericht styling */
-.error {
-  margin-top: 15px;
-  color: red;
+    .error {
+      margin-top: 15px;
+      color: red;
+    }
+  }
 }
 </style>
