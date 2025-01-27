@@ -63,7 +63,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 button {
   padding: 10px 20px;
   font-size: 1rem;
@@ -72,21 +72,22 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+
+  &:hover {
+    background-color: darkred;
+  }
 }
 
 .content {
   display: flex;
   flex: 1;
   height: 85vh;
-}
 
-.main-content {
-  flex: 1;
-  overflow-y: auto;
-  background-color: #f5f5f5;
-}
-
-button:hover {
-  background-color: darkred;
+  .main-content {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #f5f5f5;
+  }
 }
 </style>
+

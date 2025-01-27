@@ -287,12 +287,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .error-message {
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
 }
+
 .icons-container {
   display: flex;
   flex-direction: row;
@@ -301,29 +302,25 @@ export default {
   width: 15%;
   height: 10vh;
   padding-left: 30px;
-}
 
-.circle {
-  width: 70px;
-  height: 70px;
-  background-color: #ccc;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .circle {
+    width: 70px;
+    height: 70px;
+    background-color: #ccc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-.icon {
-  font-size: 20px;
-}
+    .users-img {
+      width: 65%;
+    }
 
-.users-img {
-  width: 65%;
-}
-
-.leave-img {
-  width: 60%;
-  padding-left: 5px;
+    .leave-img {
+      width: 60%;
+      padding-left: 5px;
+    }
+  }
 }
 
 .modal {
@@ -336,28 +333,28 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-.info {
-  margin-bottom: 24px;
-}
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
 
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 400px;
-  text-align: center;
-}
+    .info {
+      margin-bottom: 24px;
+    }
 
-.close-button {
-  padding: 8px 16px;
-  background-color: #209fd2;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 20px;
+    .close-button {
+      padding: 8px 16px;
+      background-color: #209fd2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  }
 }
 
 .generate-button {
@@ -370,10 +367,10 @@ export default {
   width: 40%;
   color: #fff;
   background-color: #007bff;
-}
 
-.generate-button:hover {
-  cursor: pointer;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .vw {
@@ -390,48 +387,41 @@ export default {
   height: 85vh;
   display: flex;
   flex-direction: column;
-}
 
-.big-container {
-  display: flex;
-  flex-direction: column;
-  width: 70%;
-  margin-left: 24px;
-}
+  .big-container {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin-left: 24px;
 
-.title {
-  margin: 24px;
-}
+    .user-container {
+      height: 96px;
+      width: 100%;
+      border: 0.01rem solid #939393;
+      background-color: white;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
 
-.row2 {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-}
+      .right {
+        margin-left: auto;
+        margin-right: 24px;
+      }
 
-.user-container {
-  height: 96px;
-  width: 100%;
-  border: 0.01rem solid #939393;
-  background-color: white;
-  text-decoration: none;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
+      .left {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        margin-left: 24px;
+      }
+    }
+  }
 
-.right {
-  margin-left: auto;
-  margin-right: 24px;
-}
-
-.left {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  margin-left: 24px;
+  .title {
+    margin: 24px;
+  }
 }
 
 .add-user-button {
@@ -450,39 +440,42 @@ export default {
   display: flex;
   flex-direction: column;
   width: 50%;
-}
 
-.input-field {
-  margin-bottom: 8px;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
+  .input-field {
+    margin-bottom: 8px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
 
-.submit-button {
-  padding: 8px 16px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  .submit-button {
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+  }
 }
 
 .approve {
   background-color: #28a745;
   color: white;
   margin-right: 24px;
+
+  &:hover {
+    opacity: 0.9;
+  }
 }
 
 .reject {
   background-color: #dc3545;
   color: white;
-}
 
-.approve:hover,
-.reject:hover {
-  opacity: 0.9;
+  &:hover {
+    opacity: 0.9;
+  }
 }
 </style>

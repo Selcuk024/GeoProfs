@@ -109,11 +109,59 @@ export default {
 }
 </script>
 
-<style scoped>
-.tabs {
-  width: 70%;
+<style scoped lang="scss">
+// Define variables for reusability
+$primary-color: #209fd2;
+$tab-active-bg: #f0f0f0;
+$tab-inactive-bg: #b7b7b7;
+$border-color: #ccc;
+$border-radius: 13px;
+
+// Mixin for flexbox centering
+@mixin flex-center($direction: row) {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $direction;
+}
+
+// Styling starts here
+.container {
+  width: 100%;
+  height: 85vh;
+  display: flex;
+  flex-direction: column;
+
+  .username {
+    margin: 24px;
+  }
+}
+
+.miniContainer {
+  width: 100%;
+  @include flex-center(column);
+  margin-top: 24px;
+
+  .tabs {
+    width: 70%;
+    display: flex;
+    justify-content: flex-start;
+
+    .tab {
+      padding: 15px 30px;
+      background-color: $tab-inactive-bg;
+      border: 1px solid $border-color;
+      cursor: pointer;
+      color: #000;
+      border-radius: $border-radius $border-radius 0 0;
+      font-weight: bold;
+
+      &.active {
+        background-color: $tab-active-bg;
+        color: #000;
+      }
+    }
+  }
 }
 
 .add {
@@ -123,74 +171,53 @@ export default {
   margin-right: 15px;
   font-size: 40px;
   color: white;
-  background-color: #209fd2;
-  border-radius: 13px;
+  background-color: $primary-color;
+  border-radius: $border-radius;
   border: none;
   cursor: pointer;
-}
-
-.miniContainer {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin-top: 24px;
-}
-
-.allItems {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.container {
-  width: 100%;
-  height: 85vh;
-  display: flex;
-  flex-direction: column;
 }
 
 .content {
   height: 100%;
   overflow-y: scroll;
-}
 
-.tab {
-  padding: 15px 30px;
-  background-color: #b7b7b7;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  color: #000;
-  border-radius: 13px 13px 0px 0px;
-  font-weight: bold;
-}
+  .allItems {
+    @include flex-center(column);
 
-.tab.active {
-  background-color: #f0f0f0;
-  color: #000;
-}
+    .verlof-item {
+      background-color: white;
+      padding: 16px;
+      width: 70%;
+      border: 1px solid $border-color;
 
-.verlof-item {
-  background-color: white;
-  padding: 16px;
-  width: 70%;
-  border: 1px solid #ccc;
-}
+      .verlof-content {
+        .title {
+          font-weight: bold;
+        }
 
-.Goedgekeurd {
-  color: green;
-}
+        .date,
+        .status,
+        .type {
+          margin: 4px 0;
+        }
 
-.Afgekeurd {
-  color: red;
-}
+        .status {
+          span {
+            &.Goedgekeurd {
+              color: green;
+            }
 
-.Verzonden {
-  color: gray;
-}
+            &.Afgekeurd {
+              color: red;
+            }
 
-.username {
-  margin: 24px;
+            &.Verzonden {
+              color: gray;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 </style>
