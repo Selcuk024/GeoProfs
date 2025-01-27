@@ -38,8 +38,9 @@ export default {
 };
 </script>
 
-<style scoped>
-html, body {
+<style scoped lang="scss">
+html,
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -51,3 +52,4 @@ html, body {
   box-sizing: border-box;
 }
 </style>
+
