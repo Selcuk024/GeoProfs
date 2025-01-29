@@ -8,7 +8,7 @@
         <img src="@/assets/profile-icon-white.png" alt="Profile Icon" class="profile-icon" />
         <button class="dropdown-content">
           <span @click="logout" class="logout-text">Logout</span>
-          
+
         </button>
       </div>
     </div>

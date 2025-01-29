@@ -30,35 +30,14 @@
       </button>
 
       <form v-if="showForm" @submit.prevent="addUser" class="user-form">
-        <input
-          v-model="newUsername"
-          type="text"
-          placeholder="Enter username"
-          class="input-field"
-        />
-        <input
-          v-model="email"
-          type="email"
-          placeholder="Enter email"
-          class="input-field"
-        />
+        <input v-model="newUsername" type="text" placeholder="Enter username" class="input-field" />
+        <input v-model="email" type="email" placeholder="Enter email" class="input-field" />
         <input v-model="Bsn" type="text" placeholder="Enter BSN" class="input-field" />
-        <input
-          v-model="Afdeling"
-          type="text"
-          placeholder="Enter afdeling"
-          class="input-field"
-        />
+        <input v-model="Afdeling" type="text" placeholder="Enter afdeling" class="input-field" />
         <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
         <div class="row2">
-          <input
-            v-model="generatedPassword"
-            type="password"
-            :readonly="true"
-            disabled
-            placeholder="Wachtwoord"
-            class="input-field width"
-          />
+          <input v-model="generatedPassword" type="password" :readonly="true" disabled placeholder="Wachtwoord"
+            class="input-field width" />
           <button type="button" @click="generatePassword" class="generate-button">
             Genereer Wachtwoord
           </button>
@@ -83,10 +62,7 @@
           </p>
         </div>
         <div class="right">
-          <button
-            class="add-user-button approve"
-            @click="updateVerlofStatus(verlof.id, 'Goedgekeurd')"
-          >
+          <button class="add-user-button approve" @click="updateVerlofStatus(verlof.id, 'Goedgekeurd')">
             Goedkeuren
           </button>
           <button class="add-user-button reject" @click="updateVerlofStatus(verlof.id, 'Afgewezen')">
@@ -164,10 +140,17 @@ export default {
     async fetchUsers() {
       try {
         const querySnapshot = await getDocs(collection(db, "users"));
-        this.users = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        this.users = querySnapshot.docs.map((doc) => {
+          let userData = doc.data();
+
+          // Convert Firestore Timestamp to a readable date format
+          if (userData.date && userData.date.seconds) {
+            const dateObj = new Date(userData.date.seconds * 1000);
+            userData.date = dateObj.toLocaleDateString("nl-NL"); // Format for Dutch locale (DD-MM-YYYY)
+          }
+
+          return { id: doc.id, ...userData };
+        });
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -230,7 +213,7 @@ export default {
           this.generatedPassword
         );
         const userId = userCredential.user.uid;
-        
+
         await setDoc(doc(db, 'users', userId), {
           username: this.newUsername,
           email: this.email,
@@ -478,4 +461,42 @@ export default {
     opacity: 0.9;
   }
 }
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .user-container {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+  }
+
+  .right {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .status{
+    width: 160px;
+  }
+  .icons-container {
+    width: 100%;
+    margin-left: 30px;
+    justify-content: flex-start;
+    padding: 10px 0;
+    gap: 10px;
+
+    .circle {
+      width: 60px;
+      height: 60px;
+
+      .users-img,
+      .leave-img {
+        width: 50%;
+      }
+    }
+  }
+} 
 </style>

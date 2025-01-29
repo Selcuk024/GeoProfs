@@ -55,13 +55,11 @@ export default {
   },
   methods: {
     async saveVerlof() {
-      console.log('saveVerlof called'); 
+      console.log('saveVerlof called');
       if (!this.startDate || !this.endDate || !this.reason) {
         alert('Vul alle velden in.');
         return;
-      } // else {
-      // alert('Incorrecte datum(s)')
-      // }
+      }
 
       const startDateObj = new Date(this.startDate);
       const endDateObj = new Date(this.endDate);
@@ -69,20 +67,30 @@ export default {
         alert('De einddatum mag niet eerder zijn dan de startdatum.');
         return;
       }
+
       try {
-        console.log('Data submitted:', {
+        const newVerlof = {
           type: this.verlofType,
           reason: this.reason,
           startDate: this.startDate,
           endDate: this.endDate,
-        });
+          status: "Verzonden", // Default status
+          timestamp: new Date() // Save timestamp for sorting later
+        };
+
+        // Save to Firestore
+        await addDoc(collection(db, 'verlofAanvragen'), newVerlof);
+
+        console.log('Data submitted:', newVerlof);
         alert('Verlof succesvol aangevraagd!');
-        this.$emit('close');
+
+        this.$emit('close'); // Close modal after success
       } catch (error) {
         console.error(error);
         alert('Er is iets fout gegaan bij het aanvragen van uw verlof. Probeer het later opnieuw.');
       }
-    },
+    }
+
   },
 }
 </script>
@@ -202,4 +210,3 @@ export default {
   }
 }
 </style>
-
