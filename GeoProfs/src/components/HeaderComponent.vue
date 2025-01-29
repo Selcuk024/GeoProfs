@@ -8,7 +8,7 @@
         <img src="@/assets/profile-icon-white.png" alt="Profile Icon" class="profile-icon" />
         <button class="dropdown-content">
           <span @click="logout" class="logout-text">Logout</span>
-          
+
         </button>
       </div>
     </div>
@@ -97,6 +97,46 @@ export default {
           font-weight: 400;
           color: #000;
           cursor: pointer;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .headerContainer {
+    flex-direction: row;
+
+    .aroundLogo {
+      height: auto;
+      width: 20%;
+
+      .logo {
+        width: 70%;
+      }
+    }
+
+    .header {
+      width: 100%;
+      padding: 8px;
+
+      .profile-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      .dropdown {
+        width: auto;
+        height: auto;
+
+        .dropdown-content {
+          width: 80%;
+          height: auto;
+        }
+
+        .logout-text {
+          text-align: center;
+
         }
       }
     }
