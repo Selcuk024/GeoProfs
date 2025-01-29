@@ -42,63 +42,69 @@ export default {
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .container {
   width: 100%;
   background-color: #f1f1f1;
-  height: 20%;
-  display: flex;
-  flex-direction: column;
+  padding: 24px;
 
   .username {
     font-size: 32px;
-    margin-left: 24px;
-    margin-top: 24px;
   }
 }
 
 .personal-data-container {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f1f1f1;
+}
+
+.personal-data-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+  gap: 20px;
+}
+
+.personal-data {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 80%;
-  gap: 50px;
-  background-color: #f1f1f1;
+  padding: 50px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 
-  .personal-data-col {
-    display: flex;
+  h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 24px;
+    color: #333;
+  }
+}
+
+@media (max-width: 768px) {
+  .personal-data-container {
     flex-direction: column;
     align-items: center;
-    width: 25%;
-    height: 100%;
-    gap: 50px;
-    background-color: #f1f1f1;
+  }
 
-    .personal-data {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 40%;
-      background-color: #ffffff;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
-      border-radius: 8px; 
-
-      h3 {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 8px;
-      }
-
-      p {
-        font-size: 24px;
-        color: #333;
-      }
-    }
+  .personal-data-col {
+    width: 100%;
+    max-width: 100%;
   }
 }
 </style>
