@@ -41,5 +41,21 @@ export default {
     }
   }
 }
+
+@media (max-width: 768px) {
+  .absence-card {
+    width: 100%;
+    padding: 15px;
+  }
+
+  h3 {
+    font-size: 1.3rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
 </style>
 

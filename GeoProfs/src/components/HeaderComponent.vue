@@ -136,9 +136,11 @@ export default {
 
         .logout-text {
           text-align: center;
+
         }
       }
     }
   }
 }
 </style>
+
