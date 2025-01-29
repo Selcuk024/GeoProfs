@@ -20,7 +20,11 @@
     </div>
     <div class="content">
       <div v-if="currentTab === 'Verlof'" class="allItems">
-        <div class="verlof-item" v-for="(item, index) in filteredVerlof('Verzonden')" :key="index">
+        <div
+          class="verlof-item"
+          v-for="(item, index) in filteredVerlof('Verzonden')"
+          :key="index"
+        >
           <div class="verlof-content">
             <p class="title">Reden: {{ item.reason }}</p>
             <p class="date">Van: {{ item.startDate }} Tot: {{ item.endDate }}</p>
@@ -50,7 +54,11 @@
       </div>
 
       <div v-if="currentTab === 'Afgekeurd'" class="allItems">
-        <div class="verlof-item" v-for="(item, index) in filteredVerlof('Afgewezen')" :key="index">
+        <div
+          class="verlof-item"
+          v-for="(item, index) in filteredVerlof('Afgewezen')"
+          :key="index"
+        >
           <div class="verlof-content">
             <p class="title">Reden: {{ item.reason }}</p>
             <p class="date">Van: {{ item.startDate }} Tot: {{ item.endDate }}</p>
@@ -66,58 +74,56 @@
 </template>
 
 <script>
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '@/firebase'
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebase";
 
-import VerlofModal from '../components/VerlofModal.vue'
+import VerlofModal from "../components/VerlofModal.vue";
 
 export default {
-  name: 'VerlofPage',
+  name: "VerlofPage",
   components: {
-    VerlofModal
+    VerlofModal,
   },
   data() {
     return {
-      tabs: ['Verlof', 'Goedgekeurd', 'Afgekeurd'],
-      currentTab: 'Verlof',
+      tabs: ["Verlof", "Goedgekeurd", "Afgekeurd"],
+      currentTab: "Verlof",
       showModal: false,
-      verlofList: []
-    }
+      verlofList: [],
+    };
   },
   created() {
-    this.fetchVerlofRequests()
+    this.fetchVerlofRequests();
   },
   methods: {
     async fetchVerlofRequests() {
       try {
-        const querySnapshot = await getDocs(collection(db, 'verlofAanvragen'))
+        const querySnapshot = await getDocs(collection(db, "verlofAanvragen"));
         const requests = querySnapshot.docs.map((doc) => {
           return {
             id: doc.id,
-            ...doc.data()
-          }
-        })
-        this.verlofList = requests
+            ...doc.data(),
+          };
+        });
+        this.verlofList = requests;
       } catch (error) {
-        console.error('Error fetching verlof requests:', error)
+        console.error("Error fetching verlof requests:", error);
       }
     },
     filteredVerlof(status) {
-      return this.verlofList.filter((item) => item.status === status)
-    }
-  }
-}
+      return this.verlofList.filter((item) => item.status === status);
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
-// Define variables for reusability
 $primary-color: #209fd2;
 $tab-active-bg: #f0f0f0;
 $tab-inactive-bg: #b7b7b7;
 $border-color: #ccc;
 $border-radius: 13px;
 
-// Mixin for flexbox centering
 @mixin flex-center($direction: row) {
   display: flex;
   justify-content: center;
@@ -125,7 +131,12 @@ $border-radius: 13px;
   flex-direction: $direction;
 }
 
-// Styling starts here
+@mixin respond($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
 .container {
   width: 100%;
   height: 85vh;
@@ -220,4 +231,24 @@ $border-radius: 13px;
     }
   }
 }
+
+@include respond(768px) {
+  .add {
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 24px;
+    right: 0px;
+    margin-right: 24px;
+  }
+  .container {
+    height: 100%;
+    position: relative;
+  }
+  .tab {
+   padding-left: 18px !important;
+    padding-right: 18px !important;
+    padding-bottom: 12px !important;
+    padding-top: 12px !important;  }
+}
+
 </style>
