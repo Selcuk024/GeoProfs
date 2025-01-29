@@ -10,13 +10,13 @@ describe('Admin Page User Info Modal Test', () => {
   })
 
   it('should open user information modal, wait for 4000ms, and close it', () => {
-    cy.get('.addUserButton').contains('Informatie').first().click()
+    cy.get('.add-user-button').contains('Informatie').first().click()
 
     cy.get('.modal').should('be.visible')
 
     cy.wait(4000)
 
-    cy.get('.closeButton').click()
+    cy.get('.close-button').click()
 
     cy.get('.modal').should('not.exist')
   })
