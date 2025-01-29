@@ -201,5 +201,23 @@ export default {
     }
   }
 }
+@media (max-width: 1422px) {
+  .modal-mask {
+    .modal-wrapper {
+      display: flex;
+      width: 50vw;
+      justify-content: center;
+    }
+  }
+}
+@media (max-width: 709px) {
+  .modal-mask {
+    .modal-wrapper {
+      display: flex;
+      width: 80vw;
+      justify-content: center;
+    }
+  }
+}
 </style>
 
