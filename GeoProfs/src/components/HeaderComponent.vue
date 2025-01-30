@@ -1,14 +1,28 @@
 <template>
   <div class="headerContainer">
-    <div class="aroundLogo">
+    <div class="aroundLogo" role="banner" aria-label="Geoprofs Logo">
       <img src="@/assets/logo-geo.jpeg" alt="Logo" class="logo" />
     </div>
-    <div class="header">
-      <div class="dropdown">
-        <img src="@/assets/profile-icon-white.png" alt="Profile Icon" class="profile-icon" />
-        <button class="dropdown-content">
-          <span @click="logout" class="logout-text">Logout</span>
 
+    <div class="header">
+      <div class="dropdown" role="menu" aria-haspopup="true" aria-expanded="false">
+        <img
+          src="@/assets/profile-icon-white.png"
+          alt="Profile Icon"
+          class="profile-icon"
+          role="button"
+          tabindex="0"
+          aria-label="Profile Menu"
+          @click="toggleDropdown"
+        />
+        <button
+          class="dropdown-content"
+          role="menuitem"
+          v-show="dropdownOpen"
+          aria-hidden="false"
+          aria-label="Logout button"
+        >
+          <span @click="logout" class="logout-text">Logout</span>
         </button>
       </div>
     </div>
@@ -136,11 +150,9 @@ export default {
 
         .logout-text {
           text-align: center;
-
         }
       }
     }
   }
 }
 </style>
-

@@ -1,88 +1,114 @@
 <template>
   <div class="login-page">
-    <div class="login-container">
+    <div
+      class="login-container"
+      role="form"
+      aria-labelledby="login-title"
+      aria-describedby="login-instructions"
+    >
       <div class="logo">
         <img src="@/assets/logo-geo.jpeg" alt="Geoprofs logo" />
       </div>
-      <h2>Geoprofs</h2>
-      <form @submit.prevent="login" class="login-form">
+      <h2 id="login-title">Geoprofs</h2>
+      <p id="login-instructions" class="sr-only">Please enter your email and password to log in.</p>
+
+      <form @submit.prevent="login" class="login-form" novalidate>
         <label for="email">Email</label>
-        <input type="text" v-model="email" id="email" placeholder="Email" required />
+        <input
+          type="text"
+          v-model="email"
+          id="email"
+          placeholder="Email"
+          required
+          aria-required="true"
+          aria-describedby="email-description"
+        />
+        <p id="email-description" class="sr-only">Enter your email address.</p>
 
         <label for="password">Password</label>
-        <input type="password" v-model="password" id="password" placeholder="Password" required />
+        <input
+          type="password"
+          v-model="password"
+          id="password"
+          placeholder="Password"
+          required
+          aria-required="true"
+          aria-describedby="password-description"
+        />
+        <p id="password-description" class="sr-only">Enter your password.</p>
 
-        <button type="submit" id="submit" class="submit-button">Submit</button>
+        <button type="submit" id="submit" class="submit-button" aria-label="Submit login form">
+          Submit
+        </button>
       </form>
 
-      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="error" role="alert">{{ errorMessage }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../firebase";
-import { collection, query, where, getDocs, deleteField, updateDoc  } from "firebase/firestore";
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth, db } from '../firebase'
+import { collection, query, where, getDocs, deleteField, updateDoc } from 'firebase/firestore'
 
 export default {
-  name: "LoginPage",
+  name: 'LoginPage',
   data() {
     return {
-      email: "",
-      password: "",
-      errorMessage: null,
-    };
+      email: '',
+      password: '',
+      errorMessage: null
+    }
   },
   methods: {
     async login() {
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password);
-        console.log("User logged in:", userCredential.user);
-        this.$emit("login-success", userCredential.user);
+        const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password)
+        console.log('User logged in:', userCredential.user)
+        this.$emit('login-success', userCredential.user)
       } catch (error) {
-        console.error(error);
-        this.errorMessage = error.message || "Login failed. Please try again.";
-        this.errorMessage ? this.loginWithDatabase(this.email, this.password) : console.log("no");
+        console.error(error)
+        this.errorMessage = error.message || 'Login failed. Please try again.'
+        this.errorMessage ? this.loginWithDatabase(this.email, this.password) : console.log('no')
       }
     },
 
-    async loginWithDatabase(username, password) { //dit is alleen voor de eerste keer
-  try {
-    const userQuery = query(collection(db, "users"), where("username", "==", username));
-    const querySnapshot = await getDocs(userQuery);
+    async loginWithDatabase(username, password) {
+      //dit is alleen voor de eerste keer
+      try {
+        const userQuery = query(collection(db, 'users'), where('username', '==', username))
+        const querySnapshot = await getDocs(userQuery)
 
-    if (querySnapshot.empty) {
-      console.error("No user found with this email");
-      return false;
+        if (querySnapshot.empty) {
+          console.error('No user found with this email')
+          return false
+        }
+
+        const userDoc = querySnapshot.docs[0]
+        const userData = userDoc.data()
+        const ref = userDoc.ref
+
+        if (userData.password === password) {
+          console.log(userData.password)
+          await updateDoc(ref, {
+            password: deleteField(),
+            madePassword: false
+          })
+          this.$emit('login-success', userData)
+          console.log('Login successful', userData)
+          return true
+        } else {
+          console.error('Incorrect password')
+          return false
+        }
+      } catch (error) {
+        console.error('Error during login', error)
+        return false
+      }
     }
-
-    const userDoc = querySnapshot.docs[0];
-    const userData = userDoc.data();
-    const ref = userDoc.ref;
-
-    if (userData.password === password) {
-      console.log(userData.password);
-      await updateDoc(ref, {
-        password: deleteField(),
-        madePassword: false,
-      });
-      this.$emit("login-success", userData);
-      console.log("Login successful", userData);
-      return true;
-    } else {
-      console.error("Incorrect password");
-      return false;
-    }
-  } catch (error) {
-    console.error("Error during login", error);
-    return false;
   }
 }
-
-  },
-};
-
 </script>
 
 <style scoped lang="scss">
