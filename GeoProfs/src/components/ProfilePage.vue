@@ -1,32 +1,33 @@
 <template>
   <div class="container">
-    <h1 class="username">Welkom Marco</h1>
+    <h1 class="username" aria-label="Welkom Marco">Welkom Marco</h1>
   </div>
-  <div class="personal-data-container">
+  <div class="personal-data-container" role="region" aria-labelledby="personal-data-heading">
+    <h2 id="personal-data-heading" class="sr-only">Persoonlijke gegevens</h2>
     <div class="personal-data-col">
-      <div class="personal-data">
-        <h3>Geoorloofd afwezig</h3>
-        <p>21 uur</p>
+      <div class="personal-data" role="group" aria-labelledby="afwezig-title">
+        <h3 id="afwezig-title">Geoorloofd afwezig</h3>
+        <p aria-live="polite">21 uur</p>
       </div>
-      <div class="personal-data">
-        <h3>Aantal aanvragen</h3>
-        <p>6</p>
+      <div class="personal-data" role="group" aria-labelledby="aanvragen-title">
+        <h3 id="aanvragen-title">Aantal aanvragen</h3>
+        <p aria-live="polite">6</p>
       </div>
     </div>
     <div class="personal-data-col">
-      <div class="personal-data">
-        <h3>Goedgekeurd</h3>
-        <p>3</p>
+      <div class="personal-data" role="group" aria-labelledby="goedgekeurd-title">
+        <h3 id="goedgekeurd-title">Goedgekeurd</h3>
+        <p aria-live="polite">3</p>
       </div>
-      <div class="personal-data">
-        <h3>Afgekeurd</h3>
-        <p>2</p>
+      <div class="personal-data" role="group" aria-labelledby="afgekeurd-title">
+        <h3 id="afgekeurd-title">Afgekeurd</h3>
+        <p aria-live="polite">2</p>
       </div>
     </div>
     <div class="personal-data-col">
-      <div class="personal-data">
-        <h3>Verzonden</h3>
-        <p>3</p>
+      <div class="personal-data" role="group" aria-labelledby="verzonden-title">
+        <h3 id="verzonden-title">Verzonden</h3>
+        <p aria-live="polite">3</p>
       </div>
     </div>
   </div>
@@ -39,6 +40,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 * {
   margin: 0;
   padding: 0;
