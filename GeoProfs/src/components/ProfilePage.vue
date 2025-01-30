@@ -15,6 +15,7 @@
         <p aria-live="polite">6</p>
       </article>
     </div>
+
     <div class="personal-data-col">
       <article class="personal-data" aria-labelledby="goedgekeurd-title">
         <h3 id="goedgekeurd-title">Goedgekeurd</h3>
@@ -25,6 +26,7 @@
         <p aria-live="polite">2</p>
       </article>
     </div>
+
     <div class="personal-data-col">
       <article class="personal-data" aria-labelledby="verzonden-title">
         <h3 id="verzonden-title">Verzonden</h3>
@@ -43,6 +45,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
 .sr-only {
   position: absolute;
   width: 1px;
@@ -58,9 +64,12 @@ export default {
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
-
 .container {
   width: 100%;
   background-color: #f1f1f1;
