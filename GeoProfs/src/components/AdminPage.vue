@@ -111,7 +111,7 @@ import {
   setDoc,
   Timestamp,
 } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, deleteUser as deleteAuthUser } from "firebase/auth";
 import { db, auth } from "../firebase";
 
 export default {
@@ -239,9 +239,19 @@ export default {
 
     async deleteUser(userId) {
       try {
+        // Delete from Firestore
         const userDoc = doc(db, "users", userId);
         await deleteDoc(userDoc);
 
+        // Find the corresponding auth user
+        const authUser = auth.currentUser;
+
+        if (authUser && authUser.uid === userId) {
+          // Delete user from Firebase Authentication
+          await deleteAuthUser(authUser);
+        }
+
+        // Refresh the users list
         await this.fetchUsers();
       } catch (error) {
         console.error("Error deleting user: ", error);
@@ -468,8 +478,9 @@ export default {
   }
 
   .user-container {
-    flex-direction: column;
-    align-items: flex-start;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
     padding: 15px;
   }
 
@@ -478,9 +489,11 @@ export default {
     display: flex;
     justify-content: space-between;
   }
-  .status{
+
+  .status {
     width: 160px;
   }
+
   .icons-container {
     width: 100%;
     margin-left: 30px;
@@ -498,5 +511,34 @@ export default {
       }
     }
   }
-} 
+
+  .add-user-button {
+    padding: 2px 8px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-top: 4px;
+  }
+
+  .add {
+    padding: 2px 8px;
+    height: 40px;
+    width: 180px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-top: 4px;
+  }
+
+  .vw {
+    background-color: red !important;
+    margin-left: 13px !important;
+  }
+}
 </style>
