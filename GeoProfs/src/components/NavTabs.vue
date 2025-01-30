@@ -1,19 +1,39 @@
 <template>
-  <div class="nav-tabs">
-    <button :class="{ active: currentTab === 'verlof' }" @click="$emit('change-tab', 'verlof')">
+  <div class="nav-tabs" role="tablist" aria-label="Navigatie tabs">
+    <button
+      :class="{ active: currentTab === 'verlof' }"
+      @click="$emit('change-tab', 'verlof')"
+      role="tab"
+      :aria-selected="currentTab === 'verlof'"
+      aria-controls="verlof-panel"
+    >
       Verlof
     </button>
-    <button :class="{ active: currentTab === 'afwezig' }" @click="$emit('change-tab', 'afwezig')">
+    <button
+      :class="{ active: currentTab === 'afwezig' }"
+      @click="$emit('change-tab', 'afwezig')"
+      role="tab"
+      :aria-selected="currentTab === 'afwezig'"
+      aria-controls="afwezig-panel"
+    >
       Afwezig
     </button>
-    <button :class="{ active: currentTab === 'profiel' }" @click="$emit('change-tab', 'profiel')">
+    <button
+      :class="{ active: currentTab === 'profiel' }"
+      @click="$emit('change-tab', 'profiel')"
+      role="tab"
+      :aria-selected="currentTab === 'profiel'"
+      aria-controls="profiel-panel"
+    >
       Profiel
     </button>
-    <!-- Toon de admin-tab alleen als de gebruiker admin is -->
     <button
       v-if="isAdmin"
       :class="{ active: currentTab === 'admin' }"
       @click="$emit('change-tab', 'admin')"
+      role="tab"
+      :aria-selected="currentTab === 'admin'"
+      aria-controls="admin-panel"
     >
       Admin
     </button>
@@ -28,24 +48,22 @@ export default {
   name: "NavTabs",
   props: {
     currentTab: String,
-    userId: String, // Ontvang de userId als prop
+    userId: String,
   },
   data() {
     return {
-      isAdmin: false, // Admin-rechten standaard uitgeschakeld
+      isAdmin: false,
     };
   },
   async created() {
     if (this.userId) {
       try {
-        // Haal de Firestore-document van de gebruiker op
         const userDocRef = doc(db, "users", this.userId);
         const userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
           const userData = userDoc.data();
-          console.log("Gebruikersgegevens:", userData); // Debug-log
-          // Controleer of de gebruiker een admin-rol heeft
+          console.log("Gebruikersgegevens:", userData);
           if (["Office Manager", "Manager"].includes(userData.positie)) {
             this.isAdmin = true;
           }
@@ -92,4 +110,3 @@ export default {
   }
 }
 </style>
-
