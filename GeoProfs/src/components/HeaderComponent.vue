@@ -1,38 +1,46 @@
 <template>
-  <div class="headerContainer">
-    <div class="aroundLogo" role="banner" aria-label="Geoprofs Logo">
-      <img src="@/assets/logo-geo.jpeg" alt="Logo" class="logo" />
-    </div>
+  <header class="headerContainer">
+    <section class="aroundLogo">
+      <img src="@/assets/logo-geo.jpeg" alt="Geoprofs Logo" class="logo" />
+    </section>
 
-    <div class="header">
-      <div class="dropdown" role="menu" aria-haspopup="true" aria-expanded="false">
-        <img
-          src="@/assets/profile-icon-white.png"
-          alt="Profile Icon"
-          class="profile-icon"
-          role="button"
-          tabindex="0"
-          aria-label="Profile Menu"
-          @click="toggleDropdown"
-        />
-        <button
-          class="dropdown-content"
-          role="menuitem"
-          v-show="dropdownOpen"
-          aria-hidden="false"
-          aria-label="Logout button"
-        >
-          <span @click="logout" class="logout-text">Logout</span>
-        </button>
+    <nav class="header">
+      <div class="dropdown">
+        <div class="dropdown">
+          <img
+            src="@/assets/profile-icon-white.png"
+            alt="Profile Icon"
+            class="profile-icon"
+            role="button"
+            tabindex="0"
+            aria-label="Profile Menu"
+            @click="toggleDropdown"
+          />
+          <button
+            class="dropdown-content"
+            role="menuitem"
+            v-show="dropdownOpen"
+            aria-hidden="false"
+            aria-label="Logout button"
+          >
+            <span @click="logout" class="logout-text">Logout</span>
+          </button>
+        </div>
       </div>
-    </div>
-  </div>
+    </nav>
+  </header>
 </template>
 
 <script>
 import { signOut } from 'firebase/auth'
 import { auth } from '../firebase'
+
 export default {
+  data() {
+    return {
+      dropdownOpen: false
+    }
+  },
   methods: {
     async logout() {
       try {
@@ -42,6 +50,9 @@ export default {
       } catch (error) {
         console.error('Error during logout:', error)
       }
+    },
+    toggleDropdown() {
+      this.dropdownOpen = !this.dropdownOpen
     }
   }
 }
@@ -98,7 +109,6 @@ export default {
       .dropdown-content {
         display: none;
         position: absolute;
-        background-color: #f9f9f9;
         width: 6vw;
         height: 5vh;
         border: none;

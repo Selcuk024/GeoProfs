@@ -1,126 +1,128 @@
 <template>
-  <div class="container">
-    <h1 class="title" role="heading" aria-level="1">Admin Panel</h1>
+  <main class="container">
+    <header>
+      <h1 class="title">Admin Panel</h1>
+    </header>
 
-    <div class="icons-container" role="navigation" aria-label="Quick access icons">
-      <div class="circle" role="button" tabindex="0" aria-label="Manage Users">
+    <nav class="icons-container" aria-label="Quick access icons">
+      <div class="circle" aria-label="Manage Users" role="button" tabindex="0">
         <img src="@/assets/users.png" alt="Users" class="users-img" />
       </div>
-      <div class="circle" role="button" tabindex="0" aria-label="Manage Leave Requests">
-        <img src="@/assets/leave.jpg" alt="Leave" class="leave-img" />
+      <div class="circle" aria-label="Manage Leave Requests" role="button" tabindex="0">
+        <img src="@/assets/leave.jpg" alt="Leave Requests" class="leave-img" />
       </div>
-    </div>
+    </nav>
 
-    <h1 class="title" role="heading" aria-level="2">Users</h1>
-    <div class="big-container" role="region" aria-labelledby="users-section">
-      <div
-        class="user-container"
-        v-for="user in users"
-        :key="user.id"
-        role="article"
-        aria-labelledby="'user-' + user.id"
-      >
-        <div class="left">
-          <p class="user" :id="'user-' + user.id">{{ user.username }}</p>
-          <p class="user">Aangemaakt: {{ user.date }}</p>
-        </div>
-        <div class="right">
-          <button
-            class="add-user-button"
-            @click="showUserInfo(user)"
-            aria-label="View information for {{ user.username }}"
-          >
-            Informatie
-          </button>
-          <button
-            class="add-user-button vw"
-            @click="deleteUser(user.id)"
-            aria-label="Delete user {{ user.username }}"
-          >
-            Verwijder Gebruiker
-          </button>
-        </div>
+    <section aria-labelledby="users-section">
+      <h2 class="title">Users</h2>
+      <div class="big-container">
+        <article
+          class="user-container"
+          v-for="user in users"
+          :key="user.id"
+          aria-labelledby="'user-' + user.id"
+        >
+          <div class="left">
+            <p class="user" :id="'user-' + user.id">{{ user.username }}</p>
+            <p class="user">Aangemaakt: {{ user.date }}</p>
+          </div>
+          <div class="right">
+            <button
+              class="add-user-button"
+              @click="showUserInfo(user)"
+              aria-label="View information for {{ user.username }}"
+            >
+              Informatie
+            </button>
+            <button
+              class="add-user-button vw"
+              @click="deleteUser(user.id)"
+              aria-label="Delete user {{ user.username }}"
+            >
+              Verwijder Gebruiker
+            </button>
+          </div>
+        </article>
+
+        <button
+          class="add-user-button"
+          @click="showForm = !showForm"
+          :aria-expanded="showForm"
+          aria-controls="create-user-form"
+        >
+          {{ showForm ? "Annuleer" : "Gebruiker Aanmaken" }}
+        </button>
+
+        <form
+          v-if="showForm"
+          @submit.prevent="addUser"
+          id="create-user-form"
+          class="user-form"
+        >
+          <h2 id="form-title" class="sr-only">Create New User</h2>
+          <input v-model="newUsername" type="text" placeholder="Enter username" class="input-field" required />
+          <input v-model="email" type="email" placeholder="Enter email" class="input-field" required />
+          <input v-model="Bsn" type="text" placeholder="Enter BSN" class="input-field" required />
+          <input v-model="Afdeling" type="text" placeholder="Enter afdeling" class="input-field" required />
+          <div v-if="errorMessage" class="error-message" role="alert">{{ errorMessage }}</div>
+          <div class="row2">
+            <input
+              v-model="generatedPassword"
+              type="password"
+              :readonly="true"
+              disabled
+              placeholder="Wachtwoord"
+              class="input-field width"
+            />
+            <button type="button" @click="generatePassword" class="generate-button" aria-label="Generate Password">
+              Genereer Wachtwoord
+            </button>
+          </div>
+          <select v-model="Positie" class="input-field" aria-label="Select Position">
+            <option value="Werknemer">Werknemer</option>
+            <option value="Manager">Manager</option>
+            <option value="Office Manager">Office Manager</option>
+          </select>
+          <button type="submit" class="submit-button">User Aanmaken</button>
+        </form>
       </div>
+    </section>
 
-      <button
-        class="add-user-button"
-        @click="showForm = !showForm"
-        :aria-expanded="showForm"
-        aria-controls="create-user-form"
-      >
-        {{ showForm ? "Annuleer" : "Gebruiker Aanmaken" }}
-      </button>
-
-      <form
-        v-if="showForm"
-        @submit.prevent="addUser"
-        id="create-user-form"
-        class="user-form"
-        role="form"
-        aria-labelledby="form-title"
-      >
-        <h2 id="form-title" class="sr-only">Create New User</h2>
-        <input v-model="newUsername" type="text" placeholder="Enter username" class="input-field" required />
-        <input v-model="email" type="email" placeholder="Enter email" class="input-field" required />
-        <input v-model="Bsn" type="text" placeholder="Enter BSN" class="input-field" required />
-        <input v-model="Afdeling" type="text" placeholder="Enter afdeling" class="input-field" required />
-        <div v-if="errorMessage" class="error-message" role="alert">{{ errorMessage }}</div>
-        <div class="row2">
-          <input
-            v-model="generatedPassword"
-            type="password"
-            :readonly="true"
-            disabled
-            placeholder="Wachtwoord"
-            class="input-field width"
-          />
-          <button type="button" @click="generatePassword" class="generate-button" aria-label="Generate Password">
-            Genereer Wachtwoord
-          </button>
-        </div>
-        <select v-model="Positie" class="input-field" aria-label="Select Position">
-          <option value="Werknemer">Werknemer</option>
-          <option value="Manager">Manager</option>
-          <option value="Office Manager">Office Manager</option>
-        </select>
-        <button type="submit" class="submit-button">User Aanmaken</button>
-      </form>
-    </div>
-
-    <h1 class="title" role="heading" aria-level="2">Verlofaanvragen</h1>
-    <div class="big-container" role="region" aria-labelledby="leave-requests-section">
-      <div
-        class="user-container"
-        v-for="verlof in verlofList"
-        :key="verlof.id"
-        role="article"
-        aria-labelledby="'leave-' + verlof.id"
-      >
-        <div class="left">
-          <p class="verlof-reden" :id="'leave-' + verlof.id">Reden: {{ verlof.reason }}</p>
-          <p class="verlof-datum">Van: {{ verlof.startDate }} Tot: {{ verlof.endDate }}</p>
-          <p class="status">
-            Status: <span :class="verlof.status">{{ verlof.status }}</span>
-          </p>
-        </div>
-        <div class="right">
-          <button
-            class="add-user-button approve"
-            @click="updateVerlofStatus(verlof.id, 'Goedgekeurd')"
-            aria-label="Approve leave request for {{ verlof.reason }}"
-          >
-            Goedkeuren
-          </button>
-          <button
-            class="add-user-button reject"
-            @click="updateVerlofStatus(verlof.id, 'Afgewezen')"
-            aria-label="Reject leave request for {{ verlof.reason }}"
-          >
-            Afkeuren
-          </button>
-        </div>
+    <section aria-labelledby="leave-requests-section">
+      <h2 id="leave-requests-section" class="title">Verlofaanvragen</h2>
+      <div class="big-container">
+        <article
+          class="user-container"
+          v-for="verlof in verlofList"
+          :key="verlof.id"
+          aria-labelledby="'leave-' + verlof.id"
+        >
+          <div class="left">
+            <p class="verlof-reden" :id="'leave-' + verlof.id">Reden: {{ verlof.reason }}</p>
+            <p class="verlof-datum">Van: {{ verlof.startDate }} Tot: {{ verlof.endDate }}</p>
+            <p class="status">
+              Status: <span :class="verlof.status">{{ verlof.status }}</span>
+            </p>
+          </div>
+          <div class="right">
+            <button
+              class="add-user-button approve"
+              @click="updateVerlofStatus(verlof.id, 'Goedgekeurd')"
+              aria-label="Approve leave request for {{ verlof.reason }}"
+            >
+              Goedkeuren
+            </button>
+            <button
+              class="add-user-button reject"
+              @click="updateVerlofStatus(verlof.id, 'Afgewezen')"
+              aria-label="Reject leave request for {{ verlof.reason }}"
+            >
+              Afkeuren
+            </button>
+          </div>
+        </article>
       </div>
-    </div>
+    </section>
 
     <div v-if="selectedUser" class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
       <div class="modal-content">
@@ -150,8 +152,9 @@
         </button>
       </div>
     </div>
-  </div>
+  </main>
 </template>
+
 
 <script>
 import {
