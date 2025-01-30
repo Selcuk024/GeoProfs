@@ -1,41 +1,42 @@
 <template>
-  <div class="container">
+  <section class="container">
     <h1 class="username" aria-label="Welkom Marco">Welkom Marco</h1>
-  </div>
+  </section>
 
-  <div class="personal-data-container" role="region" aria-labelledby="data-summary-heading">
-    <h2 id="data-summary-heading" class="visually-hidden">Overzicht van persoonlijke gegevens</h2>
-
+  <section class="personal-data-container" aria-labelledby="personal-data-heading">
+    <h2 id="personal-data-heading" class="sr-only">Persoonlijke gegevens</h2>
     <div class="personal-data-col">
-      <div class="personal-data" role="article" aria-labelledby="absent-heading">
-        <h3 id="absent-heading">Geoorloofd afwezig</h3>
-        <p aria-label="Totaal geoorloofde afwezigheid: 21 uur">21 uur</p>
-      </div>
-      <div class="personal-data" role="article" aria-labelledby="requests-heading">
-        <h3 id="requests-heading">Aantal aanvragen</h3>
-        <p aria-label="Aantal verlofaanvragen: 6">6</p>
-      </div>
+      <article class="personal-data" aria-labelledby="afwezig-title">
+        <h3 id="afwezig-title">Geoorloofd afwezig</h3>
+        <p aria-live="polite">21 uur</p>
+      </article>
+      <article class="personal-data" aria-labelledby="aanvragen-title">
+        <h3 id="aanvragen-title">Aantal aanvragen</h3>
+        <p aria-live="polite">6</p>
+      </article>
     </div>
 
     <div class="personal-data-col">
-      <div class="personal-data" role="article" aria-labelledby="approved-heading">
-        <h3 id="approved-heading">Goedgekeurd</h3>
-        <p aria-label="Aantal goedgekeurde aanvragen: 3">3</p>
-      </div>
-      <div class="personal-data" role="article" aria-labelledby="rejected-heading">
-        <h3 id="rejected-heading">Afgekeurd</h3>
-        <p aria-label="Aantal afgekeurde aanvragen: 2">2</p>
-      </div>
+      <article class="personal-data" aria-labelledby="goedgekeurd-title">
+        <h3 id="goedgekeurd-title">Goedgekeurd</h3>
+        <p aria-live="polite">3</p>
+      </article>
+      <article class="personal-data" aria-labelledby="afgekeurd-title">
+        <h3 id="afgekeurd-title">Afgekeurd</h3>
+        <p aria-live="polite">2</p>
+      </article>
     </div>
 
     <div class="personal-data-col">
-      <div class="personal-data" role="article" aria-labelledby="sent-heading">
-        <h3 id="sent-heading">Verzonden</h3>
-        <p aria-label="Aantal verzonden aanvragen: 3">3</p>
-      </div>
+      <article class="personal-data" aria-labelledby="verzonden-title">
+        <h3 id="verzonden-title">Verzonden</h3>
+        <p aria-live="polite">3</p>
+      </article>
     </div>
-  </div>
+  </section>
 </template>
+
+
 
 <script>
 export default {
@@ -48,6 +49,20 @@ export default {
   position: absolute;
   width: 1px;
   height: 1px;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+* {
+  margin: 0;
   padding: 0;
   margin: -1px;
   overflow: hidden;
