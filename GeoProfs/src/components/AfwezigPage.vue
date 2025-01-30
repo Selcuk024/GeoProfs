@@ -1,10 +1,12 @@
 <template>
-  <div class="afwezig-page">
-    <div class="absence-card" role="region" aria-labelledby="absence-title" aria-describedby="absence-desc">
-      <h3 id="absence-title">Geoorloofd afwezig</h3>
+  <main class="afwezig-page">
+    <section class="absence-card" role="region" aria-labelledby="absence-title" aria-describedby="absence-desc">
+      <header>
+        <h3 id="absence-title">Geoorloofd afwezig</h3>
+      </header>
       <p id="absence-desc">0 uur</p>
-    </div>
-  </div>
+    </section>
+  </main>
 </template>
 
 <script>
@@ -29,8 +31,11 @@ export default {
     color: #f5f5f5;
     text-align: center;
 
-    h3 {
+    header {
       margin-bottom: 10px;
+    }
+
+    h3 {
       font-size: 1.2rem;
       font-weight: bold;
     }

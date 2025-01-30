@@ -3,7 +3,7 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <div class="modal-header">
+          <header class="modal-header">
             <h1 id="verlofaanvraag-title" class="verlofaanvraag-header">Verlofaanvraag</h1>
             <img 
               class="modal-close-button" 
@@ -11,49 +11,52 @@
               @click="$emit('close')" 
               alt="Sluiten" 
               aria-label="Sluit de verlofaanvraag"/>
-          </div>
-          <div class="modal-body">
-            <h1 class="verlof-type-header">Verlof Type</h1>
-            <div class="row">
-              <input 
-                class="checkbox" 
-                type="radio" 
-                v-model="verlofType" 
-                value="Ziek" 
-                id="verlof-ziek"
-                aria-labelledby="verlof-ziek-label" />
-              <label id="verlof-ziek-label" class="verlofaanvraag-label" for="verlof-ziek">Ziek</label>
-            </div>
-            <div class="row">
-              <input 
-                class="checkbox" 
-                type="radio" 
-                v-model="verlofType" 
-                value="Persoonlijk" 
-                id="verlof-persoonlijk"
-                aria-labelledby="verlof-persoonlijk-label" />
-              <label id="verlof-persoonlijk-label" class="verlofaanvraag-label" for="verlof-persoonlijk">Persoonlijk</label>
-            </div>
-            <div class="row">
-              <input 
-                class="checkbox" 
-                type="radio" 
-                v-model="verlofType" 
-                value="Vakantie" 
-                id="verlof-vakantie"
-                aria-labelledby="verlof-vakantie-label" />
-              <label id="verlof-vakantie-label" class="verlofaanvraag-label" for="verlof-vakantie">Vakantie</label>
-            </div>
-            <div class="row">
-              <input 
-                class="checkbox" 
-                type="radio" 
-                v-model="verlofType" 
-                value="Overige" 
-                id="verlof-overige"
-                aria-labelledby="verlof-overige-label" />
-              <label id="verlof-overige-label" class="verlofaanvraag-label" for="verlof-overige">Overige</label>
-            </div>
+          </header>
+          <form class="modal-body" @submit.prevent="saveVerlof">
+            <h2 class="verlof-type-header">Verlof Type</h2>
+            <fieldset>
+              <legend class="sr-only">Kies een verloftype</legend>
+              <div class="row">
+                <input 
+                  class="checkbox" 
+                  type="radio" 
+                  v-model="verlofType" 
+                  value="Ziek" 
+                  id="verlof-ziek"
+                  aria-labelledby="verlof-ziek-label" />
+                <label id="verlof-ziek-label" class="verlofaanvraag-label" for="verlof-ziek">Ziek</label>
+              </div>
+              <div class="row">
+                <input 
+                  class="checkbox" 
+                  type="radio" 
+                  v-model="verlofType" 
+                  value="Persoonlijk" 
+                  id="verlof-persoonlijk"
+                  aria-labelledby="verlof-persoonlijk-label" />
+                <label id="verlof-persoonlijk-label" class="verlofaanvraag-label" for="verlof-persoonlijk">Persoonlijk</label>
+              </div>
+              <div class="row">
+                <input 
+                  class="checkbox" 
+                  type="radio" 
+                  v-model="verlofType" 
+                  value="Vakantie" 
+                  id="verlof-vakantie"
+                  aria-labelledby="verlof-vakantie-label" />
+                <label id="verlof-vakantie-label" class="verlofaanvraag-label" for="verlof-vakantie">Vakantie</label>
+              </div>
+              <div class="row">
+                <input 
+                  class="checkbox" 
+                  type="radio" 
+                  v-model="verlofType" 
+                  value="Overige" 
+                  id="verlof-overige"
+                  aria-labelledby="verlof-overige-label" />
+                <label id="verlof-overige-label" class="verlofaanvraag-label" for="verlof-overige">Overige</label>
+              </div>
+            </fieldset>
             <textarea 
               class="verlofaanvraag-input-field" 
               v-model="reason" 
@@ -74,20 +77,21 @@
                 aria-required="true" 
                 aria-label="Einddatum" />
             </div>
-          </div>
-          <div class="modal-footer">
-            <button 
-              class="modal-default-button" 
-              @click="saveVerlof" 
-              aria-label="Verstuur verlofaanvraag">
-              Versturen
-            </button>
-          </div>
+            <footer class="modal-footer">
+              <button 
+                class="modal-default-button" 
+                type="submit" 
+                aria-label="Verstuur verlofaanvraag">
+                Versturen
+              </button>
+            </footer>
+          </form>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import { collection, addDoc } from 'firebase/firestore'
