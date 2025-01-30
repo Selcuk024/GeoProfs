@@ -2,7 +2,7 @@
   <div class="home-page">
     <HeaderComponent />
     <div class="content">
-      <NavTabs :currentTab="currentTab" :userId="userId" @change-tab="currentTab = $event" />
+      <NavTabs class="comp" :currentTab="currentTab" :userId="userId" @change-tab="currentTab = $event" />
       <div class="main-content">
         <component :is="currentComponent" />
       </div>
@@ -77,7 +77,6 @@ button {
     background-color: darkred;
   }
 }
-
 .content {
   display: flex;
   flex: 1;
@@ -87,6 +86,19 @@ button {
     flex: 1;
     overflow-y: auto;
     background-color: #f5f5f5;
+  }
+}
+@media (max-width: 768px) {
+  .nav-tabs{
+    display: flex;
+    flex-direction: row;
+    bottom: 0;
+    width: 100%;
+    height: unset;
+    padding: 20px
+  }
+  .content{
+    flex-direction: column-reverse;
   }
 }
 </style>
