@@ -1,8 +1,8 @@
 <template>
   <div class="afwezig-page">
-    <div class="absence-card">
-      <h3>Geoorloofd afwezig</h3>
-      <p>0 uur</p>
+    <div class="absence-card" role="region" aria-labelledby="absence-title" aria-describedby="absence-desc">
+      <h3 id="absence-title">Geoorloofd afwezig</h3>
+      <p id="absence-desc">0 uur</p>
     </div>
   </div>
 </template>
@@ -56,6 +56,4 @@ export default {
     font-size: 1rem;
   }
 }
-
 </style>
-
