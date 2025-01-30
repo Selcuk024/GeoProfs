@@ -1,25 +1,38 @@
 <template>
-  <div class="container">
-    <h1 class="username">Welkom Marco</h1>
-    <div class="miniContainer">
-      <div class="tabs">
+  <main class="container">
+    <h1 class="username" aria-label="Welkomscherm voor gebruiker Marco">Welkom Marco</h1>
+    <div class="mini-container">
+      <nav class="tabs" aria-label="Navigatie voor verlofstatussen">
         <button
           v-for="(tab, index) in tabs"
           :key="index"
           :class="['tab', { active: currentTab === tab }]"
           @click="currentTab = tab"
+          :aria-selected="currentTab === tab"
+          role="tab"
         >
           {{ tab }}
         </button>
 
         <div id="app">
-          <button class="add" @click="showModal = true">+</button>
+          <button
+            class="add"
+            @click="showModal = true"
+            aria-label="Voeg nieuw verlof toe"
+          >
+            +
+          </button>
           <VerlofModal v-if="showModal" @close="showModal = false"> </VerlofModal>
         </div>
-      </div>
+      </nav>
     </div>
-    <div class="content">
-      <div v-if="currentTab === 'Verlof'" class="allItems">
+
+    <section class="content">
+      <article
+        v-if="currentTab === 'Verlof'"
+        class="allItems"
+        aria-label="Verlof verzoeken"
+      >
         <div
           class="verlof-item"
           v-for="(item, index) in filteredVerlof('Verzonden')"
@@ -34,9 +47,13 @@
             <p class="type">Type: {{ item.type }}</p>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div v-if="currentTab === 'Goedgekeurd'" class="allItems">
+      <article
+        v-if="currentTab === 'Goedgekeurd'"
+        class="allItems"
+        aria-label="Goedgekeurde verzoeken"
+      >
         <div
           class="verlof-item"
           v-for="(item, index) in filteredVerlof('Goedgekeurd')"
@@ -51,9 +68,13 @@
             <p class="type">Type: {{ item.type }}</p>
           </div>
         </div>
-      </div>
+      </article>
 
-      <div v-if="currentTab === 'Afgekeurd'" class="allItems">
+      <article
+        v-if="currentTab === 'Afgekeurd'"
+        class="allItems"
+        aria-label="Afgekeurde verzoeken"
+      >
         <div
           class="verlof-item"
           v-for="(item, index) in filteredVerlof('Afgewezen')"
@@ -68,9 +89,9 @@
             <p class="type">Type: {{ item.type }}</p>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </article>
+    </section>
+  </main>
 </template>
 
 <script>
@@ -148,7 +169,7 @@ $border-radius: 13px;
   }
 }
 
-.miniContainer {
+.mini-container {
   width: 100%;
   @include flex-center(column);
   margin-top: 24px;
@@ -245,10 +266,10 @@ $border-radius: 13px;
     position: relative;
   }
   .tab {
-   padding-left: 18px !important;
+    padding-left: 18px !important;
     padding-right: 18px !important;
     padding-bottom: 12px !important;
-    padding-top: 12px !important;  }
+    padding-top: 12px !important;
+  }
 }
-
 </style>
