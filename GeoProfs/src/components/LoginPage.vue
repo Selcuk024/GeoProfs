@@ -1,19 +1,11 @@
 <template>
-  <div class="login-page">
-    <div
-      class="login-container"
-      role="form"
-      aria-labelledby="login-title"
-      aria-describedby="login-instructions"
-    >
+  <main class="login-page">
+    <section class="login-container" aria-labelledby="login-title">
       <div class="logo">
         <img src="@/assets/logo-geo.jpeg" alt="Geoprofs logo" />
       </div>
-      <h2 id="login-title">Geoprofs</h2>
-      <p id="login-instructions" class="sr-only">Please enter your email and password to log in.</p>
-
+      <h1 id="login-title">Geoprofs</h1>
       <form @submit.prevent="login" class="login-form" novalidate>
-        <label for="email">Email</label>
         <input
           type="text"
           v-model="email"
@@ -23,9 +15,7 @@
           aria-required="true"
           aria-describedby="email-description"
         />
-        <p id="email-description" class="sr-only">Enter your email address.</p>
 
-        <label for="password">Password</label>
         <input
           type="password"
           v-model="password"
@@ -35,16 +25,14 @@
           aria-required="true"
           aria-describedby="password-description"
         />
-        <p id="password-description" class="sr-only">Enter your password.</p>
-
         <button type="submit" id="submit" class="submit-button" aria-label="Submit login form">
           Submit
         </button>
       </form>
 
-      <p v-if="errorMessage" class="error" role="alert">{{ errorMessage }}</p>
-    </div>
-  </div>
+      <p v-if="errorMessage" role="alert" class="error">{{ errorMessage }}</p>
+    </section>
+  </main>
 </template>
 
 <script>
