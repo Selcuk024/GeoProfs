@@ -128,17 +128,16 @@ export default {
           reason: this.reason,
           startDate: this.startDate,
           endDate: this.endDate,
-          status: "Verzonden", // Default status
-          timestamp: new Date() // Save timestamp for sorting later
+          status: "Verzonden", 
+          timestamp: new Date() 
         };
 
-        // Save to Firestore
         await addDoc(collection(db, 'verlofAanvragen'), newVerlof);
 
         console.log('Data submitted:', newVerlof);
         alert('Verlof succesvol aangevraagd!');
 
-        this.$emit('close'); // Close modal after success
+        this.$emit('close'); 
       } catch (error) {
         console.error(error);
         alert('Er is iets fout gegaan bij het aanvragen van uw verlof. Probeer het later opnieuw.');
@@ -150,6 +149,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+html, body, *{
+  border: none;
+}
 .modal-mask {
   position: fixed;
   z-index: 9998;
