@@ -1,9 +1,13 @@
 <template>
+  <!-- container voor de afwezig pagina -->
   <main class="afwezig-page">
+    <!-- kaartje voor geoorloofd afwezig met role region -->
     <section class="absence-card" role="region" aria-labelledby="absence-title" aria-describedby="absence-desc">
       <header>
+        <!-- titel voor geoorloofd afwezig -->
         <h3 id="absence-title">Geoorloofd afwezig</h3>
       </header>
+      <!-- aantal uren dat afwezig is -->
       <p id="absence-desc">0 uur</p>
     </section>
   </main>
@@ -11,6 +15,7 @@
 
 <script>
 export default {
+  // naam van de component is AfwezigPage
   name: 'AfwezigPage'
 }
 </script>

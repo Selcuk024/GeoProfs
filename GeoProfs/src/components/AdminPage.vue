@@ -1,9 +1,11 @@
 <template>
   <main class="container">
+    <!-- header sectie met titel -->
     <header>
       <h1 class="title">Admin Panel</h1>
     </header>
 
+    <!-- navigatie met icons -->
     <nav class="icons-container" aria-label="Quick access icons">
       <div class="circle" aria-label="Manage Users" role="button" tabindex="0">
         <img src="@/assets/users.png" alt="Users" class="users-img" />
@@ -13,9 +15,11 @@
       </div>
     </nav>
 
+    <!-- sectie voor het beheren van gebruikers -->
     <section aria-labelledby="users-section">
       <h2 class="title">Users</h2>
       <div class="big-container">
+        <!-- loop door de lijst van gebruikers en toon hun gegevens -->
         <article
           class="user-container"
           v-for="user in users"
@@ -27,6 +31,7 @@
             <p class="user">Aangemaakt: {{ user.date }}</p>
           </div>
           <div class="right">
+            <!-- knop om gebruikersinformatie te bekijken -->
             <button
               class="add-user-button"
               @click="showUserInfo(user)"
@@ -34,6 +39,7 @@
             >
               Informatie
             </button>
+            <!-- knop om een gebruiker te verwijderen -->
             <button
               class="add-user-button vw"
               @click="deleteUser(user.id)"
@@ -44,6 +50,7 @@
           </div>
         </article>
 
+        <!-- knop om een formulier voor het aanmaken van gebruikers te tonen -->
         <button
           class="add-user-button"
           @click="showForm = !showForm"
@@ -53,6 +60,7 @@
           {{ showForm ? "Annuleer" : "Gebruiker Aanmaken" }}
         </button>
 
+        <!-- formulier voor het aanmaken van een nieuwe gebruiker -->
         <form
           v-if="showForm"
           @submit.prevent="addUser"
@@ -66,6 +74,7 @@
           <input v-model="Afdeling" type="text" placeholder="Enter afdeling" class="input-field" required />
           <div v-if="errorMessage" class="error-message" role="alert">{{ errorMessage }}</div>
           <div class="row2">
+            <!-- genereer wachtwoord veld -->
             <input
               v-model="generatedPassword"
               type="password"
@@ -78,6 +87,7 @@
               Genereer Wachtwoord
             </button>
           </div>
+          <!-- dropdown voor positie selectie -->
           <select v-model="Positie" class="input-field" aria-label="Select Position">
             <option value="Werknemer">Werknemer</option>
             <option value="Manager">Manager</option>
@@ -88,9 +98,11 @@
       </div>
     </section>
 
+    <!-- sectie voor het beheren van verlofaanvragen -->
     <section aria-labelledby="leave-requests-section">
       <h2 id="leave-requests-section" class="title">Verlofaanvragen</h2>
       <div class="big-container">
+        <!-- loop door de verlofaanvragen en toon details -->
         <article
           class="user-container"
           v-for="verlof in verlofList"
@@ -105,6 +117,7 @@
             </p>
           </div>
           <div class="right">
+            <!-- knop om een verlofaanvraag goed te keuren -->
             <button
               class="add-user-button approve"
               @click="updateVerlofStatus(verlof.id, 'Goedgekeurd')"
@@ -112,6 +125,7 @@
             >
               Goedkeuren
             </button>
+            <!-- knop om een verlofaanvraag af te keuren -->
             <button
               class="add-user-button reject"
               @click="updateVerlofStatus(verlof.id, 'Afgewezen')"
@@ -124,29 +138,15 @@
       </div>
     </section>
 
+    <!-- modal voor gebruikersinformatie -->
     <div v-if="selectedUser" class="modal" role="dialog" aria-labelledby="modal-title" aria-modal="true">
       <div class="modal-content">
         <h2 id="modal-title" class="info">Gebruiker Informatie</h2>
-        <p>
-          <strong>Username:</strong>
-          {{ selectedUser.username ? selectedUser.username : "Geen username gevonden" }}
-        </p>
-        <p>
-          <strong>Gemaakt op:</strong>
-          {{ selectedUser.date ? selectedUser.date : "Geen datum gevonden" }}
-        </p>
-        <p>
-          <strong>BSN:</strong>
-          {{ selectedUser.bsn ? selectedUser.bsn : "Geen BSN gevonden" }}
-        </p>
-        <p>
-          <strong>Afdeling:</strong>
-          {{ selectedUser.afdeling ? selectedUser.afdeling : "Afdeling niet gevonden" }}
-        </p>
-        <p>
-          <strong>Positie:</strong>
-          {{ selectedUser.positie ? selectedUser.positie : "Positie niet gevonden" }}
-        </p>
+        <p><strong>Username:</strong> {{ selectedUser.username || "Geen username gevonden" }}</p>
+        <p><strong>Gemaakt op:</strong> {{ selectedUser.date || "Geen datum gevonden" }}</p>
+        <p><strong>BSN:</strong> {{ selectedUser.bsn || "Geen BSN gevonden" }}</p>
+        <p><strong>Afdeling:</strong> {{ selectedUser.afdeling || "Afdeling niet gevonden" }}</p>
+        <p><strong>Positie:</strong> {{ selectedUser.positie || "Positie niet gevonden" }}</p>
         <button class="close-button" @click="selectedUser = null" aria-label="Close user information modal">
           Terug
         </button>
@@ -157,6 +157,7 @@
 
 
 <script>
+// importeer de benodigde functies en variabelen
 import {
   collection,
   getDocs,
@@ -173,9 +174,13 @@ export default {
   name: "AdminPage",
   data() {
     return {
+      // array voor gebruikers
       users: [],
+      // array voor verlofaanvragen
       verlofList: [],
+      // boolean om formulier te tonen/verbergen
       showForm: false,
+      // velden voor nieuw gebruiker formulier
       newUsername: "",
       email: "",
       date: "",
@@ -183,62 +188,73 @@ export default {
       Afdeling: "",
       generatedPassword: "",
       Positie: "",
+      // geselecteerde gebruiker voor modal venster
       selectedUser: null,
+      // foutmelding bij invoer
       errorMessage: "",
     };
   },
   async created() {
-    this.fetchUsers()
-    this.fetchVerlofRequests()
+    // zodra de component wordt aangemaakt, haal gebruikers en verlofaanvragen op
+    this.fetchUsers();
+    this.fetchVerlofRequests();
   },
   methods: {
     async fetchUsers() {
       try {
+        // haal de documenten op uit de 'users' collectie
         const querySnapshot = await getDocs(collection(db, "users"));
+        // verwerk de documenten tot een array met gebruikers
         this.users = querySnapshot.docs.map((doc) => {
           let userData = doc.data();
 
-          // Convert Firestore Timestamp to a readable date format
+          // convert firestore timestamp naar een leesbaar datum formaat
           if (userData.date && userData.date.seconds) {
             const dateObj = new Date(userData.date.seconds * 1000);
-            userData.date = dateObj.toLocaleDateString("nl-NL"); // Format for Dutch locale (DD-MM-YYYY)
+            userData.date = dateObj.toLocaleDateString("nl-NL"); // formaat: dd-mm-jjjj
           }
 
           return { id: doc.id, ...userData };
         });
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        // log fouten naar de console voor debug
+        console.error("error fetching data: ", error);
       }
     },
 
     async fetchVerlofRequests() {
       try {
-        const querySnapshot = await getDocs(collection(db, 'verlofAanvragen'))
+        // haal de documenten op uit de 'verlofAanvragen' collectie
+        const querySnapshot = await getDocs(collection(db, "verlofAanvragen"));
+        // verwerk de documenten tot een array en filter op status 'Verzonden'
         this.verlofList = querySnapshot.docs
           .map((doc) => ({
             id: doc.id,
-            ...doc.data()
+            ...doc.data(),
           }))
-          .filter((verlof) => verlof.status === 'Verzonden') // Filteren op 'Verzonden' status
+          .filter((verlof) => verlof.status === "Verzonden");
       } catch (error) {
-        console.error('Error fetching verlof requests:', error)
+        // log fouten naar de console voor debug
+        console.error("error fetching verlof requests:", error);
       }
     },
 
     generatePassword() {
+      // genereer een random wachtwoord van 12 tekens
       const length = 12;
-      const charset =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
       let password = "";
       for (let i = 0; i < length; i++) {
         const randomIndex = Math.floor(Math.random() * charset.length);
         password += charset[randomIndex];
       }
+      // sla het gegenereerde wachtwoord op
       this.generatedPassword = password;
     },
 
     async addUser() {
       try {
+        // controleer of alle velden zijn ingevuld
         if (
           !this.newUsername ||
           !this.email ||
@@ -246,7 +262,7 @@ export default {
           !this.Bsn ||
           !this.Afdeling
         ) {
-          this.errorMessage = "Vul alle velden in voordat je doorgaat.";
+          this.errorMessage = "vul alle velden in voordat je doorgaat.";
           return;
         }
         if (
@@ -258,10 +274,10 @@ export default {
         )
           return;
 
-        const currentDate = new Date();
-        // Correcte omzetting naar Firestore Timestamp
-        this.date = Timestamp.now(); // Dit maakt de datum een Firestore Timestamp.
+        // maak een timestamp voor de datum
+        this.date = Timestamp.now();
 
+        // maak een nieuwe gebruiker aan via firebase authentication
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           this.email,
@@ -269,75 +285,86 @@ export default {
         );
         const userId = userCredential.user.uid;
 
-        await setDoc(doc(db, 'users', userId), {
+        // sla de gebruiker op in firestore
+        await setDoc(doc(db, "users", userId), {
           username: this.newUsername,
           email: this.email,
-          date: this.date, // Timestamp voor de datum
+          date: this.date, // timestamp voor de datum
           bsn: this.Bsn,
           wachtwoord: this.generatedPassword,
           afdeling: this.Afdeling,
           positie: this.Positie,
         });
-        await this.fetchUsers()
+        // haal de gebruikerslijst opnieuw op
+        await this.fetchUsers();
 
-        this.newUsername = ''
-        this.email = ''
-        this.generatedPassword = ''
-        this.Bsn = ''
-        this.Afdeling = ''
-        this.Positie = ''
-        this.showForm = false
+        // reset de formulier velden
+        this.newUsername = "";
+        this.email = "";
+        this.generatedPassword = "";
+        this.Bsn = "";
+        this.Afdeling = "";
+        this.Positie = "";
+        this.showForm = false;
       } catch (error) {
-        console.error("Error adding user:", error.message);
+        // log fouten naar de console voor debug
+        console.error("error adding user:", error.message);
       }
     },
 
     async deleteUser(userId) {
       try {
-        // Delete from Firestore
+        // verwijder de gebruiker uit firestore
         const userDoc = doc(db, "users", userId);
         await deleteDoc(userDoc);
 
-        // Find the corresponding auth user
+        // als de huidige auth gebruiker overeenkomt, verwijder ook uit firebase authentication
         const authUser = auth.currentUser;
-
         if (authUser && authUser.uid === userId) {
-          // Delete user from Firebase Authentication
           await deleteAuthUser(authUser);
         }
 
-        // Refresh the users list
+        // haal de gebruikerslijst opnieuw op
         await this.fetchUsers();
       } catch (error) {
-        console.error("Error deleting user: ", error);
+        // log fouten naar de console voor debug
+        console.error("error deleting user: ", error);
       }
     },
 
     showUserInfo(user) {
-      this.selectedUser = user
+      // zet de geselecteerde gebruiker zodat de modal getoond wordt
+      this.selectedUser = user;
     },
 
     async updateVerlofStatus(verlofId, newStatus) {
       try {
-        // Haal de specifieke verlofaanvraag op
-        const verlofDoc = doc(db, 'verlofAanvragen', verlofId)
-
-        // Werk de status bij
-        await setDoc(verlofDoc, { status: newStatus }, { merge: true })
-
-        // Haal de verlofaanvragen opnieuw op om de lijst te vernieuwen
-        await this.fetchVerlofRequests()
+        // haal de specifieke verlofaanvraag op
+        const verlofDoc = doc(db, "verlofAanvragen", verlofId);
+        // werk de status bij met merge zodat overige data behouden blijft
+        await setDoc(verlofDoc, { status: newStatus }, { merge: true });
+        // haal de verlofaanvragen opnieuw op
+        await this.fetchVerlofRequests();
       } catch (error) {
-        console.error('Error updating verlof status:', error)
+        // log fouten naar de console voor debug
+        console.error("error updating verlof status:", error);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped lang="scss">
+/* definieer scss variabelen */
+$error-message-color: red;
+$primary-color: #209fd2;
+$tab-active-bg: #f0f0f0;
+$tab-inactive-bg: #b7b7b7;
+$border-color: #ccc;
+$border-radius: 13px;
+
 .error-message {
-  color: red;
+  color: $error-message-color;
   font-size: 14px;
   margin-bottom: 10px;
 }
@@ -395,7 +422,7 @@ export default {
 
     .close-button {
       padding: 8px 16px;
-      background-color: #209fd2;
+      background-color: $primary-color;
       color: white;
       border: none;
       border-radius: 4px;

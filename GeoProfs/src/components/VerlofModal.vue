@@ -1,21 +1,31 @@
 <template>
+  <!-- container voor het modaal venster met role dialog -->
   <div name="modal" role="dialog" aria-labelledby="verlofaanvraag-title" aria-modal="true">
+    <!-- achtergrond masker voor modaal -->
     <div class="modal-mask">
       <div class="modal-wrapper">
+        <!-- container voor de inhoud van het modaal -->
         <div class="modal-container">
+          <!-- header van het modaal met titel en sluit knop -->
           <header class="modal-header">
+            <!-- titel van de verlofaanvraag -->
             <h1 id="verlofaanvraag-title" class="verlofaanvraag-header">Verlofaanvraag</h1>
+            <!-- sluit knop, emit close event -->
             <img 
               class="modal-close-button" 
               src="@/assets/close-icon.png" 
               @click="$emit('close')" 
-              alt="Sluiten" 
-              aria-label="Sluit de verlofaanvraag"/>
+              alt="sluiten" 
+              aria-label="sluit de verlofaanvraag"/>
           </header>
+          <!-- formulier voor het aanvragen van verlof -->
           <form class="modal-body" @submit.prevent="saveVerlof">
+            <!-- koptekst voor verloftype selectie -->
             <h2 class="verlof-type-header">Verlof Type</h2>
             <fieldset>
-              <legend class="sr-only">Kies een verloftype</legend>
+              <!-- legende verborgen voor screenreaders -->
+              <legend class="sr-only">kies een verloftype</legend>
+              <!-- rij voor de optie 'Ziek' -->
               <div class="row">
                 <input 
                   class="checkbox" 
@@ -26,6 +36,7 @@
                   aria-labelledby="verlof-ziek-label" />
                 <label id="verlof-ziek-label" class="verlofaanvraag-label" for="verlof-ziek">Ziek</label>
               </div>
+              <!-- rij voor de optie 'Persoonlijk' -->
               <div class="row">
                 <input 
                   class="checkbox" 
@@ -36,6 +47,7 @@
                   aria-labelledby="verlof-persoonlijk-label" />
                 <label id="verlof-persoonlijk-label" class="verlofaanvraag-label" for="verlof-persoonlijk">Persoonlijk</label>
               </div>
+              <!-- rij voor de optie 'Vakantie' -->
               <div class="row">
                 <input 
                   class="checkbox" 
@@ -46,6 +58,7 @@
                   aria-labelledby="verlof-vakantie-label" />
                 <label id="verlof-vakantie-label" class="verlofaanvraag-label" for="verlof-vakantie">Vakantie</label>
               </div>
+              <!-- rij voor de optie 'Overige' -->
               <div class="row">
                 <input 
                   class="checkbox" 
@@ -57,31 +70,34 @@
                 <label id="verlof-overige-label" class="verlofaanvraag-label" for="verlof-overige">Overige</label>
               </div>
             </fieldset>
+            <!-- tekstveld voor de reden van de verlofaanvraag -->
             <textarea 
               class="verlofaanvraag-input-field" 
               v-model="reason" 
               placeholder="Reden" 
               rows="4" 
               aria-required="true"></textarea>
+            <!-- container voor de start- en einddatum -->
             <div class="date-container">
               <input 
                 class="verlofaanvraag-date" 
                 type="date" 
                 v-model="startDate" 
                 aria-required="true" 
-                aria-label="Startdatum" />
+                aria-label="startdatum" />
               <input 
                 class="verlofaanvraag-date" 
                 type="date" 
                 v-model="endDate" 
                 aria-required="true" 
-                aria-label="Einddatum" />
+                aria-label="einddatum" />
             </div>
+            <!-- footer van het formulier met de submit knop -->
             <footer class="modal-footer">
               <button 
                 class="modal-default-button" 
                 type="submit" 
-                aria-label="Verstuur verlofaanvraag">
+                aria-label="verstuur verlofaanvraag">
                 Versturen
               </button>
             </footer>
@@ -92,58 +108,68 @@
   </div>
 </template>
 
-
 <script>
+// importeer de benodigde firestore functies en database variables
 import { collection, addDoc } from 'firebase/firestore'
 import { db } from '@/firebase'
 
 export default {
+  // naam van de component
   name: 'VerlofModal',
   data() {
     return {
+      // standaard geselecteerd verloftype
       verlofType: 'Ziek',
+      // reden van de verlofaanvraag
       reason: '',
+      // startdatum van de verlofaanvraag
       startDate: '',
+      // einddatum van de verlofaanvraag
       endDate: ''
     }
   },
   methods: {
     async saveVerlof() {
-      console.log('saveVerlof called');
+      console.log('saveVerlof called')
+      // controleer of alle velden ingevuld zijn
       if (!this.startDate || !this.endDate || !this.reason) {
-        alert('Vul alle velden in.');
-        return;
+        alert('vul alle velden in.')
+        return
       }
 
-      const startDateObj = new Date(this.startDate);
-      const endDateObj = new Date(this.endDate);
+      // maak datum objecten aan voor vergelijking
+      const startDateObj = new Date(this.startDate)
+      const endDateObj = new Date(this.endDate)
+      // controleer of de einddatum niet eerder is dan de startdatum
       if (endDateObj < startDateObj) {
-        alert('De einddatum mag niet eerder zijn dan de startdatum.');
-        return;
+        alert('de einddatum mag niet eerder zijn dan de startdatum.')
+        return
       }
 
       try {
+        // maak een nieuw verlof object aan
         const newVerlof = {
           type: this.verlofType,
           reason: this.reason,
           startDate: this.startDate,
           endDate: this.endDate,
-          status: "Verzonden", 
-          timestamp: new Date() 
-        };
+          status: "Verzonden",
+          timestamp: new Date()
+        }
 
-        await addDoc(collection(db, 'verlofAanvragen'), newVerlof);
+        // voeg de verlofaanvraag toe aan de firestore collectie
+        await addDoc(collection(db, 'verlofAanvragen'), newVerlof)
 
-        console.log('Data submitted:', newVerlof);
-        alert('Verlof succesvol aangevraagd!');
+        console.log('data submitted:', newVerlof)
+        alert('verlof succesvol aangevraagd!')
 
-        this.$emit('close'); 
+        // sluit het modal venster
+        this.$emit('close')
       } catch (error) {
-        console.error(error);
-        alert('Er is iets fout gegaan bij het aanvragen van uw verlof. Probeer het later opnieuw.');
+        console.error(error)
+        alert('er is iets fout gegaan bij het aanvragen van uw verlof. probeer het later opnieuw.')
       }
     }
-
   },
 }
 </script>
@@ -152,6 +178,7 @@ export default {
 html, body, *{
   border: none;
 }
+
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -265,6 +292,7 @@ html, body, *{
     }
   }
 }
+
 @media (max-width: 1422px) {
   .modal-mask {
     .modal-wrapper {
@@ -274,6 +302,7 @@ html, body, *{
     }
   }
 }
+
 @media (max-width: 709px) {
   .modal-mask {
     .modal-wrapper {
