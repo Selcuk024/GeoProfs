@@ -1,11 +1,16 @@
 <template>
+  <!-- container voor de login pagina -->
   <main class="login-page">
+    <!-- sectie voor login formulier -->
     <section class="login-container" aria-labelledby="login-title">
       <div class="logo">
-        <img src="@/assets/logo-geo.jpeg" alt="Geoprofs logo" />
+        <img src="@/assets/logo-geo.jpeg" alt="geoprofs logo" />
       </div>
+      <!-- titel van de login pagina -->
       <h1 id="login-title">Geoprofs</h1>
+      <!-- formulier voor login met preventie van standaard submit gedrag -->
       <form @submit.prevent="login" class="login-form" novalidate>
+        <!-- invoerveld voor email -->
         <input
           type="text"
           v-model="email"
@@ -15,7 +20,7 @@
           aria-required="true"
           aria-describedby="email-description"
         />
-
+        <!-- invoerveld voor wachtwoord -->
         <input
           type="password"
           v-model="password"
@@ -25,17 +30,19 @@
           aria-required="true"
           aria-describedby="password-description"
         />
-        <button type="submit" id="submit" class="submit-button" aria-label="Submit login form">
+        <!-- knop om het formulier te versturen -->
+        <button type="submit" id="submit" class="submit-button" aria-label="submit login form">
           Submit
         </button>
       </form>
-
+      <!-- foutmelding als login mislukt -->
       <p v-if="errorMessage" role="alert" class="error">{{ errorMessage }}</p>
     </section>
   </main>
 </template>
 
 <script>
+// Importeer de benodigde functies/variables
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth, db } from '../firebase'
 import { collection, query, where, getDocs, deleteField, updateDoc } from 'firebase/firestore'
@@ -44,54 +51,70 @@ export default {
   name: 'LoginPage',
   data() {
     return {
+      // email veld voor login
       email: '',
+      // wachtwoord veld voor login
       password: '',
+      // foutmelding die getoond wordt bij een login error
       errorMessage: null
     }
   },
   methods: {
     async login() {
       try {
+        // probeer in te loggen met email en wachtwoord via firebase auth
         const userCredential = await signInWithEmailAndPassword(auth, this.email, this.password)
-        console.log('User logged in:', userCredential.user)
+        // log de ingelogde gebruiker in de console
+        console.log('user logged in:', userCredential.user)
+        // geef login succes door aan parent component via event
         this.$emit('login-success', userCredential.user)
       } catch (error) {
+        // log de fout in de console
         console.error(error)
-        this.errorMessage = error.message || 'Login failed. Please try again.'
+        // zet foutmelding zodat deze getoond wordt aan de gebruiker
+        this.errorMessage = error.message || 'login failed. please try again.'
+        // als er een foutmelding is, probeer in te loggen met database fallback
         this.errorMessage ? this.loginWithDatabase(this.email, this.password) : console.log('no')
       }
     },
 
     async loginWithDatabase(username, password) {
-      //dit is alleen voor de eerste keer
+      // dit is alleen voor de eerste keer
       try {
+        // maak een query om de gebruiker te vinden met de opgegeven username
         const userQuery = query(collection(db, 'users'), where('username', '==', username))
         const querySnapshot = await getDocs(userQuery)
 
+        // controleer of er een gebruiker gevonden is
         if (querySnapshot.empty) {
-          console.error('No user found with this email')
+          console.error('no user found with this email')
           return false
         }
 
+        // haal de eerste gebruiker op uit de query resultaten
         const userDoc = querySnapshot.docs[0]
         const userData = userDoc.data()
         const ref = userDoc.ref
 
+        // controleer of het wachtwoord overeenkomt met de database
         if (userData.password === password) {
           console.log(userData.password)
+          // update het document: verwijder het wachtwoordveld en zet madePassword op false
           await updateDoc(ref, {
             password: deleteField(),
             madePassword: false
           })
+          // geef login succes door aan parent component via event
           this.$emit('login-success', userData)
-          console.log('Login successful', userData)
+          console.log('login successful', userData)
           return true
         } else {
-          console.error('Incorrect password')
+          console.error('incorrect password')
           return false
         }
       } catch (error) {
-        console.error('Error during login', error)
+        // log de error tijdens de login met database fallback
+        console.error('error during login', error)
         return false
       }
     }
@@ -100,7 +123,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-/* Algemene pagina opmaak */
 .login-page {
   display: flex;
   justify-content: center;
@@ -125,23 +147,17 @@ export default {
       }
     }
 
-    h2 {
-      font-size: 1.5rem;
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2rem;
       font-weight: bold;
       color: #333;
-      margin-bottom: 20px;
     }
 
     .login-form {
       display: flex;
       flex-direction: column;
       gap: 16px;
-
-      label {
-        text-align: left;
-        font-size: 0.9rem;
-        color: #666;
-      }
 
       input {
         padding: 12px;

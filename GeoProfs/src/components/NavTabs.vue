@@ -1,5 +1,7 @@
 <template>
-  <div class="nav-tabs" role="tablist" aria-label="Navigatie tabs">
+  <!-- container voor navigatietabs met role tablist -->
+  <div class="nav-tabs" role="tablist" aria-label="navigatie tabs">
+    <!-- knop voor de verlof tab -->
     <button
       :class="{ active: currentTab === 'verlof' }"
       @click="$emit('change-tab', 'verlof')"
@@ -9,6 +11,7 @@
     >
       Verlof
     </button>
+    <!-- knop voor de afwezig tab -->
     <button
       :class="{ active: currentTab === 'afwezig' }"
       @click="$emit('change-tab', 'afwezig')"
@@ -18,6 +21,7 @@
     >
       Afwezig
     </button>
+    <!-- knop voor de profiel tab -->
     <button
       :class="{ active: currentTab === 'profiel' }"
       @click="$emit('change-tab', 'profiel')"
@@ -27,6 +31,7 @@
     >
       Profiel
     </button>
+    <!-- knop voor de admin tab, zichtbaar als gebruiker admin is -->
     <button
       v-if="isAdmin"
       :class="{ active: currentTab === 'admin' }"
@@ -41,8 +46,9 @@
 </template>
 
 <script>
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/firebase";
+// importeer firestore functies voor ophalen van gebruikersdata
+import { doc, getDoc } from "firebase/firestore"
+import { db } from "@/firebase"
 
 export default {
   name: "NavTabs",
@@ -52,32 +58,36 @@ export default {
   },
   data() {
     return {
+      // boolean om admin rechten vast te stellen
       isAdmin: false,
-    };
-  },
-  async created() {
-    if (this.userId) {
-      try {
-        const userDocRef = doc(db, "users", this.userId);
-        const userDoc = await getDoc(userDocRef);
-
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          console.log("Gebruikersgegevens:", userData);
-          if (["Office Manager", "Manager"].includes(userData.positie)) {
-            this.isAdmin = true;
-          }
-        } else {
-          console.error("Gebruikersdocument niet gevonden.");
-        }
-      } catch (error) {
-        console.error("Fout bij ophalen gebruikersgegevens:", error);
-      }
-    } else {
-      console.error("Geen userId beschikbaar.");
     }
   },
-};
+  async created() {
+    // controleer of er een userId is doorgegeven
+    if (this.userId) {
+      try {
+        // haal het gebruikersdocument op uit de database
+        const userDocRef = doc(db, "users", this.userId)
+        const userDoc = await getDoc(userDocRef)
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data()
+          console.log("gebruikersgegevens:", userData)
+          // als de positie 'Manager' of 'Office Manager' is, geef admin
+          if (["Office Manager", "Manager"].includes(userData.positie)) {
+            this.isAdmin = true
+          }
+        } else {
+          console.error("gebruikersdocument niet gevonden.")
+        }
+      } catch (error) {
+        console.error("fout bij ophalen gebruikersgegevens:", error)
+      }
+    } else {
+      console.error("geen userId beschikbaar.")
+    }
+  },
+}
 </script>
 
 <style scoped lang="scss">

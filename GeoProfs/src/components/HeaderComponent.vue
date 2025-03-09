@@ -1,27 +1,34 @@
 <template>
+  <!-- container voor de header -->
   <header class="headerContainer">
+    <!-- sectie rondom het logo -->
     <section class="aroundLogo">
-      <img src="@/assets/logo-geo.jpeg" alt="Geoprofs Logo" class="logo" />
+      <!-- logo van de applicatie -->
+      <img src="@/assets/logo-geo.jpeg" alt="geoprofs logo" class="logo" />
     </section>
 
+    <!-- navigatie in de header -->
     <nav class="header">
+      <!-- dropdown container voor profielmenu -->
       <div class="dropdown">
         <div class="dropdown">
+          <!-- profielicoon, klikbaar om dropdown te openen -->
           <img
             src="@/assets/profile-icon-white.png"
-            alt="Profile Icon"
+            alt="profile icon"
             class="profile-icon"
             role="button"
             tabindex="0"
-            aria-label="Profile Menu"
+            aria-label="profile menu"
             @click="toggleDropdown"
           />
+          <!-- dropdown content met logout knop, zichtbaar als dropdownOpen true is -->
           <button
             class="dropdown-content"
             role="menuitem"
             v-show="dropdownOpen"
             aria-hidden="false"
-            aria-label="Logout button"
+            aria-label="logout button"
           >
             <span @click="logout" class="logout-text">Logout</span>
           </button>
@@ -32,25 +39,30 @@
 </template>
 
 <script>
+// importeer signOut functie van firebase auth en de auth configuratie
 import { signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 
 export default {
   data() {
     return {
+      // boolean om bij te houden of de dropdown open is
       dropdownOpen: false
     }
   },
   methods: {
     async logout() {
       try {
+        // voer de sign out en stuur een event naar de parent
         await signOut(auth)
         this.$emit('logout-success')
-        console.log('User logged out successfully')
+        console.log('user logged out successfully')
       } catch (error) {
-        console.error('Error during logout:', error)
+        // log fouten bij logout
+        console.error('error during logout:', error)
       }
     },
+    // wissel de dropdown status
     toggleDropdown() {
       this.dropdownOpen = !this.dropdownOpen
     }

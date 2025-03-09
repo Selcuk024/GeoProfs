@@ -1,8 +1,13 @@
 <template>
+  <!-- container voor de home pagina -->
   <div class="home-page">
+    <!-- header component met logo en navigatie -->
     <HeaderComponent />
+    <!-- container voor de hoofdinhoud -->
     <div class="content">
+      <!-- navigatietabs component met huidige tab en userId -->
       <NavTabs class="comp" :currentTab="currentTab" :userId="userId" @change-tab="currentTab = $event" />
+      <!-- container voor de geladen component op basis van de tab -->
       <div class="main-content">
         <component :is="currentComponent" />
       </div>
@@ -11,13 +16,14 @@
 </template>
 
 <script>
-import NavTabs from "@/components/NavTabs.vue";
-import VerlofPage from "@/components/VerlofPage.vue";
-import AfwezigPage from "@/components/AfwezigPage.vue";
-import HeaderComponent from "@/components/HeaderComponent.vue";
-import ProfilePage from "@/components/ProfilePage.vue";
-import AdminPage from "@/components/AdminPage.vue";
-import { getAuth } from "firebase/auth";
+// importeer benodigde componenten
+import NavTabs from "@/components/NavTabs.vue"
+import VerlofPage from "@/components/VerlofPage.vue"
+import AfwezigPage from "@/components/AfwezigPage.vue"
+import HeaderComponent from "@/components/HeaderComponent.vue"
+import ProfilePage from "@/components/ProfilePage.vue"
+import AdminPage from "@/components/AdminPage.vue"
+import { getAuth } from "firebase/auth"
 
 export default {
   name: "HomePage",
@@ -31,36 +37,39 @@ export default {
   },
   data() {
     return {
+      // standaard ingestelde tab is 'verlof'
       currentTab: "verlof",
-      userId: null, // Opslag voor de huidige userId
-    };
+      // opslag voor de huidige userId
+      userId: null,
+    }
   },
   computed: {
+    // bepaal de component die getoond wordt op basis van de huidige tab
     currentComponent() {
       switch (this.currentTab) {
         case "verlof":
-          return "VerlofPage";
+          return "VerlofPage"
         case "afwezig":
-          return "AfwezigPage";
+          return "AfwezigPage"
         case "profiel":
-          return "ProfilePage";
+          return "ProfilePage"
         case "admin":
-          return "AdminPage";
+          return "AdminPage"
       }
     },
   },
   async created() {
-    // Haal de huidige gebruiker op via Firebase Authentication
-    const auth = getAuth();
-    const currentUser = auth.currentUser;
+    // haal de huidige gebruiker op via firebase authentication
+    const auth = getAuth()
+    const currentUser = auth.currentUser
 
     if (currentUser) {
-      this.userId = currentUser.uid;
+      this.userId = currentUser.uid
     } else {
-      console.error("Geen gebruiker ingelogd.");
+      console.error("geen gebruiker ingelogd.")
     }
   },
-};
+}
 </script>
 
 <style scoped lang="scss">
@@ -77,6 +86,7 @@ button {
     background-color: darkred;
   }
 }
+
 .content {
   display: flex;
   flex: 1;
@@ -88,18 +98,18 @@ button {
     background-color: #f5f5f5;
   }
 }
+
 @media (max-width: 768px) {
-  .nav-tabs{
+  .nav-tabs {
     display: flex;
     flex-direction: row;
     bottom: 0;
     width: 100%;
     height: unset;
-    padding: 20px
+    padding: 20px;
   }
-  .content{
+  .content {
     flex-direction: column-reverse;
   }
 }
 </style>
-
